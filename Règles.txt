@@ -1,0 +1,6 @@
+Présentation :
+Jeu de plateforme mettant en scène un pingouin, qui a pour objectif de retourner à l'eau en esquivant des obstacles.
+Le jeu comportera plusieurs niveaux dont la difficulté varie (peut-être modes de jeux).
+Le jeu comprend système de récompense, les effets de celles-ci peuvent être bons () ou mauvais (ralentissement).
+
+Le pingouin peut marcher, glisser, sauter, escalader des cordes. Il est contraint par son environnement (glissant ect...).
