@@ -19,7 +19,7 @@ namespace Projet
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Window.Title = "Test";
+            Window.Title = "Titre";
             base.Initialize();
         }
 
