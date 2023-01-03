@@ -14,6 +14,9 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private TiledMap _tiledMap;
+        private TiledMapRenderer _tiledMapRenderer;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,6 +27,7 @@ namespace Projet
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Test";
             base.Initialize();
         }
@@ -33,6 +37,9 @@ namespace Projet
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            //_tiledMap = Content.Load<TiledMap>("map");
+            _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
         }
 
         protected override void Update(GameTime gameTime)
@@ -41,6 +48,7 @@ namespace Projet
                 Exit();
 
             // TODO: Add your update logic here
+            _tiledMapRenderer.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -50,6 +58,7 @@ namespace Projet
             GraphicsDevice.Clear(Color.Red);
 
             // TODO: Add your drawing code here
+            _tiledMapRenderer.Draw();
 
             base.Draw(gameTime);
         }
