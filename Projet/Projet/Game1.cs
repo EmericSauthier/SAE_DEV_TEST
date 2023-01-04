@@ -37,8 +37,24 @@ namespace Projet
         public string niv;
         public Vector2 positionNiv;
         public SpriteFont police;
+        public string quitter;
+        public Vector2 positionQuitter;
 
         private Camera camera1;
+
+        //CHAMPS POUR WIN
+        public string messageGagner;
+        public Vector2 positionMessageGagner;
+        public string messageNivSuiv;
+        public Vector2 positionMessageNivSuiv;
+        public string messageMenu;
+        public Vector2 positionMessageMenu;
+
+        //CHAMPS POUR GAMEOVER
+        public string messagePerdu;
+        public Vector2 positionMessagePerdu;
+        public string messageRejouer;
+        public Vector2 positionMessageRejouer;
 
         public Game1()
         {
@@ -60,6 +76,28 @@ namespace Projet
             regle = "Notes de pingouin";
             jouer = "Jouer";
             niv = "Charger un niveau";
+            quitter = "Quitter";
+            float tailleRegle = 24 * regle.Length;
+            positionRegle = new Vector2(tailleRegle / 2, 50);
+            positionJouer = new Vector2(tailleRegle / 2, 150);
+            positionNiv = new Vector2(tailleRegle / 2, 250);
+            positionNiv = new Vector2(tailleRegle / 2, 250);
+            positionQuitter = new Vector2(tailleRegle / 2, 350);
+
+            //CHAMPS POUR WIN
+            messageGagner = "Niveau completer !";
+            messageMenu = "Menu";
+            messageNivSuiv = "Niveau suivant -->";
+            positionMessageGagner = new Vector2(50, 50);
+            positionMessageMenu = new Vector2(50, 350);
+            positionMessageNivSuiv = new Vector2(250, 350);
+
+            //CHAMPS POUR GAMEOVER
+            messagePerdu = "C'est mort...";
+            messageRejouer = "Reessayer";
+            positionMessagePerdu = new Vector2(50, 50);
+            positionMessageRejouer = new Vector2(50, 350);
+            
 
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
@@ -108,13 +146,11 @@ namespace Projet
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Tab))
             {
-                _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
             base.Update(gameTime);

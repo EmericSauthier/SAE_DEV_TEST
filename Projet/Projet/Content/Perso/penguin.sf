@@ -1,0 +1,44 @@
+{
+  "textureAtlas": {
+    "texture": "penguin.png",
+    "regionWidth": 128,
+    "regionHeight": 128
+  },
+  "cycles": {
+    "walkForward": {
+      "frames": [0,1,2,3,4,5,6,7,8],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "walkBehind": {
+      "frames": [41,42],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "jump": {
+      "frames": [144,145,146,147,148,149,150,151,152],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "beforeSlide": {
+      "frames": [16,17,18],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "slide": {
+      "frames": [21],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "afterSlide": {
+      "frames": [19,20],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "celebrate": {
+      "frames": [153,152],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}
