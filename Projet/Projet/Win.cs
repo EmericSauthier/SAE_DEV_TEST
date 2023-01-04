@@ -17,7 +17,6 @@ namespace Projet
 
         private Pingouin _pingouin;
         private MouseState _mouseState;
-        public bool clicMenu;
         public Win(Game1 game) : base(game)
         {
             _myGame = game;
@@ -25,7 +24,7 @@ namespace Projet
         public override void Initialize()
         {
             _pingouin = new Pingouin(150, 350);
-            clicMenu = false;
+            _myGame.clicMenu = false;
             base.Initialize();
         }
         public override void LoadContent()
@@ -44,7 +43,7 @@ namespace Projet
             {
                 if (_mouseState.X >= _myGame.positionMessageMenu.X && _mouseState.Y >= _myGame.positionMessageMenu.Y && _mouseState.X <= _myGame.positionMessageMenu.X + _myGame.messageMenu.Length * 24 && _mouseState.Y <= _myGame.positionMessageMenu.Y + 24)
                 {
-                    clicMenu = true;
+                    _myGame.clicMenu = true;
                 }
             }
             }
@@ -56,6 +55,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageGagner}", _myGame.positionMessageGagner, Color.Black);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageNivSuiv}", _myGame.positionMessageNivSuiv, Color.Black);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.Black);
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
     }

@@ -49,8 +49,11 @@ namespace Projet
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
+                //quitte le jeu
                 if (_mouseState.X >= _myGame.positionQuitter.X && _mouseState.Y >= _myGame.positionQuitter.Y && _mouseState.X <= _myGame.positionQuitter.X + _myGame.quitter.Length*24 && _mouseState.Y <= _myGame.positionQuitter.Y + 24)
-                { }//Exit();
+                {
+                    _myGame.clicDead = true;
+                }
                 //envoie à la scene des regles
                 else if (_mouseState.X >= _myGame.positionRegle.X && _mouseState.Y >= _myGame.positionRegle.Y && _mouseState.X <= _myGame.positionRegle.X + _myGame.regle.Length * 24 && _mouseState.Y <= _myGame.positionRegle.Y + 24)
                 {

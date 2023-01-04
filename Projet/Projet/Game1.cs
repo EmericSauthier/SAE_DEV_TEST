@@ -26,6 +26,8 @@ namespace Projet
 
         private readonly ScreenManager _screenManager;
 
+
+        //LES CLASSES EN LIEN
         private GameOver _gameOver;
         private Win _win;
         private Menu _menu;
@@ -63,6 +65,10 @@ namespace Projet
         public string messageRejouer;
         public Vector2 positionMessageRejouer;
 
+        //LIEN VERS MENU
+        public bool clicMenu;
+        public bool clicDead;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -88,7 +94,6 @@ namespace Projet
             positionRegle = new Vector2(tailleRegle / 2, 50);
             positionJouer = new Vector2(tailleRegle / 2, 150);
             positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionNiv = new Vector2(tailleRegle / 2, 250);
             positionQuitter = new Vector2(tailleRegle / 2, 350);
 
             //CHAMPS POUR WIN
@@ -103,7 +108,7 @@ namespace Projet
             messagePerdu = "C'est mort...";
             messageRejouer = "Reessayer";
             positionMessagePerdu = new Vector2(50, 50);
-            positionMessageRejouer = new Vector2(50, 350);
+            positionMessageRejouer = new Vector2(250, 350);
 
             // GameManager
             gameOver = false;
@@ -170,10 +175,9 @@ namespace Projet
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
+            if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
-                _win.clicMenu = false;
-                _gameOver.clicMenu = false;
+                clicMenu = false;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (_keyboardState.IsKeyDown(Keys.A))
@@ -184,6 +188,11 @@ namespace Projet
             {
                 _menu.clicChoixNiv = false;
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            else if (clicDead)
+            {
+                clicDead = false;
+                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
             base.Update(gameTime);

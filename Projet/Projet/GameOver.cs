@@ -16,36 +16,55 @@ namespace Projet
         private Game1 _myGame;
 
         private Pingouin _pingouin;
+        private Pingouin[] _pingouinTab;
         private MouseState _mouseState;
 
-        public bool clicMenu;
+        
         public GameOver(Game1 game): base(game)
         {
             _myGame = game;
         }
         public override void Initialize()
         {
-            _pingouin = new Pingouin(150, 350);
-            clicMenu = false;
+            _pingouinTab = new Pingouin[6];
+            for (int i =0; i < 6; i++)
+            {
+                _pingouinTab[i] = new Pingouin(50+100*i, 600);
+            }
+            
+            _pingouin = new Pingouin(350, 50);
+            _myGame.clicMenu = false;
             base.Initialize();
         }
         public override void LoadContent()
         {
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            _pingouin.Perso = new AnimatedSprite(spriteSheet);
+            for (int i=0; i<6; i++)
+            {
+                _pingouinTab[i].Perso = new AnimatedSprite(spriteSheet);
+            }
+            
+            
+            //_pingouin.Perso = new AnimatedSprite(spriteSheet);
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _pingouin.Perso.Play("dead");
-            _pingouin.Perso.Update(deltaSeconds);
+            for (int i =0; i <6; i++)
+            {
+                _pingouinTab[i].Perso.Play("dead");
+                _pingouinTab[i].Perso.Update(deltaSeconds);
+            }
+
+            //_pingouin.Perso.Play("dead");
+            //_pingouin.Perso.Update(deltaSeconds);
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (_mouseState.X >= _myGame.positionMessageMenu.X && _mouseState.Y >= _myGame.positionMessageMenu.Y && _mouseState.X <= _myGame.positionMessageMenu.X + _myGame.messageMenu.Length * 24 && _mouseState.Y <= _myGame.positionMessageMenu.Y + 24)
                 {
-                    clicMenu = true;
+                    _myGame.clicMenu = true;
                 }
             }
         }
@@ -54,9 +73,14 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messagePerdu}", _myGame.positionMessagePerdu, Color.Black);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageRejouer}", _myGame.positionMessageRejouer, Color.Black);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.Black);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messagePerdu}", _myGame.positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageRejouer}", _myGame.positionMessageRejouer, Color.White);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.White);
+            for (int i=0; i<6; i++)
+            {
+                _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
+            }
+            //_myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
     }
