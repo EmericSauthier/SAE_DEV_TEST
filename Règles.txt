@@ -6,7 +6,7 @@ Le jeu comprend système de récompense, les effets de celles-ci peuvent être b
 Le pingouin peut marcher, glisser, sauter, escalader des cordes. Il est contraint par son environnement (glissant ect...).
 
 A faire :
-- Menu d'accueil : réglage des touches/de la partie, sélection des niveaux, sélection du mode de jeu (si plusieurs)
-- Map : 2-3 niveaux, récompenses
-- Déplacement du pingouin : animations, évènements en fonction de la map, effets des récompenses
-- Menu de fin : partie perdue --> pingouin qui souffle & partie gagnée --> pingouin qui danse la salsa, boutton rejouer, sélection du niveau, boutton niveau suivant
+- Menu d'accueil : réglage des touches/de la partie, sélection des niveaux, sélection du mode de jeu (si plusieurs) ==> Gaëlle
+- Map : faire 2-3 niveaux, récompenses ==> Hugo
+- Déplacement du pingouin : faire les animations, gérer les évènements en fonction de la map, gérer effets des récompenses ==> Emeric
+- Menu de fin : partie perdue --> pingouin qui souffle / partie gagnée --> pingouin qui célèbre & possibilité de rejouer, de sélectionner un autre niveau ou de passer au niveau suivant grâce à des bouttons ==> A voir
