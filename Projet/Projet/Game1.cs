@@ -25,6 +25,15 @@ namespace Projet
         private Win _win;
         private Menu _menu;
 
+        //CHAMPS POUR MENU
+        public string regle;
+        public Vector2 positionRegle;
+        public string jouer;
+        public Vector2 positionJouer;
+        public string niv;
+        public Vector2 positionNiv;
+        public SpriteFont police;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -41,6 +50,10 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Test";
 
+            //CHAMPS POUR MENU
+            regle = "Notes de pingouin";
+            jouer = "Jouer";
+            niv = "Charger un niveau";
             
             base.Initialize();
         }
@@ -58,6 +71,9 @@ namespace Projet
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
+
+            //POUR MENU
+            police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,6 +83,19 @@ namespace Projet
 
             // TODO: Add your update logic here
             _tiledMapRenderer.Update(gameTime);
+
+            //CHAMNGEMENT DE SCENE
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Tab))
+            {
+                _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice,
+                Color.Black));
+            }
+            else if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice,
+                Color.Black));
+            }
 
             base.Update(gameTime);
         }
