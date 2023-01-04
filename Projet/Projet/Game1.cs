@@ -116,7 +116,7 @@ namespace Projet
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
             camera1 = new Camera();
-            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
             base.Initialize();
         }
@@ -155,8 +155,7 @@ namespace Projet
             _tiledMapRenderer.Update(gameTime);
 
             // Camera
-            camera1.Update(gameTime);
-            //camera1.CameraPosition = pingouin1.Position;
+            camera1.Update(gameTime, pingouin1);
 
             // GameManager
             _keyboardState = Keyboard.GetState();
@@ -165,6 +164,7 @@ namespace Projet
             // Pingouin
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
+            
 
             //CHANGGEMENT DE SCENE
             if (_keyboardState.IsKeyDown(Keys.Tab))
