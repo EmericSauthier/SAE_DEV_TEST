@@ -160,17 +160,18 @@ namespace Projet
 
             // GameManager
             _keyboardState = Keyboard.GetState();
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
             pingouin1.Animate(gameOver, _keyboardState);
+            pingouin1.Perso.Update(deltaSeconds);
 
             //CHANGGEMENT DE SCENE
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Tab))
+            if (_keyboardState.IsKeyDown(Keys.Tab))
             {
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
-            else if (keyboardState.IsKeyDown(Keys.A))
+            else if (_keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
