@@ -64,14 +64,28 @@ namespace Projet
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
-                this.slide = false;
-                if (keyboardState.IsKeyDown(Keys.Space))
+                if (keyboardState.IsKeyDown(Keys.Down))
                 {
+                    if (!this.slide)
+                    {
+                        this.perso.Play("beforeSlide");
+                        this.slide = true;
+                    }
+                    else
+                    {
+                        this.perso.Play("slide");
+                        this.position += new Vector2((float)1.5, 0);
+                    }
+                }
+                else if (keyboardState.IsKeyDown(Keys.Space))
+                {
+                    this.slide = false;
                     this.perso.Play("jump");
                     this.position += new Vector2((float)0.5, 0);
                 }
                 else
                 {
+                    this.slide = false;
                     this.perso.Play("walkForward");
                     this.position += new Vector2(1, 0);
                 }
@@ -82,20 +96,9 @@ namespace Projet
                 this.perso.Play("walkBehind");
                 this.position -= new Vector2(1, 0);
             }
-            else if (keyboardState.IsKeyDown(Keys.Down) && !keyboardState.IsKeyDown(Keys.Space))
-            {
-                if (!this.slide)
-                {
-                    this.perso.Play("beforeSlide");
-                    this.slide = true;
-                }
-                else
-                {
-                    this.perso.Play("slide");
-                }
-            }
             else if (keyboardState.IsKeyDown(Keys.Space))
             {
+                this.slide = false;
                 this.perso.Play("jump");
             }
             else

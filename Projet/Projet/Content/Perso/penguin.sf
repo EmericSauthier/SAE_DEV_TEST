@@ -16,7 +16,7 @@
       "frameDuration": 0.2
     },
     "jump": {
-      "frames": [144,145,146,147,148,149,150,151,152],
+      "frames": [144,145,146,147,148,149,150,151,152,0],
       "isLooping": false,
       "frameDuration": 0.2
     },
@@ -31,7 +31,7 @@
       "frameDuration": 0.2
     },
     "afterSlide": {
-      "frames": [19,20],
+      "frames": [19,20,0],
       "isLooping": false,
       "frameDuration": 0.2
     },
