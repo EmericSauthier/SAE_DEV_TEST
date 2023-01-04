@@ -23,10 +23,12 @@ namespace Projet
     {
         private Vector2 position;
         private AnimatedSprite perso;
+        private bool slide;
 
         public Pingouin(float x, float y)
         {
             this.Position = new Vector2(x, y);
+            this.slide = false;
         }
 
         public Vector2 Position
@@ -58,34 +60,51 @@ namespace Projet
         {
             if (gameOver)
             {
-                perso.Play("celebrate");
-            }
-            else if (keyboardState.IsKeyDown(Keys.Down) && !keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyUp(Keys.Down))
-            {
-                perso.Play("beforeSlide");
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Space))
-            {
-                perso.Play("jump");
-                position += new Vector2((float)0.5, 0);
-            }
-            else if (!keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Space))
-            {
-                perso.Play("jump");
+                this.perso.Play("celebrate");
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
-                perso.Play("walkForward");
-                position += new Vector2(1, 0);
+                this.slide = false;
+                if (keyboardState.IsKeyDown(Keys.Space))
+                {
+                    this.perso.Play("jump");
+                    this.position += new Vector2((float)0.5, 0);
+                }
+                else
+                {
+                    this.perso.Play("walkForward");
+                    this.position += new Vector2(1, 0);
+                }
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
-                perso.Play("walkBehind");
-                position -= new Vector2(1, 0);
+                this.slide = false;
+                this.perso.Play("walkBehind");
+                this.position -= new Vector2(1, 0);
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down) && !keyboardState.IsKeyDown(Keys.Space))
+            {
+                if (!this.slide)
+                {
+                    this.perso.Play("beforeSlide");
+                    this.slide = true;
+                }
+                else
+                {
+                    this.perso.Play("slide");
+                }
+            }
+            else if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                this.perso.Play("jump");
             }
             else
             {
-
+                if (this.slide)
+                {
+                    this.perso.Play("afterSlide");
+                }
+                this.slide = false;
             }
         }
     }
