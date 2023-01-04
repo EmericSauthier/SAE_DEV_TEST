@@ -31,6 +31,8 @@ namespace Projet
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
+            this.vitesseMarche = 1;
+            this.vitesseSlide = 1.5;
         }
         
         public Vector2 Position
