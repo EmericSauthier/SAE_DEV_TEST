@@ -48,6 +48,7 @@ namespace Projet
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
+        private TiledMapTileLayer mapLayer;
 
         //CHAMPS POUR WIN
         public string messageGagner;
@@ -131,6 +132,7 @@ namespace Projet
             // Map
             _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+            mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
             // Pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
