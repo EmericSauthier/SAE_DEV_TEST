@@ -23,9 +23,6 @@ namespace Projet
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
 
-        private OrthographicCamera _camera;
-        private Vector2 _cameraPosition;
-
         private readonly ScreenManager _screenManager;
 
         private GameOver _gameOver;
@@ -40,6 +37,8 @@ namespace Projet
         public string niv;
         public Vector2 positionNiv;
         public SpriteFont police;
+
+        private Camera camera1;
 
         public Game1()
         {
@@ -61,17 +60,13 @@ namespace Projet
             regle = "Notes de pingouin";
             jouer = "Jouer";
             niv = "Charger un niveau";
-            
 
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
-            // Camera
-            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-            _camera = new OrthographicCamera(viewportAdapter);
-            _cameraPosition = new Vector2(LARGEUR_FENETRE/2, HAUTEUR_FENETRE + 80);
+            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
             base.Initialize();
         }
@@ -90,7 +85,8 @@ namespace Projet
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
-
+            camera1 = new Camera();
+            
             //POUR MENU
             police = Content.Load<SpriteFont>("Font");
         }
@@ -106,8 +102,7 @@ namespace Projet
             _tiledMapRenderer.Update(gameTime);
 
             // Camera
-            MoveCamera(gameTime);
-            _camera.LookAt(_cameraPosition);
+            camera1.Update(gameTime);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -132,47 +127,9 @@ namespace Projet
             // TODO: Add your drawing code here
 
             // Camera
-            _tiledMapRenderer.Draw(_camera.GetViewMatrix());
+            _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
             base.Draw(gameTime);
-        }
-
-        private Vector2 GetMovementDirection()
-        {
-            var movementDirection = Vector2.Zero;
-            var state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Down))
-            {
-                movementDirection += Vector2.UnitY;
-            }
-            if (state.IsKeyDown(Keys.Up))
-            {
-                movementDirection -= Vector2.UnitY;
-            }
-            if (state.IsKeyDown(Keys.Left))
-            {
-                movementDirection -= Vector2.UnitX;
-            }
-            if (state.IsKeyDown(Keys.Right))
-            {
-                movementDirection += Vector2.UnitX;
-            }
-
-            // Can't normalize the zero vector so test for it before normalizing
-            if (movementDirection != Vector2.Zero)
-            {
-                movementDirection.Normalize();
-            }
-
-            return movementDirection;
-        }
-
-        private void MoveCamera(GameTime gameTime)
-        {
-            var speed = 600;
-            var seconds = gameTime.GetElapsedSeconds();
-            var movementDirection = GetMovementDirection();
-            _cameraPosition += speed * movementDirection * seconds;
         }
     }
 }
