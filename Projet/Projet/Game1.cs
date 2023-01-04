@@ -8,11 +8,16 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
+using MonoGame.Extended.TextureAtlases;
 
 namespace Projet
 {
     public class Game1 : Game
     {
+        private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
+
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch { get; set; }
 
@@ -36,6 +41,13 @@ namespace Projet
         public SpriteFont police;
         public string quitter;
         public Vector2 positionQuitter;
+
+        private Camera camera1;
+        private Pingouin pingouin1;
+
+        // GameManager
+        private bool gameOver;
+        private KeyboardState _keyboardState;
 
         //CHAMPS POUR WIN
         public string messageGagner;
@@ -65,7 +77,7 @@ namespace Projet
         {
             // TODO: Add your initialization logic here
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Test";
+            Window.Title = "Jeu du pingouin";
 
             //CHAMPS POUR MENU
             regle = "Notes de pingouin";
@@ -92,7 +104,21 @@ namespace Projet
             messageRejouer = "Reessayer";
             positionMessagePerdu = new Vector2(50, 50);
             positionMessageRejouer = new Vector2(50, 350);
-            
+
+            // GameManager
+            gameOver = false;
+
+
+            // Fenetre
+            _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
+            _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
+            _graphics.ApplyChanges();
+
+            pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
+
+            camera1 = new Camera();
+            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+
             base.Initialize();
         }
 
@@ -102,8 +128,13 @@ namespace Projet
 
             // TODO: use this.Content to load your game content here
 
-            //_tiledMap = Content.Load<TiledMap>("map");
+            // Map
+            _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+
+            // Pingouin
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
+            pingouin1.Perso = new AnimatedSprite(spriteSheet);
 
             //Load des differente classes
             _gameOver = new GameOver(this);
@@ -121,15 +152,31 @@ namespace Projet
                 Exit();
 
             // TODO: Add your update logic here
+
+            // Map
             _tiledMapRenderer.Update(gameTime);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
+            // Camera
+            camera1.Update(gameTime);
+            //camera1.CameraPosition = pingouin1.Position;
+
+            // GameManager
+            _keyboardState = Keyboard.GetState();
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Pingouin
+            pingouin1.Animate(gameOver, _keyboardState);
+            pingouin1.Perso.Update(deltaSeconds);
+
+            //CHANGGEMENT DE SCENE
+            if (_keyboardState.IsKeyDown(Keys.Tab))
             {
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
-            else if (keyboardState.IsKeyDown(Keys.Right))
+            else if (_keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
@@ -143,10 +190,17 @@ namespace Projet
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Red);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _tiledMapRenderer.Draw();
+
+            // Pingouin
+            SpriteBatch.Begin();
+            SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
+            SpriteBatch.End();
+
+            // Camera
+            _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
             base.Draw(gameTime);
         }
