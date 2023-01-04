@@ -41,7 +41,7 @@ namespace Projet
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (_mouseState.X >= _myGame.positionMessageMenu.X && _mouseState.Y >= _myGame.positionMessageMenu.Y && _mouseState.X <= _myGame.positionMessageMenu.X + _myGame.messageMenu.Length * 24 && _mouseState.Y <= _myGame.positionMessageMenu.Y + 24)
+                if (_mouseState.X >= Champ.positionMessageMenu.X && _mouseState.Y >= Champ.positionMessageMenu.Y && _mouseState.X <= Champ.positionMessageMenu.X + Champ.messageMenu.Length * 24 && _mouseState.Y <= Champ.positionMessageMenu.Y + 24)
                 {
                     _myGame.clicMenu = true;
                 }
@@ -52,10 +52,9 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.White);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageGagner}", _myGame.positionMessageGagner, Color.Black);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageNivSuiv}", _myGame.positionMessageNivSuiv, Color.Black);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.Black);
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageGagner}", Champ.positionMessageGagner, Color.Black);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageNivSuiv}", Champ.positionMessageNivSuiv, Color.Black);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageMenu}", Champ.positionMessageMenu, Color.Black);
             _myGame.SpriteBatch.End();
         }
     }

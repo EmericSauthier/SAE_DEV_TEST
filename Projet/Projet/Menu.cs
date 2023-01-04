@@ -49,23 +49,20 @@ namespace Projet
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                //quitte le jeu
-                if (_mouseState.X >= _myGame.positionQuitter.X && _mouseState.Y >= _myGame.positionQuitter.Y && _mouseState.X <= _myGame.positionQuitter.X + _myGame.quitter.Length*24 && _mouseState.Y <= _myGame.positionQuitter.Y + 24)
-                {
-                    _myGame.clicDead = true;
-                }
+                if (_mouseState.X >= Champ.positionQuitter.X && _mouseState.Y >= Champ.positionQuitter.Y && _mouseState.X <= Champ.positionQuitter.X + Champ.quitter.Length*24 && _mouseState.Y <= Champ.positionQuitter.Y + 24)
+                { }//Exit();
                 //envoie à la scene des regles
-                else if (_mouseState.X >= _myGame.positionRegle.X && _mouseState.Y >= _myGame.positionRegle.Y && _mouseState.X <= _myGame.positionRegle.X + _myGame.regle.Length * 24 && _mouseState.Y <= _myGame.positionRegle.Y + 24)
+                else if (_mouseState.X >= Champ.positionRegle.X && _mouseState.Y >= Champ.positionRegle.Y && _mouseState.X <= Champ.positionRegle.X + Champ.regle.Length * 24 && _mouseState.Y <= Champ.positionRegle.Y + 24)
                 {
                     
                 }
                 //envoie a la scene de jeu
-                else if (_mouseState.X >= _myGame.positionJouer.X && _mouseState.Y >= _myGame.positionJouer.Y && _mouseState.X <= _myGame.positionJouer.X + _myGame.jouer.Length * 24 && _mouseState.Y <= _myGame.positionJouer.Y + 24)
+                else if (_mouseState.X >= Champ.positionJouer.X && _mouseState.Y >= Champ.positionJouer.Y && _mouseState.X <= Champ.positionJouer.X + Champ.jouer.Length * 24 && _mouseState.Y <= Champ.positionJouer.Y + 24)
                 {
 
                 }
                 //envoie a la scene de choix de niveau
-                else if (_mouseState.X >= _myGame.positionNiv.X && _mouseState.Y >= _myGame.positionNiv.Y && _mouseState.X <= _myGame.positionNiv.X + _myGame.niv.Length * 24 && _mouseState.Y <= _myGame.positionNiv.Y + 24)
+                else if (_mouseState.X >= Champ.positionNiv.X && _mouseState.Y >= Champ.positionNiv.Y && _mouseState.X <= Champ.positionNiv.X + Champ.niv.Length * 24 && _mouseState.Y <= Champ.positionNiv.Y + 24)
                 {
                     clicChoixNiv = true;
                 }
@@ -77,10 +74,10 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.regle}", _myGame.positionRegle, Color.White);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.jouer}", _myGame.positionJouer, Color.White);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.niv}", _myGame.positionNiv, Color.White);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.quitter}", _myGame.positionQuitter, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.regle}", Champ.positionRegle, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.jouer}", Champ.positionJouer, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.niv}", Champ.positionNiv, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.quitter}", Champ.positionQuitter, Color.White);
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }

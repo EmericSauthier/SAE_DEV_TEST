@@ -92,28 +92,14 @@ namespace Projet
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
-                if (keyboardState.IsKeyDown(Keys.Down))
+                this.slide = false;
+                if (keyboardState.IsKeyDown(Keys.Space))
                 {
-                    if (!this.slide)
-                    {
-                        this.perso.Play("beforeSlide");
-                        this.slide = true;
-                    }
-                    else
-                    {
-                        this.perso.Play("slide");
-                        this.position += new Vector2((float)vitesseSlide, 0);
-                    }
-                }
-                else if (keyboardState.IsKeyDown(Keys.Space))
-                {
-                    this.slide = false;
                     this.perso.Play("jump");
                     this.position += new Vector2((float)vitesseMarche / 2, 0);
                 }
                 else
                 {
-                    this.slide = false;
                     this.perso.Play("walkForward");
                     this.position += new Vector2((float)VitesseMarche, 0);
                 }
@@ -123,6 +109,19 @@ namespace Projet
                 this.slide = false;
                 this.perso.Play("walkBehind");
                 this.position -= new Vector2((float)vitesseMarche, 0);
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                if (!this.slide)
+                {
+                    this.perso.Play("beforeSlide");
+                    this.slide = true;
+                }
+                else
+                {
+                    this.perso.Play("slide");
+                    this.position += new Vector2((float)vitesseSlide, 0);
+                }
             }
             else if (keyboardState.IsKeyDown(Keys.Space))
             {
@@ -134,6 +133,10 @@ namespace Projet
                 this.slide = false;
                 this.perso.Play("idle");
             }
+        }
+        public void CheckCollision(TiledMapLayer mapLayer)
+        {
+
         }
     }
 }
