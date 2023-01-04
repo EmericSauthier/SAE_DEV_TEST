@@ -109,7 +109,7 @@ namespace Projet
                 {
                     this.slide = false;
                     this.perso.Play("jump");
-                    this.position += new Vector2((float)vitesseMarche/2, 0);
+                    this.position += new Vector2((float)vitesseMarche / 2, 0);
                 }
                 else
                 {
@@ -131,11 +131,8 @@ namespace Projet
             }
             else
             {
-                if (this.slide)
-                {
-                    this.perso.Play("afterSlide");
-                }
                 this.slide = false;
+                this.perso.Play("idle");
             }
         }
     }

@@ -30,15 +30,15 @@
       "isLooping": false,
       "frameDuration": 0.2
     },
-    "afterSlide": {
-      "frames": [19,20,0],
-      "isLooping": false,
-      "frameDuration": 0.2
-    },
     "celebrate": {
       "frames": [153,152],
       "isLooping": false,
       "frameDuration": 0.2
+    },
+    "idle": {
+      "frames": [0,16],
+      "isLooping": false,
+      "frameDuration": 0.6
     }
   }
 }
