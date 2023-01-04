@@ -38,6 +38,8 @@ namespace Projet
         private bool gameOver;
         private KeyboardState _keyboardState;
         private TiledMapTileLayer _mapLayer;
+        private float _chrono;
+        private Vector2 _positionChrono;
 
         public Game1()
         {
@@ -66,8 +68,14 @@ namespace Projet
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
+            // Chrono
+            _chrono = 0;
+            _positionChrono = new Vector2(0, 0);
+
+            // Pingouin
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
+            // Camera
             camera1 = new Camera();
             camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
@@ -101,6 +109,8 @@ namespace Projet
 
         protected override void Update(GameTime gameTime)
         {
+            //System.Diagnostics.Debug.WriteLine("oui");
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -120,7 +130,9 @@ namespace Projet
             pingouin1.CheckCollision(_mapLayer);
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
-            
+
+            // Chrono
+            _chrono += deltaSeconds;
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -156,6 +168,9 @@ namespace Projet
 
             // Camera
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
+
+            // Chrono
+            SpriteBatch.DrawString(Champ.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
 
             base.Draw(gameTime);
         }

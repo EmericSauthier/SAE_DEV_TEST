@@ -25,6 +25,11 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin map.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:map.tmx
+
 #begin Perso/penguin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -36,22 +41,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Perso/penguin.png
-#begin map.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:map.tmx
-
-#begin plains.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:plains.png
 
 #begin plains.png
 /importer:TextureImporter
@@ -81,4 +70,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SnowTiles.png
+
+#begin spike.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spike.png
 
