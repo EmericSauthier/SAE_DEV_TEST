@@ -14,12 +14,15 @@ namespace Projet
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        public SpriteBatch _spriteBatch { get; set; };
+        public SpriteBatch SpriteBatch { get; set; }
 
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
 
         private readonly ScreenManager _screenManager;
+
+        private GameOver _gameOver;
+        private Win _win;
 
         public Game1()
         {
@@ -43,12 +46,16 @@ namespace Projet
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
 
             //_tiledMap = Content.Load<TiledMap>("map");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+
+            //mise en place des page Win et GameOver
+            _gameOver = new GameOver(this);
+            _win = new Win(this);
         }
 
         protected override void Update(GameTime gameTime)
