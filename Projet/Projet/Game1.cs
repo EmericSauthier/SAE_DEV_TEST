@@ -104,6 +104,7 @@ namespace Projet
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
+            camera1 = new Camera();
             camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
             base.Initialize();
@@ -123,7 +124,6 @@ namespace Projet
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
-            camera1 = new Camera();
             
             //POUR MENU
             police = Content.Load<SpriteFont>("Font");
