@@ -15,6 +15,7 @@ namespace Projet
     {
         private Game1 _myGame;
 
+
         public Menu(Game1 game) : base(game)
         {
             _myGame = game;
@@ -30,7 +31,13 @@ namespace Projet
 
         public override void Draw(GameTime gameTime)
         {
-            _myGame.GraphicsDevice.Clear(Color.White);
+            _myGame.GraphicsDevice.Clear(Color.Black);
+            _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.regle}", _myGame.positionRegle, Color.White);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.jouer}", _myGame.positionJouer, Color.White);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.niv}", _myGame.positionNiv, Color.White);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.quitter}", _myGame.positionQuitter, Color.White);
+            _myGame.SpriteBatch.End();
         }
     }
 }

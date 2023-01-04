@@ -31,6 +31,11 @@ namespace Projet
         public override void Draw(GameTime gameTime)
         {
             _myGame.GraphicsDevice.Clear(Color.White);
+            _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageGagner}", _myGame.positionMessageGagner, Color.Black);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageNivSuiv}", _myGame.positionMessageNivSuiv, Color.Black);
+            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.Black);
+            _myGame.SpriteBatch.End();
         }
     }
 }
