@@ -172,6 +172,8 @@ namespace Projet
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
             {
+                _win.clicMenu = false;
+                _gameOver.clicMenu = false;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (_keyboardState.IsKeyDown(Keys.A))
@@ -180,6 +182,7 @@ namespace Projet
             }
             else if (_menu.clicChoixNiv)
             {
+                _menu.clicChoixNiv = false;
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
