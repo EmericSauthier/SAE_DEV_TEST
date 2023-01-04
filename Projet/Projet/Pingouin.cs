@@ -24,7 +24,7 @@ namespace Projet
         private Vector2 position;
         private AnimatedSprite perso;
 
-        public Penguin(float x, float y)
+        public Pingouin(float x, float y)
         {
             this.Position = new Vector2(x, y);
         }

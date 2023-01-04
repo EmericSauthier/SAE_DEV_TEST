@@ -14,19 +14,32 @@ namespace Projet
     internal class Menu : GameScreen
     {
         private Game1 _myGame;
-
+        private Pingouin _pingouin;
+        private KeyboardState _keyboardState;
 
         public Menu(Game1 game) : base(game)
         {
             _myGame = game;
         }
+
+        public override void Initialize()
+        {
+            _pingouin = new Pingouin(20, 150);
+            base.Initialize();
+        }
         public override void LoadContent()
         {
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
+            _pingouin.Perso = new AnimatedSprite(spriteSheet);
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _keyboardState = Keyboard.GetState();
 
+            _pingouin.Animate(false, _keyboardState);
+            _pingouin.Perso.Update(deltaSeconds);
         }
 
         public override void Draw(GameTime gameTime)
