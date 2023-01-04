@@ -11,13 +11,20 @@ using MonoGame.Extended.Screens.Transitions;
 
 namespace Projet
 {
-    public class GameOver: GameScreen
+    internal class GameOver: GameScreen
     {
         private Game1 _myGame;
+        private MouseState _mouseState;
 
+        public bool clicMenu;
         public GameOver(Game1 game): base(game)
         {
             _myGame = game;
+        }
+        public override void Initialize()
+        {
+            clicMenu = false;
+            base.Initialize();
         }
         public override void LoadContent()
         {
@@ -25,7 +32,14 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-
+            _mouseState = Mouse.GetState();
+            if (_mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (_mouseState.X >= _myGame.positionMessageMenu.X && _mouseState.Y >= _myGame.positionMessageMenu.Y && _mouseState.X <= _myGame.positionMessageMenu.X + _myGame.messageMenu.Length * 24 && _mouseState.Y <= _myGame.positionMessageMenu.Y + 24)
+                {
+                    clicMenu = true;
+                }
+            }
         }
 
         public override void Draw(GameTime gameTime)

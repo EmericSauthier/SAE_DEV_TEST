@@ -24,6 +24,7 @@ namespace Projet
         private GameOver _gameOver;
         private Win _win;
         private Menu _menu;
+        private ChoixNiveau _choixNiveau;
 
         //CHAMPS POUR MENU
         public string regle;
@@ -108,6 +109,7 @@ namespace Projet
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
+            _choixNiveau = new ChoixNiveau(this);
 
             //POUR MENU
             police = Content.Load<SpriteFont>("Font");
@@ -123,13 +125,17 @@ namespace Projet
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Tab))
+            if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
             {
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            else if (_menu.clicChoixNiv)
+            {
+                _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
             base.Update(gameTime);
