@@ -6,22 +6,28 @@ using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
+using MonoGame.Extended;
 
 namespace Projet
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch { get; set; };
 
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
+
+        private readonly ScreenManager _screenManager;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            _screenManager = new ScreenManager();
+            Components.Add(_screenManager);
         }
 
         protected override void Initialize()
@@ -29,6 +35,8 @@ namespace Projet
             // TODO: Add your initialization logic here
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Test";
+
+            
             base.Initialize();
         }
 
