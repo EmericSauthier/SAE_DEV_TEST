@@ -156,9 +156,6 @@ namespace Projet
             // Map
             _tiledMapRenderer.Update(gameTime);
 
-            //CHAMNGEMENT DE SCENE
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
             // Camera
             camera1.Update(gameTime);
             //camera1.CameraPosition = pingouin1.Position;
@@ -171,8 +168,9 @@ namespace Projet
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
 
-            //CHANGGEMENT DE SCENE
-            if (_keyboardState.IsKeyDown(Keys.Tab))
+            //CHAMNGEMENT DE SCENE
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
             {
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
