@@ -39,6 +39,11 @@
       "frames": [0,16],
       "isLooping": false,
       "frameDuration": 0.6
+    },
+    "dead": {
+      "frames": [164,165,166,167,168,169,170,171,172,173,174,175],
+      "isLooping": false,
+      "frameDuration": 0.2
     }
   }
 }
