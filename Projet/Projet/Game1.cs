@@ -33,6 +33,9 @@ namespace Projet
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
 
+        public bool clicMenu;
+        public bool clicDead;
+
         private Camera camera1;
         private Pingouin pingouin1;
 
@@ -73,6 +76,7 @@ namespace Projet
             camera1 = new Camera();
             camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
+            
             base.Initialize();
         }
 

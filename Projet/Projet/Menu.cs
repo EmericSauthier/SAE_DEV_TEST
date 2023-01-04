@@ -50,7 +50,9 @@ namespace Projet
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (_mouseState.X >= Champ.positionQuitter.X && _mouseState.Y >= Champ.positionQuitter.Y && _mouseState.X <= Champ.positionQuitter.X + Champ.quitter.Length*24 && _mouseState.Y <= Champ.positionQuitter.Y + 24)
-                { }//Exit();
+                {
+                    _myGame.clicDead = true;
+                }
                 //envoie à la scene des regles
                 else if (_mouseState.X >= Champ.positionRegle.X && _mouseState.Y >= Champ.positionRegle.Y && _mouseState.X <= Champ.positionRegle.X + Champ.regle.Length * 24 && _mouseState.Y <= Champ.positionRegle.Y + 24)
                 {

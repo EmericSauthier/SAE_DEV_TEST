@@ -45,7 +45,7 @@ namespace Projet
             }
             
             
-            //_pingouin.Perso = new AnimatedSprite(spriteSheet);
+            _pingouin.Perso = new AnimatedSprite(spriteSheet);
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -57,8 +57,8 @@ namespace Projet
                 _pingouinTab[i].Perso.Update(deltaSeconds);
             }
 
-            //_pingouin.Perso.Play("dead");
-            //_pingouin.Perso.Update(deltaSeconds);
+            _pingouin.Perso.Play("dead");
+            _pingouin.Perso.Update(deltaSeconds);
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -73,14 +73,14 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messagePerdu}", _myGame.positionMessagePerdu, Color.White);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageRejouer}", _myGame.positionMessageRejouer, Color.White);
-            _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.messageMenu}", _myGame.positionMessageMenu, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messagePerdu}", Champ.positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageRejouer}", Champ.positionMessageRejouer, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageMenu}", Champ.positionMessageMenu, Color.White);
             for (int i=0; i<6; i++)
             {
                 _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
             }
-            //_myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
     }

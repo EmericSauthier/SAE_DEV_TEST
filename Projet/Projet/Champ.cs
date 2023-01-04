@@ -61,7 +61,7 @@ namespace Projet
             messagePerdu = "C'est mort...";
             messageRejouer = "Reessayer";
             positionMessagePerdu = new Vector2(50, 50);
-            positionMessageRejouer = new Vector2(50, 350);
+            positionMessageRejouer = new Vector2(250, 350);
         }
     }
 }
