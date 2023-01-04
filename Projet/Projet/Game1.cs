@@ -128,11 +128,11 @@ namespace Projet
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice,
                 Color.Black));
             }
-            else if (keyboardState.IsKeyDown(Keys.Right))
+            /*else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice,
                 Color.Black));
-            }
+            }*/
 
             base.Update(gameTime);
         }
