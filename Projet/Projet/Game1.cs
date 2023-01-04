@@ -31,38 +31,13 @@ namespace Projet
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
 
-        //CHAMPS POUR MENU
-        public string regle;
-        public Vector2 positionRegle;
-        public string jouer;
-        public Vector2 positionJouer;
-        public string niv;
-        public Vector2 positionNiv;
-        public SpriteFont police;
-        public string quitter;
-        public Vector2 positionQuitter;
-
         private Camera camera1;
         private Pingouin pingouin1;
 
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
-        private TiledMapTileLayer mapLayer;
-
-        //CHAMPS POUR WIN
-        public string messageGagner;
-        public Vector2 positionMessageGagner;
-        public string messageNivSuiv;
-        public Vector2 positionMessageNivSuiv;
-        public string messageMenu;
-        public Vector2 positionMessageMenu;
-
-        //CHAMPS POUR GAMEOVER
-        public string messagePerdu;
-        public Vector2 positionMessagePerdu;
-        public string messageRejouer;
-        public Vector2 positionMessageRejouer;
+        private TiledMapTileLayer mapLayer;      
 
         public Game1()
         {
@@ -80,35 +55,11 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Jeu du pingouin";
 
-            //CHAMPS POUR MENU
-            regle = "Notes de pingouin";
-            jouer = "Jouer";
-            niv = "Charger un niveau";
-            quitter = "Quitter";
-            float tailleRegle = 24 * regle.Length;
-            positionRegle = new Vector2(tailleRegle / 2, 50);
-            positionJouer = new Vector2(tailleRegle / 2, 150);
-            positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionQuitter = new Vector2(tailleRegle / 2, 350);
-
-            //CHAMPS POUR WIN
-            messageGagner = "Niveau completer !";
-            messageMenu = "Menu";
-            messageNivSuiv = "Niveau suivant -->";
-            positionMessageGagner = new Vector2(50, 50);
-            positionMessageMenu = new Vector2(50, 350);
-            positionMessageNivSuiv = new Vector2(250, 350);
-
-            //CHAMPS POUR GAMEOVER
-            messagePerdu = "C'est mort...";
-            messageRejouer = "Reessayer";
-            positionMessagePerdu = new Vector2(50, 50);
-            positionMessageRejouer = new Vector2(50, 350);
+            // Champs
+            Champ.Initialize();
 
             // GameManager
             gameOver = false;
-
 
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
@@ -145,7 +96,7 @@ namespace Projet
             _choixNiveau = new ChoixNiveau(this);
 
             //POUR MENU
-            police = Content.Load<SpriteFont>("Font");
+            Champ.police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
