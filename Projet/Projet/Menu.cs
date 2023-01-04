@@ -26,7 +26,7 @@ namespace Projet
 
         public override void Initialize()
         {
-            _pingouin = new Pingouin(20, 150);
+            _pingouin = new Pingouin(150, 350);
             clicChoixNiv = false;
             base.Initialize();
         }
@@ -40,10 +40,9 @@ namespace Projet
         public override void Update(GameTime gameTime)
         {
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _keyboardState = Keyboard.GetState();
-
-            _pingouin.Animate(false, _keyboardState);
+            _pingouin.Perso.Play("celebrate");
             _pingouin.Perso.Update(deltaSeconds);
+            
 
 
             //gestion souris
@@ -79,7 +78,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.jouer}", _myGame.positionJouer, Color.White);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.niv}", _myGame.positionNiv, Color.White);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.quitter}", _myGame.positionQuitter, Color.White);
-            //_myGame.SpriteBatch.Draw(_pingouin.Perso.Play("celebration"), _pingouin.Position);
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
     }
