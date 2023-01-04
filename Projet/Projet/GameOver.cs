@@ -14,6 +14,8 @@ namespace Projet
     internal class GameOver: GameScreen
     {
         private Game1 _myGame;
+
+        private Pingouin _pingouin;
         private MouseState _mouseState;
 
         public bool clicMenu;
@@ -23,15 +25,21 @@ namespace Projet
         }
         public override void Initialize()
         {
+            _pingouin = new Pingouin(150, 350);
             clicMenu = false;
             base.Initialize();
         }
         public override void LoadContent()
         {
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
+            _pingouin.Perso = new AnimatedSprite(spriteSheet);
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _pingouin.Perso.Play("dead");
+            _pingouin.Perso.Update(deltaSeconds);
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
