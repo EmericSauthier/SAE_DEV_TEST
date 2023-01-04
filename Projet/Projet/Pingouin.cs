@@ -24,13 +24,15 @@ namespace Projet
         private Vector2 position;
         private AnimatedSprite perso;
         private bool slide;
+        private double vitesseMarche;
+        private double vitesseSlide;
 
         public Pingouin(float x, float y)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
         }
-
+        
         public Vector2 Position
         {
             get
@@ -55,6 +57,30 @@ namespace Projet
                 this.perso = value;
             }
         }
+        public double VitesseMarche
+        {
+            get
+            {
+                return this.vitesseMarche;
+            }
+
+            set
+            {
+                this.vitesseMarche = value;
+            }
+        }
+        public double VitesseSlide
+        {
+            get
+            {
+                return this.vitesseSlide;
+            }
+
+            set
+            {
+                this.vitesseSlide = value;
+            }
+        }
 
         public void Animate(bool gameOver, KeyboardState keyboardState)
         {
@@ -74,27 +100,27 @@ namespace Projet
                     else
                     {
                         this.perso.Play("slide");
-                        this.position += new Vector2((float)1.5, 0);
+                        this.position += new Vector2((float)vitesseSlide, 0);
                     }
                 }
                 else if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     this.slide = false;
                     this.perso.Play("jump");
-                    this.position += new Vector2((float)0.5, 0);
+                    this.position += new Vector2((float)vitesseMarche/2, 0);
                 }
                 else
                 {
                     this.slide = false;
                     this.perso.Play("walkForward");
-                    this.position += new Vector2(1, 0);
+                    this.position += new Vector2((float)VitesseMarche, 0);
                 }
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
                 this.slide = false;
                 this.perso.Play("walkBehind");
-                this.position -= new Vector2(1, 0);
+                this.position -= new Vector2((float)vitesseMarche, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Space))
             {
