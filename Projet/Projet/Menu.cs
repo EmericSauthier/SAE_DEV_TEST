@@ -15,8 +15,17 @@ namespace Projet
     {
         private Game1 _myGame;
         private Pingouin _pingouin;
-        private KeyboardState _keyboardState;
         private MouseState _mouseState;
+
+        //CHAMPS CONCERNANT LES TEXTES
+        public static string regle;
+        public static Vector2 positionRegle;
+        public static string jouer;
+        public static Vector2 positionJouer;
+        public static string niv;
+        public static Vector2 positionNiv;
+        public static string quitter;
+        public static Vector2 positionQuitter;
 
         public bool clicChoixNiv;
         public Menu(Game1 game) : base(game)
@@ -50,7 +59,9 @@ namespace Projet
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (_mouseState.X >= Champ.positionQuitter.X && _mouseState.Y >= Champ.positionQuitter.Y && _mouseState.X <= Champ.positionQuitter.X + Champ.quitter.Length*24 && _mouseState.Y <= Champ.positionQuitter.Y + 24)
-                { }//Exit();
+                {
+                    _myGame.clicDead = true;
+                }
                 //envoie à la scene des regles
                 else if (_mouseState.X >= Champ.positionRegle.X && _mouseState.Y >= Champ.positionRegle.Y && _mouseState.X <= Champ.positionRegle.X + Champ.regle.Length * 24 && _mouseState.Y <= Champ.positionRegle.Y + 24)
                 {

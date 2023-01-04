@@ -29,11 +29,11 @@ namespace Projet
         public static string messageMenu;
         public static Vector2 positionMessageMenu;
 
-        //CHAMPS POUR GAMEOVER
+        /*//CHAMPS POUR GAMEOVER
         public static string messagePerdu;
         public static Vector2 positionMessagePerdu;
         public static string messageRejouer;
-        public static Vector2 positionMessageRejouer;
+        public static Vector2 positionMessageRejouer;*/
 
         public static void Initialize()
         {
@@ -57,11 +57,11 @@ namespace Projet
             positionMessageMenu = new Vector2(50, 350);
             positionMessageNivSuiv = new Vector2(250, 350);
 
-            //CHAMPS POUR GAMEOVER
+            /*//CHAMPS POUR GAMEOVER
             messagePerdu = "C'est mort...";
             messageRejouer = "Reessayer";
             positionMessagePerdu = new Vector2(50, 50);
-            positionMessageRejouer = new Vector2(50, 350);
+            positionMessageRejouer = new Vector2(250, 350);*/
         }
     }
 }

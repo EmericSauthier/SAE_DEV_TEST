@@ -26,10 +26,15 @@ namespace Projet
 
         private readonly ScreenManager _screenManager;
 
+
+        //LES CLASSES EN LIEN
         private GameOver _gameOver;
         private Win _win;
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
+
+        public bool clicMenu;
+        public bool clicDead;
 
         private Camera camera1;
         private Pingouin pingouin1;
@@ -79,6 +84,7 @@ namespace Projet
             camera1 = new Camera();
             camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
+            
             base.Initialize();
         }
 
@@ -127,7 +133,6 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            pingouin1.CheckCollision(_mapLayer);
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
 
@@ -136,10 +141,9 @@ namespace Projet
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Tab) || _win.clicMenu || _gameOver.clicMenu)
+            if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
-                _win.clicMenu = false;
-                _gameOver.clicMenu = false;
+                clicMenu = false;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (_keyboardState.IsKeyDown(Keys.A))
@@ -150,6 +154,11 @@ namespace Projet
             {
                 _menu.clicChoixNiv = false;
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            else if (clicDead)
+            {
+                clicDead = false;
+                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
             base.Update(gameTime);
