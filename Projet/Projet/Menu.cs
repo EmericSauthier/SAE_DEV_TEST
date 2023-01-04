@@ -50,6 +50,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.jouer}", _myGame.positionJouer, Color.White);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.niv}", _myGame.positionNiv, Color.White);
             _myGame.SpriteBatch.DrawString(_myGame.police, $"{_myGame.quitter}", _myGame.positionQuitter, Color.White);
+            //_myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
     }
