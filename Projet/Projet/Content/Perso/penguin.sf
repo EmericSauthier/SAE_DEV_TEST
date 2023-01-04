@@ -30,13 +30,18 @@
       "isLooping": false,
       "frameDuration": 0.2
     },
-    "afterSlide": {
-      "frames": [19,20,0],
+    "celebrate": {
+      "frames": [153,152],
       "isLooping": false,
       "frameDuration": 0.2
     },
-    "celebrate": {
-      "frames": [153,152],
+    "idle": {
+      "frames": [0,16],
+      "isLooping": false,
+      "frameDuration": 0.6
+    },
+    "dead": {
+      "frames": [164,165,166,167,168,169,170,171,172,173,174,175],
       "isLooping": false,
       "frameDuration": 0.2
     }
