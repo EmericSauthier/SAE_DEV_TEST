@@ -123,7 +123,6 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            pingouin1.CheckCollision(_mapLayer);
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
             
