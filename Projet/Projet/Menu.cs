@@ -15,8 +15,17 @@ namespace Projet
     {
         private Game1 _myGame;
         private Pingouin _pingouin;
-        private KeyboardState _keyboardState;
         private MouseState _mouseState;
+
+        //CHAMPS CONCERNANT LES TEXTES
+        public static string regle;
+        public static Vector2 positionRegle;
+        public static string jouer;
+        public static Vector2 positionJouer;
+        public static string niv;
+        public static Vector2 positionNiv;
+        public static string quitter;
+        public static Vector2 positionQuitter;
 
         public bool clicChoixNiv;
         public Menu(Game1 game) : base(game)

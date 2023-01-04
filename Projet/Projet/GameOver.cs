@@ -15,8 +15,17 @@ namespace Projet
     {
         private Game1 _myGame;
 
+        //DECORATION PNGOUIN
         private Pingouin _pingouin;
         private Pingouin[] _pingouinTab;
+
+        //CHAMPS CONCERNANT LES TEXTES
+        public static string messagePerdu;
+        public static Vector2 positionMessagePerdu;
+        public static string messageRejouer;
+        public static Vector2 positionMessageRejouer;
+
+        //SOURIS
         private MouseState _mouseState;
 
         
@@ -26,6 +35,13 @@ namespace Projet
         }
         public override void Initialize()
         {
+            //TEXTE AFFICHER
+            messagePerdu = "C'est mort...";
+            messageRejouer = "Reessayer";
+            positionMessagePerdu = new Vector2(50, 50);
+            positionMessageRejouer = new Vector2(250, 350);
+
+            //MISE EN PLACE DE PINGOUIN DECO
             _pingouinTab = new Pingouin[6];
             for (int i =0; i < 6; i++)
             {
@@ -73,8 +89,8 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messagePerdu}", Champ.positionMessagePerdu, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageRejouer}", Champ.positionMessageRejouer, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{messagePerdu}", positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
             _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageMenu}", Champ.positionMessageMenu, Color.White);
             for (int i=0; i<6; i++)
             {
