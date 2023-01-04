@@ -125,13 +125,11 @@ namespace Projet
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Tab))
             {
-                _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice,
-                Color.Black));
+                _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
 
             base.Update(gameTime);

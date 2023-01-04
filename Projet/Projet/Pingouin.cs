@@ -60,7 +60,7 @@ namespace Projet
             {
                 perso.Play("celebrate");
             }
-            else if (keyboardState.IsKeyDown(Keys.Down) && !keyboardState.IsKeyDown(Keys.Space))
+            else if (keyboardState.IsKeyDown(Keys.Down) && !keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyUp(Keys.Down))
             {
                 perso.Play("beforeSlide");
             }
