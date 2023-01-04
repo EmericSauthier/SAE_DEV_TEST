@@ -134,5 +134,9 @@ namespace Projet
                 this.perso.Play("idle");
             }
         }
+        public void CheckCollision(TiledMapLayer mapLayer)
+        {
+
+        }
     }
 }

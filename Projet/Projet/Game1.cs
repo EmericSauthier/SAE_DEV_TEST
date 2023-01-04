@@ -37,7 +37,7 @@ namespace Projet
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
-        private TiledMapTileLayer mapLayer;      
+        private TiledMapTileLayer _mapLayer;
 
         public Game1()
         {
@@ -83,7 +83,7 @@ namespace Projet
             // Map
             _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
             // Pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
@@ -117,6 +117,7 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
+            pingouin1.CheckCollision(_mapLayer);
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
             
