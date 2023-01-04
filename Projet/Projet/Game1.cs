@@ -8,11 +8,15 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace Projet
 {
     public class Game1 : Game
     {
+        private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
+
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch { get; set; }
 
@@ -35,6 +39,8 @@ namespace Projet
         public SpriteFont police;
         public string quitter;
         public Vector2 positionQuitter;
+
+        private Camera camera1;
 
         //CHAMPS POUR WIN
         public string messageGagner;
@@ -92,6 +98,15 @@ namespace Projet
             positionMessagePerdu = new Vector2(50, 50);
             positionMessageRejouer = new Vector2(50, 350);
             
+
+            // Fenetre
+            _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
+            _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
+            _graphics.ApplyChanges();
+
+            camera1 = new Camera();
+            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+
             base.Initialize();
         }
 
@@ -101,14 +116,15 @@ namespace Projet
 
             // TODO: use this.Content to load your game content here
 
-            //_tiledMap = Content.Load<TiledMap>("map");
+            // Map
+            _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 
             //Load des differente classes
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
-
+            
             //POUR MENU
             police = Content.Load<SpriteFont>("Font");
         }
@@ -119,7 +135,12 @@ namespace Projet
                 Exit();
 
             // TODO: Add your update logic here
+
+            // Map
             _tiledMapRenderer.Update(gameTime);
+
+            // Camera
+            camera1.Update(gameTime);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -137,10 +158,12 @@ namespace Projet
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Red);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _tiledMapRenderer.Draw();
+
+            // Camera
+            _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
             base.Draw(gameTime);
         }
