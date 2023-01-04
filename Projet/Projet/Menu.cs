@@ -11,11 +11,11 @@ using MonoGame.Extended.Screens.Transitions;
 
 namespace Projet
 {
-    internal class Win : GameScreen
+    internal class Menu : GameScreen
     {
         private Game1 _myGame;
 
-        public Win(Game1 game) : base(game)
+        public Menu(Game1 game) : base(game)
         {
             _myGame = game;
         }

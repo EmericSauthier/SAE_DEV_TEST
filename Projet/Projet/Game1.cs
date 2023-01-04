@@ -23,6 +23,7 @@ namespace Projet
 
         private GameOver _gameOver;
         private Win _win;
+        private Menu _menu;
 
         public Game1()
         {
@@ -53,9 +54,10 @@ namespace Projet
             //_tiledMap = Content.Load<TiledMap>("map");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 
-            //mise en place des page Win et GameOver
+            //Load des differente classes
             _gameOver = new GameOver(this);
             _win = new Win(this);
+            _menu = new Menu(this);
         }
 
         protected override void Update(GameTime gameTime)
