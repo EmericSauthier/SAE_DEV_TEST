@@ -27,7 +27,7 @@ namespace Projet
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
 
-
+        //JEU
         private Camera _camera;
         private float _scale;
         private Pingouin _pingouin;
@@ -35,20 +35,19 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
 
+        AnimatedPress _ceilingTrap1;
+        private float _chronoTrap1;
+        public static bool canCollidingTrap;
+
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
         private TiledMapTileLayer _mapLayer;
 
         // Chrono
-        private float _chrono;
         private Vector2 _positionChrono;
+        private float _chrono;
         private float _chronoDep;
-
-        // Trap
-        AnimatedPress _ceilingTrap1;
-        private float _chronoTrap1;
-        public static bool canCollidingTrap;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -103,6 +102,9 @@ namespace Projet
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
+            //POLICE
+            police = Content.Load<SpriteFont>("Font");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -110,24 +112,17 @@ namespace Projet
             // Map
             _tiledMapRenderer.Update(gameTime);
 
-            /*
             // Camera
-            _camera.Update(gameTime, _pingouin);*/
+            _camera.Update(gameTime, _pingouin);
 
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            ushort x = (ushort)(_pingouin.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _tiledMap.TileHeight);
-            if (!IsCollision(x, y))
-            {
-                _pingouin.Position += new Vector2(0, 1);
-            }
-
             _pingouin.Animate(gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
+            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -145,41 +140,39 @@ namespace Projet
             _ceilingTrap1.Sprite.Update(deltaSeconds);
             if (IsCollidingTrap())
             {
-                //_screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
             }
-
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _myGame.GraphicsDevice.Clear(Color.Gray);/*
-            // Render Map With Camera
-            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());*/
+            _// Render Map With Camera
+            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
-            _myGame.SpriteBatch.Begin();
+            SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
+
             // Pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
 
             // Ennemis
-            _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(4, 4));
+            SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
-            _myGame.SpriteBatch.End();
-        }
-
-        private bool IsCollision(ushort x, ushort y)
-        {
-            // définition de tile qui peut être null (?)
-            TiledMapTile? tile;
-            if (_mapLayer.TryGetTile(x, y, out tile) == false)
-                return false;
-            return !tile.Value.IsBlank;
+            SpriteBatch.End();
         }
 
         private bool IsCollidingTrap()
@@ -193,5 +186,6 @@ namespace Projet
             }
             else return false;
         }
+    }
     }
 }

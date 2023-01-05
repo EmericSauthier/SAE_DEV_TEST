@@ -23,10 +23,6 @@ namespace Projet
 
         private readonly ScreenManager _screenManager;
 
-        //MAP
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
-
         //LES CLASSES EN LIEN
         private GameOver _gameOver;
         private Win _win;
@@ -42,29 +38,6 @@ namespace Projet
         public bool clicArret;
         public bool clicRegle;
         public bool clicNiveau1;
-
-        
-        //JEU
-        private Camera _camera;
-        private float _scale;
-        private Pingouin _pingouin;
-
-        MonstreRampant[] _monstresRampants;
-        MonstreRampant _fox1;
-
-        AnimatedPress _ceilingTrap1;
-        private float _chronoTrap1;
-        public static bool canCollidingTrap;
-
-        // GameManager
-        private bool gameOver;
-        private KeyboardState _keyboardState;
-        private TiledMapTileLayer _mapLayer;
-
-        // Chrono
-        private Vector2 _positionChrono;
-        private float _chrono;
-        private float _chronoDep;
 
         public Game1()
         {
@@ -101,51 +74,12 @@ namespace Projet
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
             _niveau1 = new Niveau1(this);
-
-            //POLICE
-            police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
-            
-            // Map
-            _tiledMapRenderer.Update(gameTime);
-
-            // Camera
-            _camera.Update(gameTime, _pingouin);
-
-            // GameManager
-            _keyboardState = Keyboard.GetState();
-            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Pingouin
-            _pingouin.Animate(gameOver, _keyboardState);
-            _pingouin.Perso.Update(deltaSeconds);
-            Gravity();
-
-            // Chrono
-            _chrono += deltaSeconds;
-            _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
-
-            // Ennemis
-            _chronoDep += deltaSeconds;
-            _fox1.RightLeftMove(ref _chronoDep);
-            _fox1.Sprite.Update(deltaSeconds);
-
-            // Traps
-            _chronoTrap1 += deltaSeconds;
-            System.Diagnostics.Debug.WriteLine(_chronoTrap1);
-            _ceilingTrap1.Activation(ref deltaSeconds);
-            _ceilingTrap1.Sprite.Update(deltaSeconds);
-            if (IsCollidingTrap())
-            {
-                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
-            }
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -197,48 +131,11 @@ namespace Projet
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            // Render Map With Camera
-            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
-            SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
-
-            // Pingouin
-            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
-
-            // Chrono
-            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
-
-            // Ennemis
-            SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
-
-            // Traps
-            SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
-
+            SpriteBatch.Begin();
             SpriteBatch.End();
             
             base.Draw(gameTime);
-        }
-
-        private bool IsCollidingTrap()
-        {
-            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * _scale), (int)(14 * _scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128*_scale), (int)(128 * _scale));
-
-            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
-            {
-                return true;
-            }
-            else return false;
         }
     }
 }
