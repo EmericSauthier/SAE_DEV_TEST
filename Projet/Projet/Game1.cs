@@ -87,14 +87,14 @@ namespace Projet
             _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
-            pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
+            pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
 
             // Ennemis
             fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE - 200, 0),"fox" , 1);
 
             // Camera
             camera1 = new Camera();
-            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
+            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
             
             base.Initialize();
         }
@@ -154,6 +154,7 @@ namespace Projet
             {
                 pingouin1.Position += new Vector2(0, 1);
             }
+
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
 
@@ -214,10 +215,11 @@ namespace Projet
             // Map
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(transformMatrix: camera1.OrthographicCamera.GetViewMatrix());
             // Pingouin
             SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
             SpriteBatch.DrawPoint(pingouin1.Position.X, pingouin1.Position.Y + 60, Color.Green, 5);
+            SpriteBatch.DrawPoint(450, 460, Color.Red, 10);
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             // Ennemis
@@ -226,6 +228,7 @@ namespace Projet
 
             base.Draw(gameTime);
         }
+
         private bool IsCollision(ushort x, ushort y)
         {
             // définition de tile qui peut être null (?)
