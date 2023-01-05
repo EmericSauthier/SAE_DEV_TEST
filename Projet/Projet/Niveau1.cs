@@ -29,7 +29,7 @@ namespace Projet
 
         //JEU
         private Camera _camera;
-        private float _scale;
+        public static float scale;
 
         // ENTITE
         private Pingouin _pingouin;
@@ -74,7 +74,7 @@ namespace Projet
             _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
 
             // Camera
-            _scale = (float)0.5;
+            scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
@@ -150,16 +150,16 @@ namespace Projet
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale, scale));
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Red, 5);
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Blue, 5);
 
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
@@ -175,8 +175,8 @@ namespace Projet
 
         private bool IsCollidingTrap()
         {
-            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * _scale), (int)(14 * _scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * _scale), (int)(128 * _scale));
+            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * scale), (int)(14 * scale));
+            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * scale), (int)(128 * scale));
 
             if (_hitBoxPingouin.Intersects(_hitBoxTrap))
             {
@@ -187,9 +187,9 @@ namespace Projet
 
         public bool CheckBottom()
         {
-            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
+            ushort left = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60 * scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -201,9 +201,9 @@ namespace Projet
         }
         public bool CheckTop()
         {
-            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
+            ushort left = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y - 60 * scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -215,9 +215,9 @@ namespace Projet
         }
         public bool CheckLeft()
         {
-            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+            ushort x = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -229,9 +229,9 @@ namespace Projet
         }
         public bool CheckRight()
         {
-            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+            ushort x = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;

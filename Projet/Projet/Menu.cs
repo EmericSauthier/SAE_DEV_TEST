@@ -1,14 +1,16 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
+using MonoGame.Extended;
 using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled.Renderers;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
-using System;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace Projet
 {
@@ -18,9 +20,8 @@ namespace Projet
 
         //PINGOUIN DECO
         private Pingouin _pingouin;
-        private Texture2D[] _textureFlocons;
+        private Pingouin _pingouinG;
         private Texture2D _textureFond;
-        private Vector2[] _positionFlocons;
         private Vector2 _positionFond;
 
         //CHAMPS CONCERNANT LES TEXTES
@@ -47,13 +48,8 @@ namespace Projet
         public override void Initialize()
         {
             //CREATION PINGOUIN & DECO
-            _pingouin = new Pingouin(150, 350);
-            Random random = new Random();
-            _positionFlocons = new Vector2[20];
-            for (int i = 0; i < 20; i++)
-            {
-                _positionFlocons[i] = new Vector2(random.Next(800), 0);
-            }
+            _pingouin = new Pingouin(900, 700);
+            _pingouinG = new Pingouin(150, 350);
             _positionFond = new Vector2(0, 0);
 
             //GESTION CLIC
@@ -76,9 +72,8 @@ namespace Projet
             //PINGOUIN & DECO
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
-            _textureFlocons = new Texture2D[20];
-            for (int i = 0; i < 20; i++)
-                _textureFlocons[i] = Content.Load<Texture2D>("flocon");
+            _pingouinG.Perso = new AnimatedSprite(spriteSheet);
+            
             _textureFond = Content.Load<Texture2D>("fondMenu");
 
 
@@ -89,20 +84,9 @@ namespace Projet
             //ANIMATION DU PINGOUIN
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _pingouin.Perso.Play("celebrate");
+            _pingouinG.Perso.Play("idle");
             _pingouin.Perso.Update(deltaSeconds);
-
-            //DECO
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Random random = new Random();
-            for (int i = 0; i < 20; i++)
-            {
-                _positionFlocons[i].Y += 1 * 5 * deltaTime;
-                if (_positionFlocons[i].Y >= 1000)
-                {
-                    _positionFlocons[i] = new Vector2(random.Next(800), 0);
-                }
-            }
-            
+            _pingouinG.Perso.Update(deltaSeconds);
 
 
 
@@ -138,17 +122,17 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.White);
             _myGame.SpriteBatch.Begin();
+            //DECO
             _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+            _myGame.SpriteBatch.Draw(_pingouinG.Perso, _pingouin.Position);//LE PINGOUIN
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouinG.Position, 0, new Vector2(2));//LE PINGOUIN
+
+            //TEXTE
             _myGame.SpriteBatch.DrawString(Game1.police, $"{regle}", positionRegle, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{jouer}", positionJouer, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{niv}", positionNiv, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{quitter}", positionQuitter, Color.Black);
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);//LE PINGOUIN
-            
-            /*for (int i=0; i<20; i++)
-            {
-                _myGame.SpriteBatch.Draw(_textureFlocons[i], _positionFlocons[i], 0, Vector2((float)0.05,(float)0.05));
-            }*/
+
             _myGame.SpriteBatch.End();
         }
     }
