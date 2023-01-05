@@ -33,13 +33,15 @@ namespace Projet
         private ChoixNiveau _choixNiveau;
         private Regle _regle;
         public static SpriteFont police; //police pour le texte
-            //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
+        
+        //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
         public bool clicMenu;
         public bool clicDead;
         public bool clicArret;
         public bool clicRegle;
 
         private Camera _camera;
+        private float _scale;
         private Pingouin _pingouin;
 
         MonstreRampant[] _monstresRampants;
@@ -49,6 +51,7 @@ namespace Projet
         private bool gameOver;
         private KeyboardState _keyboardState;
         private TiledMapTileLayer _mapLayer;
+
         // Chrono
         private float _chrono;
         private Vector2 _positionChrono;
@@ -92,6 +95,7 @@ namespace Projet
             _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
 
             // Camera
+            _scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
             
@@ -148,7 +152,7 @@ namespace Projet
 
             // Pingouin
             ushort x = (ushort)(_pingouin.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60) / _tiledMap.TileHeight);
+            ushort y = (ushort)((_pingouin.Position.Y + 60*_scale) / _tiledMap.TileHeight);
             if (!IsCollision(x, y))
             {
                 _pingouin.Position += new Vector2(0, 1);
@@ -216,9 +220,8 @@ namespace Projet
 
             SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
             // Pingouin
-            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
-            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60, Color.Green, 5);
-            SpriteBatch.DrawPoint(450, 460, Color.Red, 10);
+            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
+            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             // Ennemis

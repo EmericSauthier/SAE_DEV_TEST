@@ -97,7 +97,7 @@ namespace Projet
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     this.perso.Play("jump");
-                    move = new Vector2((float)vitesseMarche / 2, 0);
+                    move = new Vector2((float)vitesseMarche/2, 0);
                 }
                 else
                 {

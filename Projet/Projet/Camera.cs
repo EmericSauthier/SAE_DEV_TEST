@@ -48,7 +48,7 @@ namespace Projet
             var viewportAdapter = new BoxingViewportAdapter(window, device, largeurFen, hauteurFen);
             OrthographicCamera = new OrthographicCamera(viewportAdapter);
             OrthographicCamera.Zoom = 1f;
-            CameraPosition = new Vector2(largeurFen, hauteurFen);
+            CameraPosition = new Vector2(largeurFen/2, hauteurFen);
         }
 
         public void Update(GameTime gameTime, Pingouin pingouin)
@@ -90,7 +90,7 @@ namespace Projet
 
         private void MoveCamera(GameTime gameTime)
         {
-            var speed = 200;
+            var speed = 100;
             var seconds = gameTime.GetElapsedSeconds();
             var movementDirection = GetMovementDirection();
             _cameraPosition += speed * movementDirection * seconds;
