@@ -17,6 +17,15 @@ namespace Projet
 
         private Pingouin _pingouin;
         private MouseState _mouseState;
+
+        //CHAMPS CONCERNANT LES TEXTES
+        public static string messageGagner;
+        public static Vector2 positionMessageGagner;
+        public static string messageNivSuiv;
+        public static Vector2 positionMessageNivSuiv;
+        public static string messageMenu;
+        public static Vector2 positionMessageMenu;
+
         public Win(Game1 game) : base(game)
         {
             _myGame = game;
@@ -25,6 +34,14 @@ namespace Projet
         {
             _pingouin = new Pingouin(150, 350);
             _myGame.clicMenu = false;
+
+            //INITIALISATION TEXTE AFFICHER
+            messageGagner = "Niveau completer !";
+            messageMenu = "Menu";
+            messageNivSuiv = "Niveau suivant -->";
+            positionMessageGagner = new Vector2(50, 50);
+            positionMessageMenu = new Vector2(50, 350);
+            positionMessageNivSuiv = new Vector2(250, 350);
             base.Initialize();
         }
         public override void LoadContent()
@@ -41,7 +58,7 @@ namespace Projet
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (_mouseState.X >= Champ.positionMessageMenu.X && _mouseState.Y >= Champ.positionMessageMenu.Y && _mouseState.X <= Champ.positionMessageMenu.X + Champ.messageMenu.Length * 24 && _mouseState.Y <= Champ.positionMessageMenu.Y + 24)
+                if (_mouseState.X >= positionMessageMenu.X && _mouseState.Y >= positionMessageMenu.Y && _mouseState.X <= positionMessageMenu.X + messageMenu.Length * 24 && _mouseState.Y <= positionMessageMenu.Y + 24)
                 {
                     _myGame.clicMenu = true;
                 }
@@ -52,9 +69,9 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.White);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageGagner}", Champ.positionMessageGagner, Color.Black);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageNivSuiv}", Champ.positionMessageNivSuiv, Color.Black);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageMenu}", Champ.positionMessageMenu, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageGagner}", positionMessageGagner, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageNivSuiv}", positionMessageNivSuiv, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageMenu}", positionMessageMenu, Color.Black);
             _myGame.SpriteBatch.End();
         }
     }

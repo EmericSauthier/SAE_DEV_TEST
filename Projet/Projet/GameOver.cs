@@ -35,7 +35,7 @@ namespace Projet
         }
         public override void Initialize()
         {
-            //TEXTE AFFICHER
+            //INITIALISATION TEXTE AFFICHER
             messagePerdu = "C'est mort...";
             messageRejouer = "Reessayer";
             positionMessagePerdu = new Vector2(50, 50);
@@ -78,9 +78,15 @@ namespace Projet
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (_mouseState.X >= Champ.positionMessageMenu.X && _mouseState.Y >= Champ.positionMessageMenu.Y && _mouseState.X <= Champ.positionMessageMenu.X + Champ.messageMenu.Length * 24 && _mouseState.Y <= Champ.positionMessageMenu.Y + 24)
+                //CONDITION RETOUR MENU
+                if (_mouseState.X >= Win.positionMessageMenu.X && _mouseState.Y >= Win.positionMessageMenu.Y && _mouseState.X <= Win.positionMessageMenu.X + Win.messageMenu.Length * 24 && _mouseState.Y <= Win.positionMessageMenu.Y + 24)
                 {
                     _myGame.clicMenu = true;
+                }
+                //CONDITION RETOURNE PARTIE
+                else if (_mouseState.X >= positionMessageRejouer.X && _mouseState.Y >= positionMessageRejouer.Y && _mouseState.X <= positionMessageRejouer.X + messageRejouer.Length * 24 && _mouseState.Y <= positionMessageRejouer.Y + 24)
+                {
+                    //_myGame.clic.... = true;
                 }
             }
         }
@@ -89,9 +95,9 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{messagePerdu}", positionMessagePerdu, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{Champ.messageMenu}", Champ.positionMessageMenu, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messagePerdu}", positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", Win.positionMessageMenu, Color.White);
             for (int i=0; i<6; i++)
             {
                 _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
