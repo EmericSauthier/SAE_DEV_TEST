@@ -53,8 +53,8 @@ namespace Projet
         private TiledMapTileLayer _mapLayer;
 
         // Chrono
-        private float _chrono;
         private Vector2 _positionChrono;
+        private float _chrono;
         private float _chronoDep;
 
         public Game1()
@@ -89,7 +89,7 @@ namespace Projet
             _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
+            _pingouin = new Pingouin(LARGEUR_FENETRE/2, 500 + (HAUTEUR_FENETRE/2));
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
@@ -151,10 +151,9 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            Gravity();
-
             _pingouin.Animate(gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
+            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -162,12 +161,14 @@ namespace Projet
             // Ennemis
             _chronoDep += deltaSeconds;
             _fox1.RightLeftMove(ref _chronoDep);
+
             //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
             _fox1.MonsterSprite.Update(deltaSeconds);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-                //CONDITION POUR ALLER SUR LE MENU DU JEU
+            
+            //CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
@@ -237,9 +238,10 @@ namespace Projet
             ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
             ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
             ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
-            TiledMapTile? tile;
+            TiledMapTile? tileRight;
+            TiledMapTile? tileLeft;
 
-            if ((_mapLayer.TryGetTile(bottomLeft, y, out tile) != false || _mapLayer.TryGetTile(bottomRight, y, out tile) != false) && !tile.Value.IsBlank)
+            if ((_mapLayer.TryGetTile(bottomLeft, y, out tileRight) != false && !tileRight.Value.IsBlank) || (_mapLayer.TryGetTile(bottomRight, y, out tileLeft) != false && !tileLeft.Value.IsBlank))
                 return true;
 
             return false;
