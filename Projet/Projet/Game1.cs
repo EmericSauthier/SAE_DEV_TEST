@@ -138,7 +138,7 @@ namespace Projet
 
             // Pingouin
             ushort x = (ushort)(pingouin1.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((pingouin1.Position.Y + 30) / _tiledMap.TileHeight);
+            ushort y = (ushort)((pingouin1.Position.Y + 60) / _tiledMap.TileHeight);
             if (!IsCollision(x, y))
             {
                 pingouin1.Position += new Vector2(0, 1);
@@ -200,6 +200,7 @@ namespace Projet
             SpriteBatch.Begin();
             // Pingouin
             SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
+            SpriteBatch.DrawPoint(pingouin1.Position.X, pingouin1.Position.Y + 60, Color.Green, 5);
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             SpriteBatch.End();
