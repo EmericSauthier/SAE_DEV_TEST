@@ -134,7 +134,7 @@ namespace Projet
             // Traps
             _chronoTrap1 += deltaSeconds;
             System.Diagnostics.Debug.WriteLine(_chronoTrap1);
-            _ceilingTrap1.Activation(ref deltaSeconds);
+            //_ceilingTrap1.Activation(ref deltaSeconds);
             _ceilingTrap1.Sprite.Update(deltaSeconds);
             if (IsCollidingTrap())
             {

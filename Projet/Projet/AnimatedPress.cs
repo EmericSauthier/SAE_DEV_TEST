@@ -49,12 +49,12 @@ namespace Projet
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void Activation(ref float time)
+        /*public void Activation(ref float time)
         {
             if(time > 1 && time < 1.1 && Game1.canCollidingTrap)
             {
                 Sprite.Play("press");
             }
-        }
+        }*/
     }
 }

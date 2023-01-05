@@ -55,6 +55,7 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Jeu du pingouin";
 
+
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
@@ -74,6 +75,9 @@ namespace Projet
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
             _niveau1 = new Niveau1(this);
+
+            //POLICE
+            police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
