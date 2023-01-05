@@ -85,6 +85,18 @@ namespace Projet
                 this.vitesseSlide = value;
             }
         }
+        public bool Fly
+        {
+            get
+            {
+                return this.fly;
+            }
+
+            set
+            {
+                this.fly = value;
+            }
+        }
 
         public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
         {
@@ -93,15 +105,31 @@ namespace Projet
             {
                 this.perso.Play("celebrate");
             }
-            else if (keyboardState.IsKeyDown(Keys.Space))
+            else if (keyboardState.IsKeyDown(Keys.Space) || this.fly)
             {
                 this.slide = false;
                 float direction = 0;
+
+                if (!fly)
+                {
+                    this.perso.Play("beforeJump");
+                    this.fly = true;
+                }
+                else
+                {
+                    this.perso.Play("jump");
+                }
+
                 if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
                 {
                     direction = (float)(vitesseMarche / 2);
                 }
-                Jump(direction);
+                else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+                {
+                    direction = (float)-(vitesseMarche / 2);
+                }
+
+                move = new Vector2(direction, -5);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
@@ -135,22 +163,6 @@ namespace Projet
                 this.perso.Play("idle");
             }
             this.position += move;
-            return move;
-        }
-
-        public Vector2 Jump(float direction)
-        {
-            Vector2 move = Vector2.Zero;
-            if (!fly)
-            {
-                this.perso.Play("beforeJump");
-                move = new Vector2(direction, -5);
-                fly = true;
-            }
-            else
-            {
-                this.perso.Play("jump");
-            }
             return move;
         }
     }

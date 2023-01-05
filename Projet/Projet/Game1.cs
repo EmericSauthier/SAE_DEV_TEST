@@ -215,8 +215,12 @@ namespace Projet
 
             // Pingouin
             SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X-50*_scale, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
@@ -230,11 +234,12 @@ namespace Projet
         }
         public bool CheckCollision()
         {
-            ushort x = (ushort)(_pingouin.Position.X / _mapLayer.TileWidth);
+            ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
             ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
             TiledMapTile? tile;
 
-            if (_mapLayer.TryGetTile(x, y, out tile) != false && !tile.Value.IsBlank)
+            if ((_mapLayer.TryGetTile(bottomLeft, y, out tile) != false || _mapLayer.TryGetTile(bottomRight, y, out tile) != false) && !tile.Value.IsBlank)
                 return true;
 
             return false;
@@ -244,7 +249,11 @@ namespace Projet
         {
             if (!CheckCollision())
             {
+                _pingouin.Fly = true;
                 _pingouin.Position += new Vector2(0, 1);
+            } else
+            {
+                _pingouin.Fly = false;
             }
         }
     }

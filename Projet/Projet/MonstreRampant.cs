@@ -97,7 +97,6 @@ namespace Projet
 
         public void RightLeftMove(ref float time)
         {
-            System.Diagnostics.Debug.WriteLine(time);
             if (time <= tempsArrivePosition)
             {
                 Position += new Vector2((float)Vitesse, 0);
