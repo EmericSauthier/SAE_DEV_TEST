@@ -47,7 +47,7 @@ namespace Projet
         {
             var viewportAdapter = new BoxingViewportAdapter(window, device, largeurFen, hauteurFen);
             OrthographicCamera = new OrthographicCamera(viewportAdapter);
-            OrthographicCamera.Zoom = 0.5f;
+            OrthographicCamera.Zoom = 1f;
             CameraPosition = new Vector2(largeurFen, hauteurFen);
         }
 

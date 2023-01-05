@@ -1,16 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
+using MonoGame.Extended;
 using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled.Renderers;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended;
-using MonoGame.Extended.ViewportAdapters;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace Projet
 {
@@ -40,11 +39,11 @@ namespace Projet
         public bool clicArret;
         public bool clicRegle;
 
-        private Camera camera1;
-        private Pingouin pingouin1;
+        private Camera _camera;
+        private Pingouin _pingouin;
 
-        MonstreRampant[] monstresRampants;
-        MonstreRampant fox1;
+        MonstreRampant[] _monstresRampants;
+        MonstreRampant _fox1;
 
         // GameManager
         private bool gameOver;
@@ -87,14 +86,14 @@ namespace Projet
             _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
-            pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
+            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
 
             // Ennemis
-            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
+            _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
 
             // Camera
-            camera1 = new Camera();
-            camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+            _camera = new Camera();
+            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
             
             base.Initialize();
         }
@@ -112,11 +111,11 @@ namespace Projet
 
             // Pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            pingouin1.Perso = new AnimatedSprite(spriteSheet);
+            _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
             // Ennemis
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
-            fox1.LoadContent(foxSprite);
+            _fox1.LoadContent(foxSprite);
 
             //Load des differente classes
             _gameOver = new GameOver(this);
@@ -141,31 +140,31 @@ namespace Projet
             _tiledMapRenderer.Update(gameTime);
 
             // Camera
-            camera1.Update(gameTime, pingouin1);
+            _camera.Update(gameTime, _pingouin);
 
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            ushort x = (ushort)(pingouin1.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((pingouin1.Position.Y + 60) / _tiledMap.TileHeight);
+            ushort x = (ushort)(_pingouin.Position.X / _tiledMap.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60) / _tiledMap.TileHeight);
             if (!IsCollision(x, y))
             {
-                pingouin1.Position += new Vector2(0, 1);
+                _pingouin.Position += new Vector2(0, 1);
             }
 
-            pingouin1.Animate(gameOver, _keyboardState);
-            pingouin1.Perso.Update(deltaSeconds);
+            _pingouin.Animate(gameOver, _keyboardState);
+            _pingouin.Perso.Update(deltaSeconds);
 
             // Chrono
             _chrono += deltaSeconds;
 
             // Ennemis
             _chronoDep += deltaSeconds;
-            fox1.RightLeftMove(ref _chronoDep);
+            _fox1.RightLeftMove(ref _chronoDep);
             //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
-            fox1.MonsterSprite.Update(deltaSeconds);
+            _fox1.MonsterSprite.Update(deltaSeconds);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -213,17 +212,17 @@ namespace Projet
             // TODO: Add your drawing code here
 
             // Render Map With Camera
-            _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
+            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
-            SpriteBatch.Begin(transformMatrix: camera1.OrthographicCamera.GetViewMatrix());
+            SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
             // Pingouin
-            SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
-            SpriteBatch.DrawPoint(pingouin1.Position.X, pingouin1.Position.Y + 60, Color.Green, 5);
+            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
+            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60, Color.Green, 5);
             SpriteBatch.DrawPoint(450, 460, Color.Red, 10);
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             // Ennemis
-            SpriteBatch.Draw(fox1.MonsterSprite, fox1.Position, 0, new Vector2(4, 4)); 
+            SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4)); 
             SpriteBatch.End();
 
             base.Draw(gameTime);
