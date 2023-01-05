@@ -17,7 +17,7 @@ namespace Projet
     internal class MonstreRampant
     {
         private Vector2 position;
-        private AnimatedSprite monsterSprite;
+        private AnimatedSprite sprite;
         private string enemy;
         private double vitesse;
         private double tempsArrivePosition;
@@ -25,8 +25,8 @@ namespace Projet
         public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
             this.Position = position;
-            this.MonsterSprite = monsterSprite;
             this.Vitesse = vitesse;
+            this.Enemy = enemy;
             this.TempsArrivePosition = tempsArrivePosition;
         }
 
@@ -43,16 +43,16 @@ namespace Projet
             }
         }
 
-        public AnimatedSprite MonsterSprite
+        public AnimatedSprite Sprite
         {
             get
             {
-                return this.monsterSprite;
+                return this.sprite;
             }
 
             set
             {
-                this.monsterSprite = value;
+                this.sprite = value;
             }
         }
 
@@ -97,29 +97,23 @@ namespace Projet
 
         public void RightLeftMove(ref float time)
         {
+            //System.Diagnostics.Debug.WriteLine(time);
             if (time <= tempsArrivePosition)
             {
                 Position += new Vector2((float)Vitesse, 0);
-                MonsterSprite.Play("rightWalking");
+                Sprite.Play("rightWalking");
             }
             else if (time > tempsArrivePosition && time < tempsArrivePosition*2)
             {
                 Position -= new Vector2((float)Vitesse, 0);
-                MonsterSprite.Play("leftWalking");
+                Sprite.Play("leftWalking");
             }
             else time = 0;
         }
 
-        
-
         public void LoadContent(SpriteSheet sprite)
         {           
-            MonsterSprite = new AnimatedSprite(sprite);
-        }
-
-        public void Matrice()
-        {
-
+            Sprite = new AnimatedSprite(sprite);
         }
     }
 }

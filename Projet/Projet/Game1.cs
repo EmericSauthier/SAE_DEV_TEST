@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
@@ -22,10 +23,6 @@ namespace Projet
 
         private readonly ScreenManager _screenManager;
 
-        //MAP
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
-
         //LES CLASSES EN LIEN
         private GameOver _gameOver;
         private Win _win;
@@ -41,25 +38,6 @@ namespace Projet
         public bool clicArret;
         public bool clicRegle;
         public bool clicNiveau1;
-
-        
-        //JEU
-        private Camera _camera;
-        private float _scale;
-        private Pingouin _pingouin;
-
-        MonstreRampant[] _monstresRampants;
-        MonstreRampant _fox1;
-
-        // GameManager
-        private bool gameOver;
-        private KeyboardState _keyboardState;
-        private TiledMapTileLayer _mapLayer;
-
-        // Chrono
-        private Vector2 _positionChrono;
-        private float _chrono;
-        private float _chronoDep;
 
         public Game1()
         {
@@ -77,32 +55,11 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Jeu du pingouin";
 
-            // Champs
-            //Champ.Initialize();
-            
-            // GameManager
-            gameOver = false;
-
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
-            // Chrono
-            _chrono = 0;
-            _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
-
-            // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, 500 + (HAUTEUR_FENETRE/2));
-
-            // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
-
-            // Camera
-            _scale = (float)0.5;
-            _camera = new Camera();
-            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-            
             base.Initialize();
         }
 
@@ -110,21 +67,6 @@ namespace Projet
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            
-            // Map
-            _tiledMap = Content.Load<TiledMap>("snowmap1");
-            _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
-
-            // Pingouin
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            _pingouin.Perso = new AnimatedSprite(spriteSheet);
-
-            // Ennemis
-            SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
-            _fox1.LoadContent(foxSprite);
-            
             //Load des differente classes
             _gameOver = new GameOver(this);
             _win = new Win(this);
@@ -132,44 +74,13 @@ namespace Projet
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
             _niveau1 = new Niveau1(this);
-
-            //POLICE
-            police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            
-            // Map
-            _tiledMapRenderer.Update(gameTime);
-
-            // Camera
-            _camera.Update(gameTime, _pingouin);
-
-            // GameManager
-            _keyboardState = Keyboard.GetState();
-            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Pingouin
-            _pingouin.Animate(gameOver, _keyboardState);
-            _pingouin.Perso.Update(deltaSeconds);
-            Gravity();
-
-            // Chrono
-            _chrono += deltaSeconds;
-
-            // Ennemis
-            _chronoDep += deltaSeconds;
-            _fox1.RightLeftMove(ref _chronoDep);
-
-            //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
-            _fox1.MonsterSprite.Update(deltaSeconds);
-            
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
             
@@ -220,101 +131,11 @@ namespace Projet
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            // Render Map With Camera
-            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
-            SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
-
-            // Pingouin
-            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
-
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
-
-            // Chrono
-            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
-
-            // Ennemis
-            SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4));
-
+            SpriteBatch.Begin();
             SpriteBatch.End();
             
             base.Draw(gameTime);
-        }
-        public bool CheckBottom()
-        {
-            ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileRight;
-
-            if ((_mapLayer.TryGetTile(bottomLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(bottomRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckTop()
-        {
-            ushort topLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort topRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileRight;
-
-            if ((_mapLayer.TryGetTile(topLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(topRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckLeft()
-        {
-            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort topLeft = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottomLeft = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileBottom;
-
-            if ((_mapLayer.TryGetTile(x, topLeft, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomLeft, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckRight()
-        {
-            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort topRight = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottomRight = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileBottom;
-
-            if ((_mapLayer.TryGetTile(x, topRight, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomRight, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-
-        public void Gravity()
-        {
-            if (!CheckBottom())
-            {
-                _pingouin.Fly = true;
-                _pingouin.Position += new Vector2(0, 1);
-            } else
-            {
-                _pingouin.Fly = false;
-            }
         }
     }
 }
