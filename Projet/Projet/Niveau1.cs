@@ -44,6 +44,7 @@ namespace Projet
         private Vector2 _positionChrono;
         private float _chronoDep;
 
+
         public Niveau1(Game1 game) : base(game)
         {
             _myGame = game;
@@ -51,8 +52,6 @@ namespace Projet
         }
         public override void Initialize()
         {
-            /*GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Jeu du pingouin";*/
 
             // Chrono
             _chrono = 0;
@@ -64,11 +63,11 @@ namespace Projet
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE / 2, 0), "fox", 1, 2.5);
             
-            /*
+            
             // Camera
             _scale = (float)0.5;
             _camera = new Camera();
-            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);*/
+            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
             
             base.Initialize();
         }
@@ -93,9 +92,9 @@ namespace Projet
         {
             // Map
             _tiledMapRenderer.Update(gameTime);
-            /*
+            
             // Camera
-            _camera.Update(gameTime, _pingouin);*/
+            _camera.Update(gameTime, _pingouin);
 
             // GameManager
             _keyboardState = Keyboard.GetState();
@@ -125,9 +124,9 @@ namespace Projet
 
         public override void Draw(GameTime gameTime)
         {
-            _myGame.GraphicsDevice.Clear(Color.Gray);/*
+            _myGame.GraphicsDevice.Clear(Color.Gray);
             // Render Map With Camera
-            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());*/
+            _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
             _myGame.SpriteBatch.Begin();
             // Pingouin
