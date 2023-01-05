@@ -15,6 +15,8 @@ namespace Projet
     {
         private Game1 _myGame;
 
+        //police
+        private static SpriteFont _policeGO;
         //DECORATION PNGOUIN
         private Pingouin _pingouin;
         private Pingouin[] _pingouinTab;
@@ -67,6 +69,10 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
             _textureFond = Content.Load<Texture2D>("fondGameOver");
+
+            //POLICE
+            _policeGO = Content.Load<SpriteFont>("FontGameOver");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -102,7 +108,7 @@ namespace Projet
             _myGame.SpriteBatch.Begin();
             _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
             //TEXTE
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{messagePerdu}", positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(_policeGO, $"{messagePerdu}", positionMessagePerdu, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", Win.positionMessageMenu, Color.White);
 
