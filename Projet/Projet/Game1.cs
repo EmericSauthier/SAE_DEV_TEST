@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
@@ -80,34 +81,11 @@ namespace Projet
             // TODO: Add your initialization logic here
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Jeu du pingouin";
-            // Champs
-            //Champ.Initialize();
-            
-            // GameManager
-            gameOver = false;
 
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
-
-            // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, 500 + (HAUTEUR_FENETRE/2));
-
-            // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox" , 1, 2.5);
-
-            // Traps
-            _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
-
-            // Camera
-            _scale = (float)0.5;
-            _camera = new Camera();
-            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-
-            // Chrono
-            _chrono = 0;
-            _chronoDep = 0;
 
             base.Initialize();
         }
@@ -115,25 +93,6 @@ namespace Projet
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-            
-            // Map
-            _tiledMap = Content.Load<TiledMap>("snowmap1");
-            _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
-
-            // Pingouin
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            _pingouin.Perso = new AnimatedSprite(spriteSheet);
-
-            // Ennemis
-            SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
-            _fox1.LoadContent(foxSprite);
-
-            // Traps
-            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
-            _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             //Load des differente classes
             _gameOver = new GameOver(this);
@@ -268,74 +227,6 @@ namespace Projet
             SpriteBatch.End();
             
             base.Draw(gameTime);
-        }
-        public bool CheckBottom()
-        {
-            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileRight;
-
-            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckTop()
-        {
-            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileRight;
-
-            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckLeft()
-        {
-            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileBottom;
-
-            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-        public bool CheckRight()
-        {
-            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileBottom;
-
-            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-
-        public void Gravity()
-        {
-            if (!CheckBottom())
-            {
-                _pingouin.Fly = true;
-                _pingouin.Position += new Vector2(0, 1);
-            } else
-            {
-                _pingouin.Fly = false;
-            }
         }
 
         private bool IsCollidingTrap()

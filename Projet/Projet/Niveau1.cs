@@ -19,6 +19,7 @@ namespace Projet
 
         private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
         private GraphicsDeviceManager _graphics;
+
         //SOURIS POUR GERER CLIC
         private MouseState _mouseState;
 
@@ -54,13 +55,17 @@ namespace Projet
             _myGame = game;
 
         }
+
         public override void Initialize()
         {
-            /*GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Jeu du pingouin";**/
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            Window.Title = "Jeu du pingouin";
+
+            // GameManager
+            gameOver = false;
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, HAUTEUR_FENETRE / 6);
+            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
@@ -68,14 +73,14 @@ namespace Projet
             // Traps
             _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
 
+            // Camera
+            _scale = (float)0.5;
+            _camera = new Camera();
+            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+
             // Chrono
             _chrono = 0;
             _chronoDep = 0;
-
-            /* Camera
-            _scale = (float)0.5;
-            _camera = new Camera();
-            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);*/
 
             base.Initialize();
         }
@@ -93,6 +98,10 @@ namespace Projet
             // Ennemis
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
+
+            // Traps
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             base.LoadContent();
         }
