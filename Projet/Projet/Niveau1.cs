@@ -121,7 +121,7 @@ namespace Projet
             // Pingouin
             _pingouin.Animate(_gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
-            //Gravity();
+            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -184,6 +184,76 @@ namespace Projet
                 return true;
             }
             else return false;
+        }
+
+        public bool CheckBottom()
+        {
+            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop()
+        {
+            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft()
+        {
+            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight()
+        {
+            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+
+        public void Gravity()
+        {
+            if (!CheckBottom())
+            {
+                _pingouin.Fly = true;
+                _pingouin.Position += new Vector2(0, 1);
+            }
+            else
+            {
+                _pingouin.Fly = false;
+            }
         }
     }
     }
