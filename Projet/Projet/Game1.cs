@@ -90,7 +90,7 @@ namespace Projet
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
             // Ennemis
-            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE - 200, 0),"fox" , 1, 2.5);
+            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
 
             // Camera
             camera1 = new Camera();
@@ -211,7 +211,7 @@ namespace Projet
 
             // TODO: Add your drawing code here
 
-            // Map
+            // Render Map With Camera
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
             SpriteBatch.Begin();
