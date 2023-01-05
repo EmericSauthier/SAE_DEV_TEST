@@ -28,7 +28,7 @@ namespace Projet
         //SOURIS POUR GERER CLIC
         private MouseState _mouseState;
 
-        //CHAMPS TEXTE BOUTON
+        //CHAMPS TEXTE
         private string _menuTXT;
         private string _texteEnnemi;
         private string _texteControle;
@@ -42,9 +42,13 @@ namespace Projet
         private string _sauter;
         private string _glisser;
         private string _avancer;
+        private string _attaquer;
+        private string _relever;
         private Vector2 _positionSauter;
         private Vector2 _positionGlisser;
         private Vector2 _positionAvancer;
+        private Vector2 _positionAttaquer;
+        private Vector2 _positionRelever;
 
         public Regle(Game1 game) : base(game)
         {
@@ -56,12 +60,14 @@ namespace Projet
             _menuTXT = "Menu";
                 //DEPLACEMENT
             _texteControle = "Deplacement :";
-            _avancer = "Pour avancer, maintener la touche fleche droite";
-            _sauter = "Pour sauter, appuyer sur la touche espace";
-            _glisser = "Pour glisser, appuyer sur la fleche du bas";
+            _avancer = "Maintener la fleche droite pour avancer.";
+            _sauter = "Sauter avec la touche espace !";
+            _glisser = "Glisser grace a la fleche du bas.";
+            _relever = "Relever vous avec la fleche du haut.";
+            _attaquer = "Attaquer avec ...";
                 //ENNEMI
             _texteEnnemi = "Attention aux predateurs !";
-            _texteIntroEnnemi = "Durant votre parcours, faites attention aux ennemis sur votre \nchemin, il pourrait bien vous devorer !";
+            _texteIntroEnnemi = "Durant votre parcours, faites attention aux ennemis sur votre \nchemin, il pourrait bien vous devorer ! Eviter les ou attaquer !";
             
 
             //POSITION
@@ -71,15 +77,17 @@ namespace Projet
             _positionAvancer = new Vector2(_positionMenu.X, _positiontxtControle.Y + 70);
             _positionSauter = new Vector2(_positionMenu.X+100, _positionAvancer.Y + 80);
             _positionGlisser = new Vector2(_positionMenu.X, _positionSauter.Y + 80);
+            _positionRelever = new Vector2(_positionMenu.X, _positionGlisser.Y + 30);
+            _positionAttaquer = new Vector2(_positionMenu.X, _positionRelever.Y + 80);
 
-            _positiontxtEnnemi = new Vector2(_positiontxtControle.X, _positionGlisser.Y+60);
+            _positiontxtEnnemi = new Vector2(_positiontxtControle.X, _positionAttaquer.Y+60);
             _positiontxtIntroEnnemi = new Vector2(_positionMenu.X, _positiontxtEnnemi.Y+35);
 
 
             //CREATION DECO
             _pingouinSauter = new Pingouin(_positionSauter.X-80, _positionSauter.Y);
             _pingouinAvancer = new Pingouin(_positionAvancer.X+_avancer.Length*16, _positionAvancer.Y);
-            _pingouinGlisser = new Pingouin(_positionGlisser.X+_glisser.Length*16, _positionGlisser.Y);
+            _pingouinGlisser = new Pingouin(_positionGlisser.X+_glisser.Length*18, _positionGlisser.Y);
 
             base.Initialize();
         }
@@ -128,9 +136,12 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_sauter}", _positionSauter, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_glisser}", _positionGlisser, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_avancer}", _positionAvancer, Color.White);
-            _myGame.SpriteBatch.Draw(_pingouinSauter.Perso, _pingouinSauter.Position);//LE PINGOUIN
-            _myGame.SpriteBatch.Draw(_pingouinAvancer.Perso, _pingouinAvancer.Position);//LE PINGOUIN
-            _myGame.SpriteBatch.Draw(_pingouinGlisser.Perso, _pingouinGlisser.Position);//LE PINGOUIN
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_relever}", _positionRelever, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_attaquer}", _positionAttaquer, Color.White);
+            //PINGOUIN
+            _myGame.SpriteBatch.Draw(_pingouinSauter.Perso, _pingouinSauter.Position);
+            _myGame.SpriteBatch.Draw(_pingouinAvancer.Perso, _pingouinAvancer.Position);
+            _myGame.SpriteBatch.Draw(_pingouinGlisser.Perso, _pingouinGlisser.Position);
 
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_texteEnnemi}", _positiontxtEnnemi, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_texteIntroEnnemi}", _positiontxtIntroEnnemi, Color.White);
