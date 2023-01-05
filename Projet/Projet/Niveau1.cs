@@ -41,7 +41,7 @@ namespace Projet
         public static bool canCollidingTrap;
 
         // GameManager
-        private bool gameOver;
+        private bool _gameOver;
         private KeyboardState _keyboardState;
         private TiledMapTileLayer _mapLayer;
 
@@ -63,7 +63,7 @@ namespace Projet
             Window.Title = "Jeu du pingouin";
 
             // GameManager
-            gameOver = false;
+            _gameOver = false;
 
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
@@ -104,9 +104,6 @@ namespace Projet
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
-            //POLICE
-            police = Content.Load<SpriteFont>("Font");
-
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -122,9 +119,9 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            _pingouin.Animate(gameOver, _keyboardState);
+            _pingouin.Animate(_gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
-            Gravity();
+            //Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
