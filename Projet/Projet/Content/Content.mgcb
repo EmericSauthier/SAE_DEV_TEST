@@ -30,6 +30,18 @@
 /processorParam:TextureFormat=Color
 /build:flocon.png
 
+#begin fondGameOver.jfif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:fondGameOver.jfif
+
 #begin fondMenu.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -89,6 +101,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:plains.png
+
+#begin regle2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:regle2.png
 
 #begin snowmap1.tmx
 /importer:TiledMapImporter

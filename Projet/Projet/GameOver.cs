@@ -18,6 +18,8 @@ namespace Projet
         //DECORATION PNGOUIN
         private Pingouin _pingouin;
         private Pingouin[] _pingouinTab;
+        private Texture2D _textureFond;
+        private Vector2 _positionFond;
 
         //CHAMPS CONCERNANT LES TEXTES
         public static string messagePerdu;
@@ -49,6 +51,9 @@ namespace Projet
             }
             
             _pingouin = new Pingouin(350, 50);
+            _positionFond = new Vector2(0, 0);
+
+            //GESTION CLIC
             _myGame.clicMenu = false;
             base.Initialize();
         }
@@ -59,9 +64,9 @@ namespace Projet
             {
                 _pingouinTab[i].Perso = new AnimatedSprite(spriteSheet);
             }
-            
-            
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
+
+            _textureFond = Content.Load<Texture2D>("fondGameOver");
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -95,9 +100,13 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+            //TEXTE
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messagePerdu}", positionMessagePerdu, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", Win.positionMessageMenu, Color.White);
+
+            //PINGOUIN
             for (int i=0; i<6; i++)
             {
                 _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
