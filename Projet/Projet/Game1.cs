@@ -90,7 +90,7 @@ namespace Projet
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
 
             // Ennemis
-            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE - 200, 0),"fox" , 1);
+            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
 
             // Camera
             camera1 = new Camera();
@@ -164,7 +164,7 @@ namespace Projet
             // Ennemis
             _chronoDep += deltaSeconds;
             fox1.RightLeftMove(ref _chronoDep);
-            fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
+            //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
             fox1.MonsterSprite.Update(deltaSeconds);
 
             //CHAMNGEMENT DE SCENE
@@ -212,7 +212,7 @@ namespace Projet
 
             // TODO: Add your drawing code here
 
-            // Map
+            // Render Map With Camera
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
             SpriteBatch.Begin(transformMatrix: camera1.OrthographicCamera.GetViewMatrix());

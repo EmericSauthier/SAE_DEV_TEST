@@ -18,6 +18,10 @@ namespace Projet
 
         //PINGOUIN DECO
         private Pingouin _pingouin;
+        private Texture2D[] _textureFlocons;
+        private Texture2D _textureFond;
+        private Vector2[] _positionFlocons;
+        private Vector2 _positionFond;
 
         //CHAMPS CONCERNANT LES TEXTES
         public static string regle;
@@ -42,9 +46,16 @@ namespace Projet
 
         public override void Initialize()
         {
-            //CREATION PINGOUIN DECO
+            //CREATION PINGOUIN & DECO
             _pingouin = new Pingouin(150, 350);
-            
+            Random random = new Random();
+            _positionFlocons = new Vector2[20];
+            for (int i = 0; i < 20; i++)
+            {
+                _positionFlocons[i] = new Vector2(random.Next(800), 0);
+            }
+            _positionFond = new Vector2(0, 0);
+
             //GESTION CLIC
             clicChoixNiv = false;
 
@@ -53,29 +64,46 @@ namespace Projet
             jouer = "Jouer";
             niv = "Charger un niveau";
             quitter = "Quitter";
-            float tailleRegle = 24 * regle.Length;
-            positionRegle = new Vector2(tailleRegle / 2, 50);
-            positionJouer = new Vector2(tailleRegle / 2, 150);
-            positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionQuitter = new Vector2(tailleRegle / 2, 350);
+
+            positionRegle = new Vector2(300+regle.Length*12, 200);
+            positionJouer = new Vector2(positionRegle.X, positionRegle.Y+100);
+            positionNiv = new Vector2(positionRegle.X, positionJouer.Y+100);
+            positionQuitter = new Vector2(positionRegle.X, positionNiv.Y+100);
             base.Initialize();
         }
         public override void LoadContent()
         {
-            //PINGOUIN DECO
+            //PINGOUIN & DECO
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
+            _textureFlocons = new Texture2D[20];
+            for (int i = 0; i < 20; i++)
+                _textureFlocons[i] = Content.Load<Texture2D>("flocon");
+            _textureFond = Content.Load<Texture2D>("fondMenu");
+
 
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
-            //ANIMATION DU PINGOUIN DECO
+            //ANIMATION DU PINGOUIN
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _pingouin.Perso.Play("celebrate");
             _pingouin.Perso.Update(deltaSeconds);
+
+            //DECO
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Random random = new Random();
+            for (int i = 0; i < 20; i++)
+            {
+                _positionFlocons[i].Y += 1 * 5 * deltaTime;
+                if (_positionFlocons[i].Y >= 1000)
+                {
+                    _positionFlocons[i] = new Vector2(random.Next(800), 0);
+                }
+            }
             
+
 
 
             //gestion souris
@@ -108,13 +136,19 @@ namespace Projet
 
         public override void Draw(GameTime gameTime)
         {
-            _myGame.GraphicsDevice.Clear(Color.Black);
+            _myGame.GraphicsDevice.Clear(Color.White);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{regle}", positionRegle, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{jouer}", positionJouer, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{niv}", positionNiv, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{quitter}", positionQuitter, Color.White);
+            _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{regle}", positionRegle, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{jouer}", positionJouer, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{niv}", positionNiv, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{quitter}", positionQuitter, Color.Black);
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);//LE PINGOUIN
+            
+            /*for (int i=0; i<20; i++)
+            {
+                _myGame.SpriteBatch.Draw(_textureFlocons[i], _positionFlocons[i], 0, Vector2((float)0.05,(float)0.05));
+            }*/
             _myGame.SpriteBatch.End();
         }
     }

@@ -20,12 +20,14 @@ namespace Projet
         private AnimatedSprite monsterSprite;
         private string enemy;
         private double vitesse;
+        private double tempsArrivePosition;
 
-        public MonstreRampant(Vector2 position, string enemy, double vitesse)
+        public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
             this.Position = position;
             this.MonsterSprite = monsterSprite;
             this.Vitesse = vitesse;
+            this.TempsArrivePosition = tempsArrivePosition;
         }
 
         public Vector2 Position
@@ -80,15 +82,28 @@ namespace Projet
             }
         }
 
+        public double TempsArrivePosition
+        {
+            get
+            {
+                return this.tempsArrivePosition;
+            }
+
+            set
+            {
+                this.tempsArrivePosition = value;
+            }
+        }
+
         public void RightLeftMove(ref float time)
         {
             System.Diagnostics.Debug.WriteLine(time);
-            if (time <= 2)
+            if (time <= tempsArrivePosition)
             {
                 Position += new Vector2((float)Vitesse, 0);
                 MonsterSprite.Play("rightWalking");
             }
-            else if (time > 2 && time < 4)
+            else if (time > tempsArrivePosition && time < tempsArrivePosition*2)
             {
                 Position -= new Vector2((float)Vitesse, 0);
                 MonsterSprite.Play("leftWalking");

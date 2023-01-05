@@ -24,6 +24,8 @@ namespace Projet
         private Pingouin _pingouinSauter;
         private Pingouin _pingouinGlisser;
         private Pingouin _pingouinAvancer;
+        private Texture2D _textureFond;
+        private Vector2 _positionFond;
 
         //SOURIS POUR GERER CLIC
         private MouseState _mouseState;
@@ -88,6 +90,7 @@ namespace Projet
             _pingouinSauter = new Pingouin(_positionSauter.X-80, _positionSauter.Y);
             _pingouinAvancer = new Pingouin(_positionAvancer.X+_avancer.Length*16, _positionAvancer.Y);
             _pingouinGlisser = new Pingouin(_positionGlisser.X+_glisser.Length*18, _positionGlisser.Y);
+            _positionFond = new Vector2(0, 0);
 
             base.Initialize();
         }
@@ -98,6 +101,8 @@ namespace Projet
             _pingouinSauter.Perso = new AnimatedSprite(spriteSheet);
             _pingouinGlisser.Perso = new AnimatedSprite(spriteSheet);
             _pingouinAvancer.Perso = new AnimatedSprite(spriteSheet);
+
+            _textureFond = Content.Load<Texture2D>("regle2");
 
             base.LoadContent();
         }
@@ -130,6 +135,8 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Gray);
             _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_menuTXT}", _positionMenu, Color.White);
 
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_texteControle}", _positiontxtControle, Color.White);
