@@ -100,8 +100,8 @@ namespace Projet
             _fox1.LoadContent(foxSprite);
 
             // Traps
-            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
-            _ceilingTrap1.LoadContent(ceilingTrapSprite);
+            //SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            //_ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             base.LoadContent();
         }
@@ -133,13 +133,13 @@ namespace Projet
 
             // Traps
             _chronoTrap1 += deltaSeconds;
-            System.Diagnostics.Debug.WriteLine(_chronoTrap1);
+            //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
             //_ceilingTrap1.Activation(ref deltaSeconds);
-            _ceilingTrap1.Sprite.Update(deltaSeconds);
-            if (IsCollidingTrap())
-            {
-                _myGame.clicDead = true;
-            }
+            //_ceilingTrap1.Sprite.Update(deltaSeconds);
+            //if (IsCollidingTrap())
+            //{
+            //    _myGame.clicDead = true;
+            //}
         }
 
         public override void Draw(GameTime gameTime)
@@ -168,7 +168,7 @@ namespace Projet
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            //_myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
         }
@@ -185,6 +185,7 @@ namespace Projet
             else return false;
         }
 
+        // A mettre dans Pingouin
         public bool CheckBottom()
         {
             ushort left = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
@@ -241,7 +242,6 @@ namespace Projet
 
             return false;
         }
-
         public void Gravity()
         {
             if (!CheckBottom())
