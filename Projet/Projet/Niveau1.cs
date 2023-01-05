@@ -60,7 +60,7 @@ namespace Projet
         public override void Initialize()
         {
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Jeu du pingouin";
+            _myGame.Window.Title = "Jeu du pingouin";
 
             // GameManager
             _gameOver = false;
@@ -77,7 +77,7 @@ namespace Projet
             // Camera
             _scale = (float)0.5;
             _camera = new Camera();
-            _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+            _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
             // Chrono
             _chrono = 0;
@@ -255,6 +255,5 @@ namespace Projet
                 _pingouin.Fly = false;
             }
         }
-    }
     }
 }
