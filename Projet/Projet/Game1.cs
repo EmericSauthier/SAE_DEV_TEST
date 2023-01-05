@@ -213,19 +213,21 @@ namespace Projet
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
             // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
             SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
+
             // Pingouin
             SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
             SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
+
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+
             // Ennemis
-            SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4)); 
+            SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4));
+
             SpriteBatch.End();
 
             base.Draw(gameTime);

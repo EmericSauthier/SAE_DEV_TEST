@@ -15,6 +15,7 @@ namespace Projet
     {
         private OrthographicCamera _orthographicCamera;
         private Vector2 _cameraPosition;
+        private int _hauteurFen;
 
 
         public OrthographicCamera OrthographicCamera
@@ -48,13 +49,14 @@ namespace Projet
             var viewportAdapter = new BoxingViewportAdapter(window, device, largeurFen, hauteurFen);
             OrthographicCamera = new OrthographicCamera(viewportAdapter);
             OrthographicCamera.Zoom = 1f;
+            _hauteurFen = hauteurFen;
             CameraPosition = new Vector2(largeurFen/2, hauteurFen);
         }
 
         public void Update(GameTime gameTime, Pingouin pingouin)
         {
             MoveCamera(gameTime);
-            //CameraPosition = pingouin.Position;
+            CameraPosition = new Vector2(pingouin.Position.X, _hauteurFen);
             OrthographicCamera.LookAt(CameraPosition);
         }
 
@@ -90,7 +92,7 @@ namespace Projet
 
         private void MoveCamera(GameTime gameTime)
         {
-            var speed = 100;
+            var speed = 1;
             var seconds = gameTime.GetElapsedSeconds();
             var movementDirection = GetMovementDirection();
             _cameraPosition += speed * movementDirection * seconds;
