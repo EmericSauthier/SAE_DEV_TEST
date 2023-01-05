@@ -241,7 +241,6 @@ namespace Projet
 
             return false;
         }
-
         public void Gravity()
         {
             if (!CheckBottom())
