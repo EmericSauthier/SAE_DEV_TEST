@@ -234,14 +234,24 @@ namespace Projet
 
             base.Draw(gameTime);
         }
-
-        private bool IsCollision(ushort x, ushort y)
+        public bool CheckCollision()
         {
-            // définition de tile qui peut être null (?)
+            ushort x = (ushort)(_pingouin.Position.X / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
             TiledMapTile? tile;
-            if (_mapLayer.TryGetTile(x, y, out tile) == false)
-                return false;
-            return !tile.Value.IsBlank;
+
+            if (_mapLayer.TryGetTile(x, y, out tile) != false && !tile.Value.IsBlank)
+                return true;
+
+            return false;
+        }
+
+        public void Gravity()
+        {
+            if (!CheckCollision())
+            {
+                _pingouin.Position += new Vector2(0, 1);
+            }
         }
     }
 }
