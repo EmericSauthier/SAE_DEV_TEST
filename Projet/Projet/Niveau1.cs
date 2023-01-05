@@ -30,8 +30,9 @@ namespace Projet
         //JEU
         private Camera _camera;
         private float _scale;
-        private Pingouin _pingouin;
 
+        // ENTITE
+        private Pingouin _pingouin;
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
 
