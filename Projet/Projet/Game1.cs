@@ -47,6 +47,10 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
 
+        AnimatedPress _ceilingTrap1;
+        private float _chronoTrap1;
+        public static bool canCollidingTrap;
+
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
@@ -84,21 +88,24 @@ namespace Projet
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
-            // Chrono
-            _chrono = 0;
-            _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
-
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
+            _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox" , 1, 2.5);
+
+            // Traps
+            _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
 
             // Camera
             _scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-            
+
+            // Chrono
+            _chrono = 0;
+            _chronoDep = 0;
+
             base.Initialize();
         }
 
@@ -121,6 +128,10 @@ namespace Projet
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
 
+            // Traps
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            _ceilingTrap1.LoadContent(ceilingTrapSprite);
+
             //Load des differente classes
             _gameOver = new GameOver(this);
             _win = new Win(this);
@@ -134,7 +145,6 @@ namespace Projet
 
         protected override void Update(GameTime gameTime)
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -158,12 +168,22 @@ namespace Projet
 
             // Chrono
             _chrono += deltaSeconds;
+            _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
 
             // Ennemis
             _chronoDep += deltaSeconds;
             _fox1.RightLeftMove(ref _chronoDep);
-            //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
-            _fox1.MonsterSprite.Update(deltaSeconds);
+            _fox1.Sprite.Update(deltaSeconds);
+
+            // Traps
+            _chronoTrap1 += deltaSeconds;
+            System.Diagnostics.Debug.WriteLine(_chronoTrap1);
+            _ceilingTrap1.Activation(ref deltaSeconds);
+            _ceilingTrap1.Sprite.Update(deltaSeconds);
+            if (IsCollidingTrap())
+            {
+                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+            }
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -222,7 +242,10 @@ namespace Projet
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
 
             // Ennemis
-            SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4));
+            SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
+
+            // Traps
+            SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             SpriteBatch.End();
 
@@ -246,6 +269,18 @@ namespace Projet
             {
                 _pingouin.Position += new Vector2(0, 1);
             }
+        }
+
+        private bool IsCollidingTrap()
+        {
+            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * _scale), (int)(14 * _scale));
+            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128*_scale), (int)(128 * _scale));
+
+            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
