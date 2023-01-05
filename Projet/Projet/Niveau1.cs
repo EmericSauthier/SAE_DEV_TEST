@@ -50,6 +50,7 @@ namespace Projet
         private float _chrono;
         private float _chronoDep;
 
+
         public Niveau1(Game1 game) : base(game)
         {
             _myGame = game;
