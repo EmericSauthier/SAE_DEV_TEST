@@ -32,9 +32,10 @@ namespace Projet
         private Win _win;
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
-
+            //BOOLEEN POUR SAVOIR SI L4ON VA SUR UNE AUTRE SCENE
         public bool clicMenu;
         public bool clicDead;
+        public bool clicArret;
 
         private Camera camera1;
         private Pingouin pingouin1;
@@ -129,24 +130,33 @@ namespace Projet
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
+                //CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
+                //CONDITION POUR ALLER A LA SCENE WIN
             else if (_keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
+                //CONDITION POUR ALLER A LA SCENE DU CHOIX DE NIVEAU
             else if (_menu.clicChoixNiv)
             {
                 _menu.clicChoixNiv = false;
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
             }
+                //CONDITION POUR METTRE LA PAGE GAME OVER
             else if (clicDead)
             {
                 clicDead = false;
                 _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+                //CONDITION POUR FERMER LE JEU
+            else if (clicArret)
+            {
+                Exit();
             }
 
             base.Update(gameTime);
@@ -165,7 +175,7 @@ namespace Projet
 
             // Camera
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
-
+            
             base.Draw(gameTime);
         }
     }

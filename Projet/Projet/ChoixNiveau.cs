@@ -15,9 +15,28 @@ namespace Projet
     {
         private Game1 _myGame;
 
+        //CHAMPS TEXTE BOUTON
+        private string _niv1;
+        private string _niv2;
+        private string _niv3;
+        private Vector2 _positionNiv1;
+        private Vector2 _positionNiv2;
+        private Vector2 _positionNiv3;
+
         public ChoixNiveau(Game1 game) : base(game)
         {
             _myGame = game;
+        }
+        public override void Initialize()
+        {
+            _niv1 = "Niveau 1";
+            _niv2 = "Niveau 2";
+            _niv3 = "Niveau 3";
+            _positionNiv1 = new Vector2(50, 50);
+            _positionNiv2 = new Vector2(_positionNiv1.X+_niv2.Length*24+ 50, _positionNiv1.Y);
+            _positionNiv3 = new Vector2(_positionNiv2.X+_niv3.Length*24+50, 50);
+
+            base.Initialize();
         }
         public override void LoadContent()
         {
@@ -32,6 +51,9 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Gray);
             _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv1}", _positionNiv1, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv2}", _positionNiv2, Color.White);
+            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv3}", _positionNiv3, Color.White);
             _myGame.SpriteBatch.End();
         }
     }

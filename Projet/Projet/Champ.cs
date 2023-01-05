@@ -11,23 +11,23 @@ namespace Projet
     internal class Champ
     {
         //CHAMPS POUR MENU
-        public static string regle;
+        /*public static string regle;
         public static Vector2 positionRegle;
         public static string jouer;
         public static Vector2 positionJouer;
         public static string niv;
         public static Vector2 positionNiv;
-        public static SpriteFont police;
+        */public static SpriteFont police;/*
         public static string quitter;
-        public static Vector2 positionQuitter;
+        public static Vector2 positionQuitter;*/
 
         //CHAMPS POUR WIN
-        public static string messageGagner;
+        /*public static string messageGagner;
         public static Vector2 positionMessageGagner;
         public static string messageNivSuiv;
         public static Vector2 positionMessageNivSuiv;
         public static string messageMenu;
-        public static Vector2 positionMessageMenu;
+        public static Vector2 positionMessageMenu;*/
 
         /*//CHAMPS POUR GAMEOVER
         public static string messagePerdu;
@@ -37,7 +37,7 @@ namespace Projet
 
         public static void Initialize()
         {
-            //CHAMPS POUR MENU
+           /* //CHAMPS POUR MENU
             regle = "Notes de pingouin";
             jouer = "Jouer";
             niv = "Charger un niveau";
@@ -47,15 +47,15 @@ namespace Projet
             positionJouer = new Vector2(tailleRegle / 2, 150);
             positionNiv = new Vector2(tailleRegle / 2, 250);
             positionNiv = new Vector2(tailleRegle / 2, 250);
-            positionQuitter = new Vector2(tailleRegle / 2, 350);
+            positionQuitter = new Vector2(tailleRegle / 2, 350);*/
 
             //CHAMPS POUR WIN
-            messageGagner = "Niveau completer !";
+            /*messageGagner = "Niveau completer !";
             messageMenu = "Menu";
             messageNivSuiv = "Niveau suivant -->";
             positionMessageGagner = new Vector2(50, 50);
             positionMessageMenu = new Vector2(50, 350);
-            positionMessageNivSuiv = new Vector2(250, 350);
+            positionMessageNivSuiv = new Vector2(250, 350);*/
 
             /*//CHAMPS POUR GAMEOVER
             messagePerdu = "C'est mort...";
