@@ -44,6 +44,11 @@ namespace Projet
         private Vector2 _positionChrono;
         private float _chronoDep;
 
+        // Trap
+        AnimatedPress _ceilingTrap1;
+        private float _chronoTrap1;
+        public static bool canCollidingTrap;
+
         public Niveau1(Game1 game) : base(game)
         {
             _myGame = game;
@@ -52,24 +57,26 @@ namespace Projet
         public override void Initialize()
         {
             /*GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Jeu du pingouin";*/
-
-            // Chrono
-            _chrono = 0;
-            _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
+            Window.Title = "Jeu du pingouin";**/
 
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, HAUTEUR_FENETRE / 6);
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE / 2, 0), "fox", 1, 2.5);
-            
-            /*
-            // Camera
+            _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
+
+            // Traps
+            _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
+
+            // Chrono
+            _chrono = 0;
+            _chronoDep = 0;
+
+            /* Camera
             _scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);*/
-            
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -93,6 +100,7 @@ namespace Projet
         {
             // Map
             _tiledMapRenderer.Update(gameTime);
+
             /*
             // Camera
             _camera.Update(gameTime, _pingouin);*/
@@ -114,12 +122,22 @@ namespace Projet
 
             // Chrono
             _chrono += deltaSeconds;
+            _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
 
             // Ennemis
             _chronoDep += deltaSeconds;
             _fox1.RightLeftMove(ref _chronoDep);
-            //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
             _fox1.Sprite.Update(deltaSeconds);
+
+            // Traps
+            _chronoTrap1 += deltaSeconds;
+            System.Diagnostics.Debug.WriteLine(_chronoTrap1);
+            _ceilingTrap1.Activation(ref deltaSeconds);
+            _ceilingTrap1.Sprite.Update(deltaSeconds);
+            if (IsCollidingTrap())
+            {
+                //_screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+            }
 
         }
 
@@ -140,6 +158,9 @@ namespace Projet
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(4, 4));
 
+            // Traps
+            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+
             _myGame.SpriteBatch.End();
         }
 
@@ -150,6 +171,18 @@ namespace Projet
             if (_mapLayer.TryGetTile(x, y, out tile) == false)
                 return false;
             return !tile.Value.IsBlank;
+        }
+
+        private bool IsCollidingTrap()
+        {
+            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * _scale), (int)(14 * _scale));
+            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * _scale), (int)(128 * _scale));
+
+            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
