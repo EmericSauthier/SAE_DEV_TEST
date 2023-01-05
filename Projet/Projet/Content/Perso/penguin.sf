@@ -15,8 +15,18 @@
       "isLooping": false,
       "frameDuration": 0.2
     },
+    "beforeJump": {
+      "frames": [144,145],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
     "jump": {
-      "frames": [144,145,146,147,148,149,150,151,152,0],
+      "frames": [146,147],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "afterJump": {
+      "frames": [148,149,150,151,152,0],
       "isLooping": false,
       "frameDuration": 0.2
     },

@@ -57,8 +57,8 @@ namespace Projet
         private TiledMapTileLayer _mapLayer;
 
         // Chrono
-        private float _chrono;
         private Vector2 _positionChrono;
+        private float _chrono;
         private float _chronoDep;
 
         public Game1()
@@ -93,7 +93,7 @@ namespace Projet
             _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
+            _pingouin = new Pingouin(LARGEUR_FENETRE/2, 500 + (HAUTEUR_FENETRE/2));
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
@@ -156,15 +156,9 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            ushort x = (ushort)(_pingouin.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60*_scale) / _tiledMap.TileHeight);
-            if (!IsCollision(x, y))
-            {
-                _pingouin.Position += new Vector2(0, 1);
-            }
-
             _pingouin.Animate(gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
+            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -172,12 +166,14 @@ namespace Projet
             // Ennemis
             _chronoDep += deltaSeconds;
             _fox1.RightLeftMove(ref _chronoDep);
+
             //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
             _fox1.MonsterSprite.Update(deltaSeconds);
             
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-                //CONDITION POUR ALLER SUR LE MENU DU JEU
+            
+            //CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
@@ -232,7 +228,15 @@ namespace Projet
 
             // Pingouin
             SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
@@ -244,14 +248,73 @@ namespace Projet
             
             base.Draw(gameTime);
         }
-
-        private bool IsCollision(ushort x, ushort y)
+        public bool CheckBottom()
         {
-            // définition de tile qui peut être null (?)
-            TiledMapTile? tile;
-            if (_mapLayer.TryGetTile(x, y, out tile) == false)
-                return false;
-            return !tile.Value.IsBlank;
+            ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(bottomLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(bottomRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop()
+        {
+            ushort topLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort topRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(topLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(topRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft()
+        {
+            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort topLeft = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottomLeft = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, topLeft, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomLeft, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight()
+        {
+            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort topRight = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottomRight = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, topRight, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomRight, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+
+        public void Gravity()
+        {
+            if (!CheckBottom())
+            {
+                _pingouin.Fly = true;
+                _pingouin.Position += new Vector2(0, 1);
+            } else
+            {
+                _pingouin.Fly = false;
+            }
         }
     }
 }

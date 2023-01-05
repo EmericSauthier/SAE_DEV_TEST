@@ -23,16 +23,20 @@ namespace Projet
     {
         private Vector2 position;
         private AnimatedSprite perso;
+
+        private double walkVelocity;
+        private double slideVelocity;
+        private double jumpVelocity;
+
         private bool slide;
-        private double vitesseMarche;
-        private double vitesseSlide;
+        private bool fly;
 
         public Pingouin(float x, float y)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
-            this.vitesseMarche = 1;
-            this.vitesseSlide = 1.5;
+            this.walkVelocity = 1;
+            this.slideVelocity = 1.5;
         }
         
         public Vector2 Position
@@ -63,53 +67,63 @@ namespace Projet
         {
             get
             {
-                return this.vitesseMarche;
+                return this.walkVelocity;
             }
 
             set
             {
-                this.vitesseMarche = value;
+                this.walkVelocity = value;
             }
         }
         public double VitesseSlide
         {
             get
             {
-                return this.vitesseSlide;
+                return this.slideVelocity;
             }
 
             set
             {
-                this.vitesseSlide = value;
+                this.slideVelocity = value;
+            }
+        }
+        public bool Fly
+        {
+            get
+            {
+                return this.fly;
+            }
+
+            set
+            {
+                this.fly = value;
             }
         }
 
         public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
         {
             Vector2 move = Vector2.Zero;
+
             if (gameOver)
             {
                 this.perso.Play("celebrate");
             }
+            else if (keyboardState.IsKeyDown(Keys.Space) || this.fly)
+            {
+                this.slide = false;
+                move = Jump(ref move, keyboardState);
+            }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
                 this.slide = false;
-                if (keyboardState.IsKeyDown(Keys.Space))
-                {
-                    this.perso.Play("jump");
-                    move = new Vector2((float)vitesseMarche/2, 0);
-                }
-                else
-                {
-                    this.perso.Play("walkForward");
-                    move = new Vector2((float)VitesseMarche, 0);
-                }
+                this.perso.Play("walkForward");
+                move = new Vector2((float)VitesseMarche, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
                 this.slide = false;
                 this.perso.Play("walkBehind");
-                move = new Vector2((float)-vitesseMarche, 0);
+                move = new Vector2((float)-walkVelocity, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
@@ -121,20 +135,44 @@ namespace Projet
                 else
                 {
                     this.perso.Play("slide");
-                    move = new Vector2((float)vitesseSlide, 0);
+                    move = new Vector2((float)slideVelocity, 0);
                 }
-            }
-            else if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                this.slide = false;
-                this.perso.Play("jump");
             }
             else
             {
                 this.slide = false;
                 this.perso.Play("idle");
             }
+
             this.position += move;
+
+            return move;
+        }
+
+        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState)
+        {
+            float direction = 0;
+
+            if (!fly)
+            {
+                this.perso.Play("beforeJump");
+                this.fly = true;
+                move += new Vector2(0, -80);
+            }
+            else
+            {
+                this.perso.Play("jump");
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            {
+                move += new Vector2((float)walkVelocity, 0);
+            }
+            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            {
+                move += new Vector2((float)-walkVelocity, 0);
+            }
+
             return move;
         }
     }
