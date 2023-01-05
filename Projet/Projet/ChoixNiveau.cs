@@ -15,13 +15,18 @@ namespace Projet
     {
         private Game1 _myGame;
 
+        //SOURIS POUR GERER CLIC
+        private MouseState _mouseState;
+
         //CHAMPS TEXTE BOUTON
         private string _niv1;
         private string _niv2;
         private string _niv3;
+        private string _messMenu;
         private Vector2 _positionNiv1;
         private Vector2 _positionNiv2;
         private Vector2 _positionNiv3;
+        private Vector2 _positionMenu;
 
         public ChoixNiveau(Game1 game) : base(game)
         {
@@ -32,9 +37,11 @@ namespace Projet
             _niv1 = "Niveau 1";
             _niv2 = "Niveau 2";
             _niv3 = "Niveau 3";
-            _positionNiv1 = new Vector2(50, 50);
+            _messMenu = "Retour au menu";
+            _positionMenu = new Vector2(30, 50);
+            _positionNiv1 = new Vector2(50, 150);
             _positionNiv2 = new Vector2(_positionNiv1.X+_niv2.Length*24+ 50, _positionNiv1.Y);
-            _positionNiv3 = new Vector2(_positionNiv2.X+_niv3.Length*24+50, 50);
+            _positionNiv3 = new Vector2(_positionNiv2.X+_niv3.Length*24+50, _positionNiv1.Y);
 
             base.Initialize();
         }
@@ -44,16 +51,32 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
+            _mouseState = Mouse.GetState();
+            if (_mouseState.LeftButton == ButtonState.Pressed)
+            {
+                //si clic retour au menu
+                if (_mouseState.X >= _positionMenu.X && _mouseState.Y >= _positionMenu.Y && _mouseState.X <= _positionMenu.X + _messMenu.Length * 24 && _mouseState.Y <= _positionMenu.Y + 24)
+                {
+                    _myGame.clicMenu = true;
+                }
+                //si clic niveau 1 //A CHANGER DES QUE NIVEAU 1 EST PRES
+                else if (_mouseState.X >= _positionNiv1.X && _mouseState.Y >= _positionNiv1.Y && _mouseState.X <= _positionNiv1.X + _niv1.Length * 24 && _mouseState.Y <= _positionNiv1.Y + 24)
+                {
+                    _myGame.clicDead = true;
+                }
 
+
+            }
         }
 
         public override void Draw(GameTime gameTime)
         {
             _myGame.GraphicsDevice.Clear(Color.Gray);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv1}", _positionNiv1, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv2}", _positionNiv2, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{_niv3}", _positionNiv3, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv1}", _positionNiv1, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv2}", _positionNiv2, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv3}", _positionNiv3, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_messMenu}", _positionMenu, Color.White);
             _myGame.SpriteBatch.End();
         }
     }

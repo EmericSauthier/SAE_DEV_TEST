@@ -15,8 +15,9 @@ namespace Projet
     internal class Menu : GameScreen
     {
         private Game1 _myGame;
+
+        //PINGOUIN DECO
         private Pingouin _pingouin;
-        private MouseState _mouseState;
 
         //CHAMPS CONCERNANT LES TEXTES
         public static string regle;
@@ -28,7 +29,12 @@ namespace Projet
         public static string quitter;
         public static Vector2 positionQuitter;
 
+
+        //GESTION SOURIS
+        private MouseState _mouseState;
         public bool clicChoixNiv;
+
+
         public Menu(Game1 game) : base(game)
         {
             _myGame = game;
@@ -36,7 +42,10 @@ namespace Projet
 
         public override void Initialize()
         {
+            //CREATION PINGOUIN DECO
             _pingouin = new Pingouin(150, 350);
+            
+            //GESTION CLIC
             clicChoixNiv = false;
 
             //INITIALISATION TEXTE AFFICHER
@@ -54,6 +63,7 @@ namespace Projet
         }
         public override void LoadContent()
         {
+            //PINGOUIN DECO
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
@@ -61,6 +71,7 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
+            //ANIMATION DU PINGOUIN DECO
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _pingouin.Perso.Play("celebrate");
             _pingouin.Perso.Update(deltaSeconds);
@@ -79,7 +90,7 @@ namespace Projet
                 //envoie à la scene des regles
                 else if (_mouseState.X >= positionRegle.X && _mouseState.Y >= positionRegle.Y && _mouseState.X <= positionRegle.X + regle.Length * 24 && _mouseState.Y <= positionRegle.Y + 24)
                 {
-                    
+                    _myGame.clicRegle = true;
                 }
                 //envoie a la scene de jeu
                 else if (_mouseState.X >= positionJouer.X && _mouseState.Y >= positionJouer.Y && _mouseState.X <= positionJouer.X + jouer.Length * 24 && _mouseState.Y <= positionJouer.Y + 24)
@@ -99,11 +110,11 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{regle}", positionRegle, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{jouer}", positionJouer, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{niv}", positionNiv, Color.White);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{quitter}", positionQuitter, Color.White);
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{regle}", positionRegle, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{jouer}", positionJouer, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{niv}", positionNiv, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{quitter}", positionQuitter, Color.White);
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);//LE PINGOUIN
             _myGame.SpriteBatch.End();
         }
     }

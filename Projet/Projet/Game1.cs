@@ -32,10 +32,13 @@ namespace Projet
         private Win _win;
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
-            //BOOLEEN POUR SAVOIR SI L4ON VA SUR UNE AUTRE SCENE
+        private Regle _regle;
+        public static SpriteFont police; //police pour le texte
+            //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
         public bool clicMenu;
         public bool clicDead;
         public bool clicArret;
+        public bool clicRegle;
 
         private Camera camera1;
         private Pingouin pingouin1;
@@ -64,7 +67,7 @@ namespace Projet
             Window.Title = "Jeu du pingouin";
 
             // Champs
-            Champ.Initialize();
+            //Champ.Initialize();
 
             // GameManager
             gameOver = false;
@@ -109,9 +112,10 @@ namespace Projet
             _win = new Win(this);
             _menu = new Menu(this);
             _choixNiveau = new ChoixNiveau(this);
+            _regle = new Regle(this);
 
             //POUR MENU
-            Champ.police = Content.Load<SpriteFont>("Font");
+            police = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
@@ -169,7 +173,12 @@ namespace Projet
             {
                 Exit();
             }
-
+            //CONDITION POUR ALLER AUX REGLE DU JEU
+            else if (clicRegle)
+            {
+                clicRegle = false;
+                _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
+            }
             base.Update(gameTime);
         }
 
@@ -186,7 +195,7 @@ namespace Projet
             // Pingouin
             SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
             // Chrono
-            SpriteBatch.DrawString(Champ.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             SpriteBatch.End();
 
             base.Draw(gameTime);

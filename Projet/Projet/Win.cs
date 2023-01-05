@@ -69,9 +69,9 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.White);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{messageGagner}", positionMessageGagner, Color.Black);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{messageNivSuiv}", positionMessageNivSuiv, Color.Black);
-            _myGame.SpriteBatch.DrawString(Champ.police, $"{messageMenu}", positionMessageMenu, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageGagner}", positionMessageGagner, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageNivSuiv}", positionMessageNivSuiv, Color.Black);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageMenu}", positionMessageMenu, Color.Black);
             _myGame.SpriteBatch.End();
         }
     }
