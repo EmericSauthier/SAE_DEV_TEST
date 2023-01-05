@@ -59,8 +59,12 @@ namespace Projet
                 {
                     _myGame.clicMenu = true;
                 }
-                //si clic niveau 1 //A CHANGER DES QUE NIVEAU 1 EST PRES
+                //si clic niveau 1
                 else if (_mouseState.X >= _positionNiv1.X && _mouseState.Y >= _positionNiv1.Y && _mouseState.X <= _positionNiv1.X + _niv1.Length * 24 && _mouseState.Y <= _positionNiv1.Y + 24)
+                {
+                    _myGame.clicNiveau1 = true;
+                }//si clic niveau 2 //A CHANGER DES QUE NIVEAU 2 EST PRES
+                else if (_mouseState.X >= _positionNiv2.X && _mouseState.Y >= _positionNiv2.Y && _mouseState.X <= _positionNiv2.X + _niv2.Length * 24 && _mouseState.Y <= _positionNiv2.Y + 24)
                 {
                     _myGame.clicDead = true;
                 }

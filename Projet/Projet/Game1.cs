@@ -20,11 +20,11 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch { get; set; }
 
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
-
         private readonly ScreenManager _screenManager;
 
+        //MAP
+        private TiledMap _tiledMap;
+        private TiledMapRenderer _tiledMapRenderer;
 
         //LES CLASSES EN LIEN
         private GameOver _gameOver;
@@ -32,6 +32,7 @@ namespace Projet
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
         private Regle _regle;
+        private Niveau1 _niveau1;
         public static SpriteFont police; //police pour le texte
         
         //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
@@ -39,7 +40,10 @@ namespace Projet
         public bool clicDead;
         public bool clicArret;
         public bool clicRegle;
+        public bool clicNiveau1;
 
+        
+        //JEU
         private Camera _camera;
         private float _scale;
         private Pingouin _pingouin;
@@ -75,7 +79,7 @@ namespace Projet
 
             // Champs
             //Champ.Initialize();
-
+            
             // GameManager
             gameOver = false;
 
@@ -107,7 +111,7 @@ namespace Projet
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
+            
             // Map
             _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
@@ -120,15 +124,16 @@ namespace Projet
             // Ennemis
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
-
+            
             //Load des differente classes
             _gameOver = new GameOver(this);
             _win = new Win(this);
             _menu = new Menu(this);
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
+            _niveau1 = new Niveau1(this);
 
-            //POUR MENU
+            //POLICE
             police = Content.Load<SpriteFont>("Font");
         }
 
@@ -139,7 +144,7 @@ namespace Projet
                 Exit();
 
             // TODO: Add your update logic here
-
+            
             // Map
             _tiledMapRenderer.Update(gameTime);
 
@@ -169,7 +174,7 @@ namespace Projet
             _fox1.RightLeftMove(ref _chronoDep);
             //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
             _fox1.MonsterSprite.Update(deltaSeconds);
-
+            
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
                 //CONDITION POUR ALLER SUR LE MENU DU JEU
@@ -179,7 +184,7 @@ namespace Projet
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
                 //CONDITION POUR ALLER A LA SCENE WIN
-            else if (_keyboardState.IsKeyDown(Keys.A))
+            else if (keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
@@ -206,13 +211,20 @@ namespace Projet
                 clicRegle = false;
                 _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
             }
+            //CONDITION POUR LANCER LE NIVEAU 1
+            else if (clicNiveau1)
+            {
+                clicNiveau1 = false;
+                _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
             // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
@@ -229,7 +241,7 @@ namespace Projet
             SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4));
 
             SpriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
 
