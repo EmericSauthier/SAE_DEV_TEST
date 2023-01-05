@@ -84,8 +84,9 @@ namespace Projet
             }
         }
 
-        public void Animate(bool gameOver, KeyboardState keyboardState)
+        public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
         {
+            Vector2 move = Vector2.Zero;
             if (gameOver)
             {
                 this.perso.Play("celebrate");
@@ -96,19 +97,19 @@ namespace Projet
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     this.perso.Play("jump");
-                    this.position += new Vector2((float)vitesseMarche / 2, 0);
+                    move = new Vector2((float)vitesseMarche / 2, 0);
                 }
                 else
                 {
                     this.perso.Play("walkForward");
-                    this.position += new Vector2((float)VitesseMarche, 0);
+                    move = new Vector2((float)VitesseMarche, 0);
                 }
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
                 this.slide = false;
                 this.perso.Play("walkBehind");
-                this.position -= new Vector2((float)vitesseMarche, 0);
+                move = new Vector2((float)-vitesseMarche, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
@@ -120,7 +121,7 @@ namespace Projet
                 else
                 {
                     this.perso.Play("slide");
-                    this.position += new Vector2((float)vitesseSlide, 0);
+                    move = new Vector2((float)vitesseSlide, 0);
                 }
             }
             else if (keyboardState.IsKeyDown(Keys.Space))
@@ -133,6 +134,8 @@ namespace Projet
                 this.slide = false;
                 this.perso.Play("idle");
             }
+            this.position += move;
+            return move;
         }
     }
 }

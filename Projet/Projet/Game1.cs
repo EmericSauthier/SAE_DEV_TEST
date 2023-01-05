@@ -137,6 +137,12 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
+            ushort x = (ushort)(pingouin1.Position.X / _tiledMap.TileWidth);
+            ushort y = (ushort)((pingouin1.Position.Y + 30) / _tiledMap.TileHeight);
+            if (!IsCollision(x, y))
+            {
+                pingouin1.Position += new Vector2(0, 1);
+            }
             pingouin1.Animate(gameOver, _keyboardState);
             pingouin1.Perso.Update(deltaSeconds);
 
@@ -199,6 +205,14 @@ namespace Projet
             SpriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        private bool IsCollision(ushort x, ushort y)
+        {
+            // définition de tile qui peut être null (?)
+            TiledMapTile? tile;
+            if (_mapLayer.TryGetTile(x, y, out tile) == false)
+                return false;
+            return !tile.Value.IsBlank;
         }
     }
 }
