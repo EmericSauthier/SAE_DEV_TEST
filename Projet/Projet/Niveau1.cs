@@ -139,39 +139,39 @@ namespace Projet
             _ceilingTrap1.Sprite.Update(deltaSeconds);
             if (IsCollidingTrap())
             {
-                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+                _myGame.clicDead = true;
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _// Render Map With Camera
+            // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
-            SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
+            _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Pingouin
-            SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
 
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
 
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
 
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
-            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
 
             // Ennemis
-            SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
+            _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
-            SpriteBatch.End();
+            _myGame.SpriteBatch.End();
         }
 
         private bool IsCollidingTrap()
