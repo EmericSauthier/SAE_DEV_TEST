@@ -73,6 +73,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin FontGameOver.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:FontGameOver.spritefont
+
 #begin fox.png
 /importer:TextureImporter
 /processor:TextureProcessor

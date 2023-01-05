@@ -20,11 +20,11 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch { get; set; }
 
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
-
         private readonly ScreenManager _screenManager;
 
+        //MAP
+        private TiledMap _tiledMap;
+        private TiledMapRenderer _tiledMapRenderer;
 
         //LES CLASSES EN LIEN
         private GameOver _gameOver;
@@ -32,6 +32,7 @@ namespace Projet
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
         private Regle _regle;
+        private Niveau1 _niveau1;
         public static SpriteFont police; //police pour le texte
         
         //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
@@ -39,7 +40,10 @@ namespace Projet
         public bool clicDead;
         public bool clicArret;
         public bool clicRegle;
+        public bool clicNiveau1;
 
+        
+        //JEU
         private Camera _camera;
         private float _scale;
         private Pingouin _pingouin;
@@ -57,8 +61,8 @@ namespace Projet
         private TiledMapTileLayer _mapLayer;
 
         // Chrono
-        private float _chrono;
         private Vector2 _positionChrono;
+        private float _chrono;
         private float _chronoDep;
 
         public Game1()
@@ -79,7 +83,7 @@ namespace Projet
 
             // Champs
             //Champ.Initialize();
-
+            
             // GameManager
             gameOver = false;
 
@@ -89,7 +93,7 @@ namespace Projet
             _graphics.ApplyChanges();
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
+            _pingouin = new Pingouin(LARGEUR_FENETRE/2, 500 + (HAUTEUR_FENETRE/2));
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox" , 1, 2.5);
@@ -114,7 +118,7 @@ namespace Projet
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
+            
             // Map
             _tiledMap = Content.Load<TiledMap>("snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
@@ -138,8 +142,9 @@ namespace Projet
             _menu = new Menu(this);
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
+            _niveau1 = new Niveau1(this);
 
-            //POUR MENU
+            //POLICE
             police = Content.Load<SpriteFont>("Font");
         }
 
@@ -149,7 +154,7 @@ namespace Projet
                 Exit();
 
             // TODO: Add your update logic here
-
+            
             // Map
             _tiledMapRenderer.Update(gameTime);
 
@@ -161,10 +166,9 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            Gravity();
-
             _pingouin.Animate(gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
+            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -187,14 +191,15 @@ namespace Projet
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
-                //CONDITION POUR ALLER SUR LE MENU DU JEU
+            
+            //CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
                 //CONDITION POUR ALLER A LA SCENE WIN
-            else if (_keyboardState.IsKeyDown(Keys.A))
+            else if (keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
@@ -221,13 +226,20 @@ namespace Projet
                 clicRegle = false;
                 _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
             }
+            //CONDITION POUR LANCER LE NIVEAU 1
+            else if (clicNiveau1)
+            {
+                clicNiveau1 = false;
+                _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
             // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
@@ -235,8 +247,15 @@ namespace Projet
 
             // Pingouin
             SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
-            SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
-            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Green, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
+
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
@@ -248,16 +267,61 @@ namespace Projet
             SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             SpriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
-        public bool CheckCollision()
+        public bool CheckBottom()
         {
-            ushort x = (ushort)(_pingouin.Position.X / _mapLayer.TileWidth);
+            ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
             ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
-            TiledMapTile? tile;
 
-            if (_mapLayer.TryGetTile(x, y, out tile) != false && !tile.Value.IsBlank)
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(bottomLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(bottomRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop()
+        {
+            ushort topLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort topRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(topLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(topRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft()
+        {
+            ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort topLeft = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottomLeft = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, topLeft, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomLeft, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight()
+        {
+            ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort topRight = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottomRight = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, topRight, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomRight, out tileBottom) != false && !tileBottom.Value.IsBlank))
                 return true;
 
             return false;
@@ -265,9 +329,13 @@ namespace Projet
 
         public void Gravity()
         {
-            if (!CheckCollision())
+            if (!CheckBottom())
             {
+                _pingouin.Fly = true;
                 _pingouin.Position += new Vector2(0, 1);
+            } else
+            {
+                _pingouin.Fly = false;
             }
         }
 

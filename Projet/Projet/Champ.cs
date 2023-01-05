@@ -17,7 +17,7 @@ namespace Projet
         public static Vector2 positionJouer;
         public static string niv;
         public static Vector2 positionNiv;
-        */public static SpriteFont police;/*
+        public static SpriteFont police;
         public static string quitter;
         public static Vector2 positionQuitter;*/
 
