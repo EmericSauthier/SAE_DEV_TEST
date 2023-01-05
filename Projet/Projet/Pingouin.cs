@@ -23,9 +23,11 @@ namespace Projet
     {
         private Vector2 position;
         private AnimatedSprite perso;
-        private bool slide;
         private double vitesseMarche;
         private double vitesseSlide;
+
+        private bool slide;
+        private bool fly;
 
         public Pingouin(float x, float y)
         {
@@ -91,19 +93,22 @@ namespace Projet
             {
                 this.perso.Play("celebrate");
             }
-            else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            else if (keyboardState.IsKeyDown(Keys.Space))
             {
                 this.slide = false;
-                if (keyboardState.IsKeyDown(Keys.Space))
+                float direction = 0;
+                if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
                 {
-                    this.perso.Play("jump");
-                    move = new Vector2((float)vitesseMarche/2, 0);
+                    direction = (float)(vitesseMarche / 2);
                 }
-                else
-                {
-                    this.perso.Play("walkForward");
-                    move = new Vector2((float)VitesseMarche, 0);
-                }
+                Jump(direction);
+            }
+            else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            {
+                //if (!IsCollision(x,y, out tile))
+                this.slide = false;
+                this.perso.Play("walkForward");
+                move = new Vector2((float)VitesseMarche, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
@@ -124,17 +129,28 @@ namespace Projet
                     move = new Vector2((float)vitesseSlide, 0);
                 }
             }
-            else if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                this.slide = false;
-                this.perso.Play("jump");
-            }
             else
             {
                 this.slide = false;
                 this.perso.Play("idle");
             }
             this.position += move;
+            return move;
+        }
+
+        public Vector2 Jump(float direction)
+        {
+            Vector2 move = Vector2.Zero;
+            if (!fly)
+            {
+                this.perso.Play("beforeJump");
+                move = new Vector2(direction, -5);
+                fly = true;
+            }
+            else
+            {
+                this.perso.Play("jump");
+            }
             return move;
         }
     }

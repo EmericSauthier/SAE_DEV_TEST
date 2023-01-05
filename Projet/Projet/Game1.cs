@@ -89,7 +89,7 @@ namespace Projet
             _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/6);
+            _pingouin = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE/2, 0),"fox" , 1, 2.5);
@@ -151,11 +151,12 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            ushort x = (ushort)(_pingouin.Position.X / _tiledMap.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60*_scale) / _tiledMap.TileHeight);
+            ushort x = (ushort)(_pingouin.Position.X / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60*_scale) / _mapLayer.TileHeight);
             if (!IsCollision(x, y))
             {
                 _pingouin.Position += new Vector2(0, 1);
+                _pingouin.Perso.Play("jump");
             }
 
             _pingouin.Animate(gameOver, _keyboardState);
@@ -221,6 +222,7 @@ namespace Projet
             // Pingouin
             SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale, _scale));
             SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60*_scale, Color.Green, 5);
+            SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Green, 5);
 
             // Chrono
             SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
