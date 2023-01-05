@@ -39,12 +39,17 @@ namespace Projet
         private Camera camera1;
         private Pingouin pingouin1;
 
+        MonstreRampant[] monstresRampants;
+        MonstreRampant fox1;
+
         // GameManager
         private bool gameOver;
         private KeyboardState _keyboardState;
         private TiledMapTileLayer _mapLayer;
+        // Chrono
         private float _chrono;
         private Vector2 _positionChrono;
+        private float _chronoDep;
 
         public Game1()
         {
@@ -80,10 +85,12 @@ namespace Projet
             // Pingouin
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
 
+            // Ennemis
+            fox1 = new MonstreRampant(new Vector2(LARGEUR_FENETRE - 200, 0),"fox" , 1);
+
             // Camera
             camera1 = new Camera();
             camera1.Initialize(Window, GraphicsDevice, LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
-
             
             base.Initialize();
         }
@@ -102,6 +109,10 @@ namespace Projet
             // Pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             pingouin1.Perso = new AnimatedSprite(spriteSheet);
+
+            // Ennemis
+            SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
+            fox1.LoadContent(foxSprite);
 
             //Load des differente classes
             _gameOver = new GameOver(this);
@@ -137,6 +148,12 @@ namespace Projet
 
             // Chrono
             _chrono += deltaSeconds;
+
+            // Ennemis
+            _chronoDep += deltaSeconds;
+            fox1.RightLeftMove(ref _chronoDep);
+            fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
+            fox1.MonsterSprite.Update(deltaSeconds);
 
             //CHAMNGEMENT DE SCENE
             KeyboardState keyboardState = Keyboard.GetState();
@@ -177,6 +194,8 @@ namespace Projet
             SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
             // Chrono
             SpriteBatch.DrawString(Champ.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            // Ennemis
+            SpriteBatch.Draw(fox1.MonsterSprite, fox1.Position, 0, new Vector2(4, 4)); 
             SpriteBatch.End();
 
             base.Draw(gameTime);
