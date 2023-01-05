@@ -142,13 +142,13 @@ namespace Projet
             _ceilingTrap1.Sprite.Update(deltaSeconds);
             if (IsCollidingTrap())
             {
-                _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
+                _myGame.clicDead = true;
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _// Render Map With Camera
+            // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
