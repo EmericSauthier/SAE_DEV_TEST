@@ -219,7 +219,7 @@ namespace Projet
             SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
             SpriteBatch.DrawPoint(pingouin1.Position.X, pingouin1.Position.Y + 60, Color.Green, 5);
             // Chrono
-            SpriteBatch.DrawString(Champ.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            SpriteBatch.DrawString(police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             // Ennemis
             SpriteBatch.Draw(fox1.MonsterSprite, fox1.Position, 0, new Vector2(4, 4)); 
             SpriteBatch.End();
