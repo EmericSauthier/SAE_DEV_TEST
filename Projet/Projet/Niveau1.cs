@@ -54,7 +54,6 @@ namespace Projet
         public Niveau1(Game1 game) : base(game)
         {
             _myGame = game;
-
         }
 
         public override void Initialize()
