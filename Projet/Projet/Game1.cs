@@ -151,13 +151,7 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            ushort x = (ushort)(_pingouin.Position.X / _mapLayer.TileWidth);
-            ushort y = (ushort)((_pingouin.Position.Y + 60*_scale) / _mapLayer.TileHeight);
-            if (!IsCollision(x, y))
-            {
-                _pingouin.Position += new Vector2(0, 1);
-                _pingouin.Perso.Play("jump");
-            }
+            Gravity();
 
             _pingouin.Animate(gameOver, _keyboardState);
             _pingouin.Perso.Update(deltaSeconds);
