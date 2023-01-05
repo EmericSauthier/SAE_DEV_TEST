@@ -119,7 +119,7 @@ namespace Projet
             _chronoDep += deltaSeconds;
             _fox1.RightLeftMove(ref _chronoDep);
             //fox1.Position = new Vector2(camera1.CameraPosition.X - 100, camera1.CameraPosition.Y - 100);
-            _fox1.MonsterSprite.Update(deltaSeconds);
+            _fox1.Sprite.Update(deltaSeconds);
 
         }
 
@@ -138,7 +138,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
 
             // Ennemis
-            _myGame.SpriteBatch.Draw(_fox1.MonsterSprite, _fox1.Position, 0, new Vector2(4, 4));
+            _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(4, 4));
 
             _myGame.SpriteBatch.End();
         }
