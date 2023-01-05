@@ -103,6 +103,7 @@ namespace Projet
         public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
         {
             Vector2 move = Vector2.Zero;
+
             if (gameOver)
             {
                 this.perso.Play("celebrate");
@@ -110,27 +111,7 @@ namespace Projet
             else if (keyboardState.IsKeyDown(Keys.Space) || this.fly)
             {
                 this.slide = false;
-                float direction = 0;
-
-                if (!fly)
-                {
-                    this.perso.Play("beforeJump");
-                    this.fly = true;
-                    move += new Vector2(0, -80);
-                }
-                else
-                {
-                    this.perso.Play("jump");
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
-                {
-                    move += new Vector2((float)walkVelocity, 0);
-                }
-                else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
-                {
-                    move += new Vector2((float)-walkVelocity, 0);
-                }
+                move = Jump(ref move, keyboardState);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
@@ -162,7 +143,36 @@ namespace Projet
                 this.slide = false;
                 this.perso.Play("idle");
             }
+
             this.position += move;
+
+            return move;
+        }
+
+        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState)
+        {
+            float direction = 0;
+
+            if (!fly)
+            {
+                this.perso.Play("beforeJump");
+                this.fly = true;
+                move += new Vector2(0, -80);
+            }
+            else
+            {
+                this.perso.Play("jump");
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            {
+                move += new Vector2((float)walkVelocity, 0);
+            }
+            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            {
+                move += new Vector2((float)-walkVelocity, 0);
+            }
+
             return move;
         }
     }
