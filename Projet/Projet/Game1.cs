@@ -238,28 +238,28 @@ namespace Projet
         }
         public bool CheckBottom()
         {
-            ushort bottomLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort bottomRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
             ushort y = (ushort)((_pingouin.Position.Y + 60 * _scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
 
-            if ((_mapLayer.TryGetTile(bottomLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(bottomRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
                 return true;
 
             return false;
         }
         public bool CheckTop()
         {
-            ushort topLeft = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort topRight = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
+            ushort left = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
             ushort y = (ushort)((_pingouin.Position.Y - 60 * _scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
 
-            if ((_mapLayer.TryGetTile(topLeft, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(topRight, y, out tileRight) != false && !tileRight.Value.IsBlank))
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
                 return true;
 
             return false;
@@ -267,13 +267,13 @@ namespace Projet
         public bool CheckLeft()
         {
             ushort x = (ushort)((_pingouin.Position.X - 50 * _scale) / _mapLayer.TileWidth);
-            ushort topLeft = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottomLeft = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
 
-            if ((_mapLayer.TryGetTile(x, topLeft, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomLeft, out tileBottom) != false && !tileBottom.Value.IsBlank))
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
                 return true;
 
             return false;
@@ -281,13 +281,13 @@ namespace Projet
         public bool CheckRight()
         {
             ushort x = (ushort)((_pingouin.Position.X + 50 * _scale) / _mapLayer.TileWidth);
-            ushort topRight = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
-            ushort bottomRight = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * _scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * _scale) / _mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
 
-            if ((_mapLayer.TryGetTile(x, topRight, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottomRight, out tileBottom) != false && !tileBottom.Value.IsBlank))
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
                 return true;
 
             return false;
