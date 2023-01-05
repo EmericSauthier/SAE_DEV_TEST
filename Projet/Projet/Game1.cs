@@ -75,7 +75,7 @@ namespace Projet
 
             // Chrono
             _chrono = 0;
-            _positionChrono = new Vector2(0, 0);
+            _positionChrono = new Vector2(LARGEUR_FENETRE - 200, 0);
 
             // Pingouin
             pingouin1 = new Pingouin(LARGEUR_FENETRE/2, HAUTEUR_FENETRE/2);
@@ -115,7 +115,6 @@ namespace Projet
 
         protected override void Update(GameTime gameTime)
         {
-            //System.Diagnostics.Debug.WriteLine("oui");
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -170,16 +169,15 @@ namespace Projet
 
             // TODO: Add your drawing code here
 
-            // Pingouin
-            SpriteBatch.Begin();
-            SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
-            SpriteBatch.End();
-
-            // Camera
+            // Map
             _tiledMapRenderer.Draw(camera1.OrthographicCamera.GetViewMatrix());
 
+            SpriteBatch.Begin();
+            // Pingouin
+            SpriteBatch.Draw(pingouin1.Perso, pingouin1.Position);
             // Chrono
             SpriteBatch.DrawString(Champ.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
