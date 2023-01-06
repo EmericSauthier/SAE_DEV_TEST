@@ -54,6 +54,16 @@
       "frames": [164,165,166,167,168,169,170,171,172,173,174,175],
       "isLooping": false,
       "frameDuration": 0.2
+    },
+    "attack": {
+      "frames": [64,65,66,67,68,69],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "attack_fouet": {
+      "frames": [202,203,204,205,206,207],
+      "isLooping": false,
+      "frameDuration": 0.2
     }
   }
 }
