@@ -25,6 +25,7 @@ namespace Projet
         private Vector2 positionSaut;
 
         private AnimatedSprite perso;
+        private RectangleF hitBox;
 
         private double walkVelocity;
         private double slideVelocity;
@@ -103,6 +104,18 @@ namespace Projet
             set
             {
                 this.fly = value;
+            }
+        }
+        public RectangleF HitBox
+        {
+            get
+            {
+                return this.hitBox;
+            }
+
+            set
+            {
+                this.hitBox = value;
             }
         }
 
