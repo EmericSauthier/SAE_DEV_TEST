@@ -211,7 +211,7 @@ namespace Projet
                 // Lifes
                 for (int i = 0; i < _pingouinLife.MaxLife; i++)
                 {
-                    _heartsPositions[i] = _positionChrono - new Vector2(500, 0);
+                    _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2 , _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
                     _heartsPositions[i] += new Vector2(50*i, 0);
                 }
 
