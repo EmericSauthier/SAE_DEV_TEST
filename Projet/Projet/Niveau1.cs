@@ -66,9 +66,9 @@ namespace Projet
         private Life _pingouinLife;
         private Texture2D _heartSprite;
         private Vector2[] _heartsPositions;
+        private Rectangle _hitBoxPingouin;
 
         //Debug rectangle
-        private Rectangle rPingouin;
         private Rectangle rFox;
         private Rectangle rTrap;
         private Rectangle rKillingFox;
@@ -210,14 +210,16 @@ namespace Projet
 
 
                 // Collisions
-                if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, ref rPingouin))
+                _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
+
+                if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
                 {
                     _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
-                    if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rPingouin, ref rKillingFox))
+                    if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
                         _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                     }
@@ -301,7 +303,7 @@ namespace Projet
             
 
             // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(rPingouin, Color.Blue);
+            _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
             if (!isFox1Died)
             {
