@@ -15,7 +15,7 @@ namespace Projet
             if (canCollidingtrap)
             {
                 Rectangle _hitBoxTrap = new Rectangle((int)trap.Position.X, (int)trap.Position.Y + largeurTrap - 14, (int)(largeurTrap * scale), (int)(14 * scale));
-                Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
+                Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X - 10, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
 
                 if (_hitBoxPingouin.Intersects(_hitBoxTrap))
                 {
