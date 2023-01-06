@@ -47,7 +47,7 @@ namespace Projet
             }
         }
 
-        public void TakeDamage(int damage, float invincibilityChrono)
+        public void TakeDamage(int damage, ref float invincibilityChrono)
         {
             if (invincibilityChrono > 2)
             {

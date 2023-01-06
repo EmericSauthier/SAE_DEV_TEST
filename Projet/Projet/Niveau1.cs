@@ -113,8 +113,8 @@ namespace Projet
             _chronoDep = 0;
             _chronoInvincibility = 0;
 
-            // Lifes
-            _heartsPositions = new Vector2[_pingouinLife.MaxLife];
+            // Life
+            _heartsPositions = new Vector2[3];
 
             base.Initialize();
         }
@@ -195,17 +195,17 @@ namespace Projet
                 // Collisions
                 if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
                 {
-                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
                 if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
                 {
-                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
                 //Collision de la recompense avec le pingouin
                 if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
                 {
-                    _pingouinLife.TakeDamage(-1, _chronoInvincibility);
+                    _pingouinLife.TakeDamage(-1, ref _chronoInvincibility);
                 }
 
                 // Mort
@@ -247,7 +247,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
             //Life
-            for (int i = 0; i < _pingouinLife.MaxLife; i++)
+            for (int i = 0; i < _pingouinLife.CurrentLife; i++)
             {
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }

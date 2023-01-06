@@ -66,24 +66,6 @@
 /processorParam:TextureFormat=Color
 /build:Decors/regle2.png
 
-#begin Decors/spritCoin.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Decors/spritCoin.png
-
-#begin Decors/spritCoin.sf
-/importer:SpriteFactoryContentImporter
-/processor:SpriteFactoryContentProcessor
-/processorParam:ContentType=MonoGame.Extended MonoGame.Extended.Animations.SpriteFactory.SpriteFactoryFileReader, MonoGame.Extended.Animations
-/build:Decors/spritCoin.sf
-
 #begin Ennemis_pieges/ceilingTrap.png
 /importer:TextureImporter
 /processor:TextureProcessor
