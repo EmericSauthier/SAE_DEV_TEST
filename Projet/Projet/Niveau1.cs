@@ -73,6 +73,8 @@ namespace Projet
         private Rectangle rTrap;
         private Rectangle rKillingFox;
 
+        private Texture2D _snowballTexture;
+
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -154,6 +156,8 @@ namespace Projet
             // Life
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
+            // Chargement de la texture de la boule de neige
+            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             base.LoadContent();
         }
@@ -214,7 +218,6 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50*i, 0);
                 }
 
-
                 // Collisions
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
 
@@ -236,7 +239,7 @@ namespace Projet
                     //Collision de la recompense avec le pingouin
                     if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
                     {
-                        if(_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                        if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
                         {
                             _pingouin.WalkVelocity *= 0.80;
                             recompensePrise = true;
