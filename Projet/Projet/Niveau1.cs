@@ -125,12 +125,14 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
+            // GameManager
+            _keyboardState = Keyboard.GetState();
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
-            if (keyboardState.IsKeyDown(Keys.Tab))
+            if (_keyboardState.IsKeyDown(Keys.Tab))
             {
-                _myGame.pause = true;
+                _myGame.pause = !_myGame.pause;
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
@@ -139,10 +141,6 @@ namespace Projet
 
                 // Camera
                 _camera.Update(gameTime, _pingouin);
-
-                // GameManager
-                _keyboardState = Keyboard.GetState();
-                float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 // Pingouin
                 _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
