@@ -54,6 +54,7 @@ namespace Projet
 
         public override void Update(GameTime gameTime)
         {
+            float deltaTime = (float)gameTime.GetElapsedSeconds();
             _mouseState = Mouse.GetState();
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -66,6 +67,7 @@ namespace Projet
                     {
                         System.Diagnostics.Debug.WriteLine(_keyboardState.GetPressedKeys()[0]);
                     }
+
                 }
                 else if (_mouseState.X >= _positionDroite.X && _mouseState.X <= _positionDroite.X + 120 && _mouseState.Y >= _positionDroite.Y && _mouseState.Y <= _positionDroite.Y + 50)
                 {
