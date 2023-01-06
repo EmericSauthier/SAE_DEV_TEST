@@ -22,14 +22,18 @@ namespace Projet
     internal class Pingouin
     {
         private Vector2 position;
+        private Vector2 positionSaut;
+
         private AnimatedSprite perso;
 
         private double walkVelocity;
         private double slideVelocity;
         private double jumpVelocity;
+        private double gravity;
 
         private bool slide;
         private bool fly;
+        private bool jump;
 
         public Pingouin(float x, float y)
         {
@@ -37,6 +41,8 @@ namespace Projet
             this.slide = false;
             this.walkVelocity = 1;
             this.slideVelocity = 1.5;
+            this.gravity = 2.5;
+            this.jumpVelocity = 10;
         }
         
         public Vector2 Position
@@ -63,7 +69,7 @@ namespace Projet
                 this.perso = value;
             }
         }
-        public double VitesseMarche
+        public double WalkVelocity
         {
             get
             {
@@ -75,7 +81,7 @@ namespace Projet
                 this.walkVelocity = value;
             }
         }
-        public double VitesseSlide
+        public double SlideVelocity
         {
             get
             {
@@ -100,8 +106,9 @@ namespace Projet
             }
         }
 
-        public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
+        public Vector2 Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
+            Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
             if (gameOver)
@@ -117,7 +124,7 @@ namespace Projet
             {
                 this.slide = false;
                 this.perso.Play("walkForward");
-                move = new Vector2((float)VitesseMarche, 0);
+                move = new Vector2((float)WalkVelocity, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
@@ -157,11 +164,22 @@ namespace Projet
             {
                 this.perso.Play("beforeJump");
                 this.fly = true;
-                move += new Vector2(0, -80);
+                this.jump = true;
+                this.positionSaut = this.position;
             }
             else
             {
                 this.perso.Play("jump");
+            }
+
+            if (this.positionSaut.Y - this.position.Y < 80 && this.jump)
+            {
+                move += new Vector2(0, (float)-this.jumpVelocity);
+            }
+            else
+            {
+                this.jump = false;
+                this.positionSaut = new Vector2();
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
@@ -174,6 +192,74 @@ namespace Projet
             }
 
             return move;
+        }
+        public void Gravity(TiledMapTileLayer mapLayer)
+        {
+            if (!CheckBottom(mapLayer))
+            {
+                this.Fly = true;
+                this.Position += new Vector2(0, (float)this.gravity);
+            }
+            else
+            {
+                this.Fly = false;
+            }
+        }
+        public bool CheckBottom(TiledMapTileLayer mapLayer)
+        {
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y + 60 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop(TiledMapTileLayer mapLayer)
+        {
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 60 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft(TiledMapTileLayer mapLayer)
+        {
+            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight(TiledMapTileLayer mapLayer)
+        {
+            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
         }
     }
 }
