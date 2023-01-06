@@ -72,7 +72,7 @@ namespace Projet
             // GameManager
             _gameOver = false;
 
-            // Pingouin
+            // Initialisation du pingouin et de sa position
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
 
             // Life
@@ -108,24 +108,24 @@ namespace Projet
         }
         public override void LoadContent()
         {
-            // Map
+            // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
-            // Pingouin
+            // Chargement du sprite du pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
-            // Ennemis
+            // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
 
-            // Traps
+            // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
-            // Life
+            // Chargement de la texture des coeurs
             Texture2D heartSprite = Content.Load<Texture2D>("ceilingTrap.png");
 
             base.LoadContent();
