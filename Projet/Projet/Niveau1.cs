@@ -132,7 +132,7 @@ namespace Projet
             _fox1.Sprite.Update(deltaSeconds);
 
             // Traps
-            _chronoTrap1 += deltaSeconds;
+            //_chronoTrap1 += deltaSeconds;
             //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
             //_ceilingTrap1.Activation(ref deltaSeconds);
             //_ceilingTrap1.Sprite.Update(deltaSeconds);
@@ -144,6 +144,8 @@ namespace Projet
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
@@ -168,7 +170,7 @@ namespace Projet
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            //_myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            // _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
         }
