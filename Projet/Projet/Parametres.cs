@@ -59,6 +59,33 @@ namespace Projet
             {
                 if (_mouseState.X >= _positionGauche.X && _mouseState.X <= _positionGauche.X+120 && _mouseState.Y >= _positionGauche.Y && _mouseState.Y <= _positionGauche.Y + 50)
                 {
+                    System.Diagnostics.Debug.WriteLine("GAUCHE");
+                    System.Diagnostics.Debug.WriteLine("Count : " + _keyboardState.GetPressedKeyCount());
+                    System.Diagnostics.Debug.WriteLine("Tab : " + _keyboardState.GetPressedKeys());
+                    if (_keyboardState.GetPressedKeyCount() == 1 && _keyboardState.GetPressedKeys()[0] != Keys.Escape)
+                    {
+                        System.Diagnostics.Debug.WriteLine(_keyboardState.GetPressedKeys()[0]);
+                    }
+                }
+                else if (_mouseState.X >= _positionDroite.X && _mouseState.X <= _positionDroite.X + 120 && _mouseState.Y >= _positionDroite.Y && _mouseState.Y <= _positionDroite.Y + 50)
+                {
+                    System.Diagnostics.Debug.WriteLine("DROITE");
+                    if (_keyboardState.GetPressedKeyCount() == 1 && _keyboardState.GetPressedKeys()[0] != Keys.Escape)
+                    {
+                        System.Diagnostics.Debug.WriteLine(_keyboardState.GetPressedKeys()[0]);
+                    }
+                }
+                else if (_mouseState.X >= _positionSauter.X && _mouseState.X <= _positionSauter.X + 120 && _mouseState.Y >= _positionSauter.Y && _mouseState.Y <= _positionSauter.Y + 50)
+                {
+                    System.Diagnostics.Debug.WriteLine("SAUTER");
+                    if (_keyboardState.GetPressedKeyCount() == 1 && _keyboardState.GetPressedKeys()[0] != Keys.Escape)
+                    {
+                        System.Diagnostics.Debug.WriteLine(_keyboardState.GetPressedKeys()[0]);
+                    }
+                }
+                else if (_mouseState.X >= _positionGlisser.X && _mouseState.X <= _positionGlisser.X + 120 && _mouseState.Y >= _positionGlisser.Y && _mouseState.Y <= _positionGlisser.Y + 50)
+                {
+                    System.Diagnostics.Debug.WriteLine("GLISSER");
                     if (_keyboardState.GetPressedKeyCount() == 1 && _keyboardState.GetPressedKeys()[0] != Keys.Escape)
                     {
                         System.Diagnostics.Debug.WriteLine(_keyboardState.GetPressedKeys()[0]);
@@ -68,10 +95,12 @@ namespace Projet
         }
         public override void Draw(GameTime gameTime)
         {
-            _myGame.GraphicsDevice.Clear(Color.White);
+            _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
             _myGame.SpriteBatch.DrawString(Game1.police, "Gauche", _positionGauche, Color.Wheat);
-            _myGame.SpriteBatch.DrawRectangle(_positionGauche, new Size2(120, 50), Color.Black, 5);
+            _myGame.SpriteBatch.DrawString(Game1.police, "Droite", _positionDroite, Color.Wheat);
+            _myGame.SpriteBatch.DrawString(Game1.police, "Sauter", _positionSauter, Color.Wheat);
+            _myGame.SpriteBatch.DrawString(Game1.police, "Glisser", _positionGlisser, Color.Wheat);
             _myGame.SpriteBatch.End();
         }
     }
