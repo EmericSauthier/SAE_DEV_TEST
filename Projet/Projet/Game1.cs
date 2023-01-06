@@ -38,6 +38,16 @@ namespace Projet
         public bool clicArret;
         public bool clicRegle;
         public bool clicNiveau1;
+        public bool pause;
+
+        //TEXTE
+        private string _buttonPlay;
+        private string _buttonMenu;
+        private Vector2 _posiButtonPlay;
+        private Vector2 _posiButtonMenu;
+
+        //GESTION SOURIS
+        private MouseState _mouseState;
 
         public Game1()
         {
@@ -61,6 +71,12 @@ namespace Projet
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
 
+            //BOUTON
+            _buttonMenu = "Menu";
+            _buttonPlay = "Jouer";
+            _posiButtonMenu = new Vector2(300 - _buttonMenu.Length * 12, HAUTEUR_FENETRE / 2-24);
+            _posiButtonPlay = new Vector2(650 - _buttonMenu.Length * 12, _posiButtonMenu.Y);
+
             base.Initialize();
         }
 
@@ -82,6 +98,21 @@ namespace Projet
 
         protected override void Update(GameTime gameTime)
         {
+            //GESTION SOURIS
+            _mouseState = Mouse.GetState();
+            if (_mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (_mouseState.X >= _posiButtonMenu.X && _mouseState.Y >= _posiButtonMenu.Y && _mouseState.X <= _posiButtonMenu.X + _buttonMenu.Length * 24 && _mouseState.Y <= _posiButtonMenu.Y + 24)
+                {
+                    clicMenu = true;
+                }
+                else if (_mouseState.X >= _posiButtonPlay.X && _mouseState.Y >= _posiButtonPlay.Y && _mouseState.X <= _posiButtonPlay.X + _buttonPlay.Length * 24 && _mouseState.Y <= _posiButtonPlay.Y + 24)
+                {
+                    clicNiveau1 = true;
+                }
+            }
+            
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -92,6 +123,7 @@ namespace Projet
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
+                pause = true;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
                 //CONDITION POUR ALLER A LA SCENE WIN
@@ -137,6 +169,8 @@ namespace Projet
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             SpriteBatch.Begin();
+            SpriteBatch.DrawString(police, $"{_buttonMenu}", _posiButtonMenu, Color.Black);
+            SpriteBatch.DrawString(police, $"{_buttonPlay}", _posiButtonPlay, Color.Black);
             SpriteBatch.End();
             
             base.Draw(gameTime);
