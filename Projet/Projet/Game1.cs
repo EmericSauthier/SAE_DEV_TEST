@@ -141,7 +141,7 @@ namespace Projet
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
-                //CONDITION POUR ALLER A LA SCENE DU CHOIX DE NIVEAU
+            // CONDITION POUR ALLER A LA SCENE DU CHOIX DE NIVEAU
             else if (_menu.clicChoixNiv)
             {
                 _menu.clicChoixNiv = false;
