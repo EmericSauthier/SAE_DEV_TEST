@@ -28,6 +28,7 @@ namespace Projet
         public static Vector2 positionMessagePerdu;
         public static string messageRejouer;
         public static Vector2 positionMessageRejouer;
+        public static Vector2 positionMessageMenu;
 
         //SOURIS
         private MouseState _mouseState;
@@ -42,8 +43,9 @@ namespace Projet
             //INITIALISATION TEXTE AFFICHER
             messagePerdu = "C'est mort...";
             messageRejouer = "Reessayer";
-            positionMessagePerdu = new Vector2(50, 50);
-            positionMessageRejouer = new Vector2(250, 350);
+            positionMessagePerdu = new Vector2(Game1.LARGEUR_FENETRE/2-messagePerdu.Length*12, Game1.HAUTEUR_FENETRE/2-24);
+            positionMessageRejouer = new Vector2(Game1.LARGEUR_FENETRE/4, positionMessagePerdu.Y+150);
+            positionMessageMenu = new Vector2(Game1.LARGEUR_FENETRE/4+ messagePerdu.Length * 24, positionMessagePerdu.Y+150);
 
             //MISE EN PLACE DE PINGOUIN DECO
             _pingouinTab = new Pingouin[6];
@@ -52,7 +54,7 @@ namespace Projet
                 _pingouinTab[i] = new Pingouin(50+100*i, 600);
             }
             
-            _pingouin = new Pingouin(350, 50);
+            _pingouin = new Pingouin(70, 90);
             _positionFond = new Vector2(0, 0);
 
             //GESTION CLIC
@@ -68,7 +70,7 @@ namespace Projet
             }
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
-            _textureFond = Content.Load<Texture2D>("Decor/fondGameOver");
+            _textureFond = Content.Load<Texture2D>("Decors/fondGameOver");
 
             //POLICE
             _policeGO = Content.Load<SpriteFont>("Font/FontGameOver");
@@ -90,7 +92,7 @@ namespace Projet
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 //CONDITION RETOUR MENU
-                if (_mouseState.X >= Win.positionMessageMenu.X && _mouseState.Y >= Win.positionMessageMenu.Y && _mouseState.X <= Win.positionMessageMenu.X + Win.messageMenu.Length * 24 && _mouseState.Y <= Win.positionMessageMenu.Y + 24)
+                if (_mouseState.X >= positionMessageMenu.X && _mouseState.Y >= positionMessageMenu.Y && _mouseState.X <= positionMessageMenu.X + Win.messageMenu.Length * 24 && _mouseState.Y <= Win.positionMessageMenu.Y + 24)
                 {
                     _myGame.clicMenu = true;
                 }
@@ -110,7 +112,7 @@ namespace Projet
             //TEXTE
             _myGame.SpriteBatch.DrawString(_policeGO, $"{messagePerdu}", positionMessagePerdu, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", Win.positionMessageMenu, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", positionMessageMenu, Color.White);
 
             //PINGOUIN
             //for (int i=0; i<6; i++)
