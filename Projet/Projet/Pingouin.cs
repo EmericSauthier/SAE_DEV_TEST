@@ -100,8 +100,9 @@ namespace Projet
             }
         }
 
-        public Vector2 Animate(bool gameOver, KeyboardState keyboardState)
+        public Vector2 Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
+            Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
             if (gameOver)
@@ -174,6 +175,74 @@ namespace Projet
             }
 
             return move;
+        }
+        public void Gravity(TiledMapTileLayer mapLayer)
+        {
+            if (!CheckBottom(mapLayer))
+            {
+                this.Fly = true;
+                this.Position += new Vector2(0, 1);
+            }
+            else
+            {
+                this.Fly = false;
+            }
+        }
+        public bool CheckBottom(TiledMapTileLayer mapLayer)
+        {
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y + 60 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop(TiledMapTileLayer mapLayer)
+        {
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 60 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft(TiledMapTileLayer mapLayer)
+        {
+            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight(TiledMapTileLayer mapLayer)
+        {
+            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
         }
     }
 }
