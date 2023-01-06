@@ -110,9 +110,9 @@ namespace Projet
         {
             //ANIMATION DU PINGOUIN DECO
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _pingouinSauter.Perso.Play("jump");
-            _pingouinAvancer.Perso.Play("walkForward");
-            _pingouinGlisser.Perso.Play("beforeSlide");
+            _pingouinSauter.Animate("jump");
+            _pingouinAvancer.Animate("walkForward");
+            _pingouinGlisser.Animate("slide");
             _pingouinSauter.Perso.Update(deltaSeconds);
             _pingouinAvancer.Perso.Update(deltaSeconds);
             _pingouinGlisser.Perso.Update(deltaSeconds);

@@ -114,6 +114,11 @@ namespace Projet
                 {
                     clicChoixNiv = true;
                 }
+                //retourne a la partie en cours ou niveau 1 si aucune partie en cours
+                else if (_mouseState.X >= positionNiv.X && _mouseState.Y >= positionNiv.Y && _mouseState.X <= positionNiv.X + niv.Length * 24 && _mouseState.Y <= positionNiv.Y + 24)
+                {
+                    _myGame.reprendre = true;
+                }
 
             }
         }

@@ -39,6 +39,7 @@ namespace Projet
         public bool clicRegle;
         public bool clicNiveau1;
         public bool pause;
+        public bool reprendre;
 
         //TEXTE
         private string _buttonPlay;
@@ -159,6 +160,11 @@ namespace Projet
             {
                 clicNiveau1 = false;
                 _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
+            }
+            //CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
+            else if (reprendre)
+            {
+                pause = false;
             }
             
             base.Update(gameTime);
