@@ -179,6 +179,12 @@ namespace Projet
                 // Pingouin
                 _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
                 _pingouin.Move(_gameOver, _keyboardState, _mapLayer);
+
+                if (_keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    _pingouin.Perso.Play("attack");
+                }
+
                 _pingouin.Perso.Update(deltaSeconds);
 
                 // Chrono

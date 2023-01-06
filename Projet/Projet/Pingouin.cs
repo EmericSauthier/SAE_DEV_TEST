@@ -190,10 +190,6 @@ namespace Projet
             {
                 this.perso.Play("idle");
             }
-            if (keyboardState.IsKeyDown(Keys.Enter))
-            {
-                this.perso.Play("attack");
-            }
 
             // Applique le mouvement à la position du pingouin
             this.position += move;
