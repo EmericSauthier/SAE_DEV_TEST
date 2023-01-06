@@ -106,13 +106,13 @@ namespace Projet
             }
         }
 
-        public Vector2 Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
             // Si le jeu est fini
-            if (gameOver || this.position.Y > Niveau1.HAUTEUR_FENETRE)
+            if (gameOver)
             {
                 this.perso.Play("celebrate");
             }
@@ -153,8 +153,6 @@ namespace Projet
             }
 
             this.position += move;
-
-            return move;
         }
         public void Animate(String animation)
         {

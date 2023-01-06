@@ -133,7 +133,6 @@ namespace Projet
 
             // Traps
             _chronoTrap1 += deltaSeconds;
-            //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
             _ceilingTrap1.PressActivation(ref _chronoTrap1, ref canCollidingTrap);
             if(Collision.IsCollidingTrap(_ceilingTrap1, _pingouin, scale, canCollidingTrap))
             {
