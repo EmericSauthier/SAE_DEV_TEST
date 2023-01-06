@@ -215,7 +215,7 @@ namespace Projet
                     //Collision de la recompense avec le pingouin
                     if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
                     {
-                        _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                        _pingouin.WalkVelocity *= 0.80;
                         recompensePrise = true;
                     }
                 }
