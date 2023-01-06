@@ -39,6 +39,7 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         public int _largeurFox1 = 19*3, _hauteurFox1 = 14*3; // à déplacer 
+        public bool isFox1Died;
 
         // Traps
         Trap _ceilingTrap1;
@@ -70,6 +71,7 @@ namespace Projet
         private Rectangle rPingouin;
         private Rectangle rFox;
         private Rectangle rTrap;
+        private Rectangle rKillingFox;
 
 
         public Niveau1(Game1 game) : base(game)
@@ -102,7 +104,8 @@ namespace Projet
             }
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
+            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 6);
+            isFox1Died = false;
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
@@ -212,10 +215,14 @@ namespace Projet
                     _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
-                if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, ref rFox, ref rPingouin))
+                if (!isFox1Died)
                 {
-                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                    if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rPingouin, ref rKillingFox))
+                    {
+                        _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                    }
                 }
+                
                 if (!recompensePrise)
                 {
                     //Collision de la recompense avec le pingouin
@@ -228,6 +235,7 @@ namespace Projet
                         }
                         else
                         {
+                            recompensePrise = true;
                             _pingouinLife.Heal(1);
                         }
                     }
@@ -279,7 +287,10 @@ namespace Projet
             }
 
             // Affichage des ennemis et des pièges
-            _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
+            if (!isFox1Died)
+            {
+                _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
+            }
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             if (!recompensePrise)
@@ -290,9 +301,13 @@ namespace Projet
             
 
             // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
             _myGame.SpriteBatch.DrawRectangle(rPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
+            if (!isFox1Died)
+            {
+                _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
+                _myGame.SpriteBatch.DrawRectangle(rKillingFox, Color.DarkOrange);
+            }
 
             _myGame.SpriteBatch.End();
         }
