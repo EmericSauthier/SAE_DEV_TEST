@@ -58,7 +58,6 @@ namespace Projet
                 this.position = value;
             }
         }
-
         public AnimatedSprite Sprite
         {
             get
@@ -71,7 +70,6 @@ namespace Projet
                 this.sprite = value;
             }
         }
-
         public double Vitesse
         {
             get
@@ -84,7 +82,6 @@ namespace Projet
                 this.vitesse = value;
             }
         }
-
         public string Enemy
         {
             get
@@ -97,7 +94,6 @@ namespace Projet
                 this.enemy = value;
             }
         }
-
         public double TempsArrivePosition
         {
             get
