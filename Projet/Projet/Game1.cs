@@ -50,6 +50,9 @@ namespace Projet
         //GESTION SOURIS
         private MouseState _mouseState;
 
+        //SAUVEGARDE
+        public Vector2 _dernierePosiPingouin;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -159,6 +162,7 @@ namespace Projet
             else if (clicNiveau1)
             {
                 clicNiveau1 = false;
+                pause = false;
                 _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
             }
             //CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
