@@ -116,10 +116,10 @@ namespace Projet
             {
                 this.perso.Play("celebrate");
             }
-            else if (keyboardState.IsKeyDown(Keys.Space) || this.fly)
+            else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 this.slide = false;
-                move = Jump(ref move, keyboardState);
+                move = Jump(ref move, keyboardState, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
@@ -188,7 +188,7 @@ namespace Projet
             }
         }
 
-        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState)
+        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             float direction = 0;
 
@@ -204,7 +204,7 @@ namespace Projet
                 this.perso.Play("jump");
             }
 
-            if (this.positionSaut.Y - this.position.Y < 80 && this.jump)
+            if (this.positionSaut.Y - this.position.Y < 80 && this.jump && !CheckTop(mapLayer))
             {
                 move += new Vector2(0, (float)-this.jumpVelocity);
             }
