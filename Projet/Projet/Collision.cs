@@ -39,5 +39,18 @@ namespace Projet
             else return false;
 
         }
+
+        public static bool IsCollidingRecompense(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, Recompenses recompense, int largeurRecompense, int hauteurRecompense, float scale)
+        {
+            Rectangle _hitBoxRecompense = new Rectangle((int)recompense.Position.X, (int)recompense.Position.Y, (int)(largeurRecompense * scale), (int)(hauteurRecompense * scale));
+            Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
+
+            if (_hitBoxPingouin.Intersects(_hitBoxRecompense))
+            {
+                return true;
+            }
+            else return false;
+
+        }
     }
 }

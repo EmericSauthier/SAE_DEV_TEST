@@ -53,6 +53,10 @@ namespace Projet
         //SAUVEGARDE
         public Vector2 _dernierePosiPingouin;
 
+        //DECO
+        private Texture2D _textureFond;
+        private Vector2 _positionFond;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -81,6 +85,9 @@ namespace Projet
             _posiButtonMenu = new Vector2(300 - _buttonMenu.Length * 12, HAUTEUR_FENETRE / 2-24);
             _posiButtonPlay = new Vector2(650 - _buttonMenu.Length * 12, _posiButtonMenu.Y);
 
+            //DECO
+            _positionFond = new Vector2(0, 0);
+
             base.Initialize();
         }
 
@@ -98,6 +105,10 @@ namespace Projet
 
             //POLICE
             police = Content.Load<SpriteFont>("Font");
+
+            //DECO
+
+            _textureFond = Content.Load<Texture2D>("fondGame12");
         }
 
         protected override void Update(GameTime gameTime)
@@ -169,6 +180,7 @@ namespace Projet
             else if (reprendre)
             {
                 pause = false;
+                _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
             }
             
             base.Update(gameTime);
@@ -179,8 +191,14 @@ namespace Projet
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             SpriteBatch.Begin();
+
+            //DECO
+            SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+
+            //TEXTE
             SpriteBatch.DrawString(police, $"{_buttonMenu}", _posiButtonMenu, Color.Black);
             SpriteBatch.DrawString(police, $"{_buttonPlay}", _posiButtonPlay, Color.Black);
+
             SpriteBatch.End();
             
             base.Draw(gameTime);

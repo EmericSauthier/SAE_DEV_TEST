@@ -46,6 +46,10 @@ namespace Projet
         public static bool _canCollidingTrap;
         public int _largeurTrap1 = 64, _hauteurTrap1 = 64;
 
+        //Recompense
+        Recompenses recompense;
+        public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
+
         // GameManager
         private bool _gameOver;
         private KeyboardState _keyboardState;
@@ -71,7 +75,7 @@ namespace Projet
             _gameOver = false;
 
             // Pingouin
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+            //_pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
             _pingouinLife = 3; // à déplacer ?
             if (_myGame.reprendre)
             {
@@ -88,6 +92,9 @@ namespace Projet
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(300, 870));
+
+            //Recompenses
+            recompense = new Recompenses(new Vector2(1150, 850), "piece");
 
             // Camera
             scale = (float)0.5;
@@ -118,6 +125,9 @@ namespace Projet
             // Traps
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
+
+            //Recompenses
+            //SpriteSheet piece = 
 
             base.LoadContent();
         }
@@ -156,15 +166,21 @@ namespace Projet
                 _fox1.RightLeftMove(ref _chronoDep);
                 _fox1.Sprite.Update(deltaSeconds);
 
-            // Traps
-            _chronoTrap1 += deltaSeconds;
-            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
-            if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _scale, _canCollidingTrap))
-            {
-                _myGame.clicDead = true;
+                // Traps
+                _chronoTrap1 += deltaSeconds;
+                _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
+                if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
+                {
+                    _myGame.clicDead = true;
+                }
+                _ceilingTrap1.Sprite.Update(deltaSeconds);
+
+                //Recompenses
+                /*if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, Recompenses recompense, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
+                {
+                    _myGame.clicDead = true;
+                }*/
             }
-            _ceilingTrap1.Sprite.Update(deltaSeconds);
-        }
 
         }
 
