@@ -111,6 +111,7 @@ namespace Projet
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
+            // Si le jeu est fini
             if (gameOver)
             {
                 this.perso.Play("celebrate");
@@ -159,23 +160,28 @@ namespace Projet
         {
             switch (animation)
             {
+                // Joue l'animation de célébration
                 case "celebrate":
                     this.perso.Play("celebrate");
                     break;
+                // Joue l'animation de déplacement vers la droite
                 case "walkForward":
                     this.perso.Play("walkForward");
                     break;
+                // Joue l'animation de déplacement vers la gauche
                 case "walkBehind":
                     this.perso.Play("walkBehind");
                     break;
+                // Joue l'animation de glisse
                 case "slide":
                     this.perso.Play("beforeSlide");
                     this.perso.Play("slide");
                     break;
+                // Joue l'animation de saut
                 case "jump":
-                    this.perso.Play("beforeJump");
-                    this.perso.Play("jump");
+                    this.perso.Play("afterJump");
                     break;
+                // Joue l'animation de base (immobile)
                 default:
                     this.perso.Play("idle");
                     break;

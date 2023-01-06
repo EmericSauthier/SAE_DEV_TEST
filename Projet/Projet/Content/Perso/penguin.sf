@@ -23,7 +23,7 @@
     "jump": {
       "frames": [146,147],
       "isLooping": false,
-      "frameDuration": 0.1
+      "frameDuration": 0.2
     },
     "afterJump": {
       "frames": [148,149,150,151,152,0],
