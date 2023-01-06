@@ -108,7 +108,7 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
-            recompense = new Recompenses(new Vector2(1150, 850), "piece");
+            recompense = new Recompenses(new Vector2(1150, 780), "piece");
 
             // Camera
             scale = (float)0.5;
@@ -215,8 +215,15 @@ namespace Projet
                     //Collision de la recompense avec le pingouin
                     if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
                     {
-                        _pingouin.WalkVelocity *= 0.80;
-                        recompensePrise = true;
+                        if(_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                        {
+                            _pingouin.WalkVelocity *= 0.80;
+                            recompensePrise = true;
+                        }
+                        else
+                        {
+                            _pingouinLife.Heal(1);
+                        }
                     }
                 }
                 

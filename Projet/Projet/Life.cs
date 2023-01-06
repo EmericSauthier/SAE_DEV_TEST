@@ -53,5 +53,10 @@ namespace Projet
             }
             invincibilityChrono = 0;
         }
+
+        public void Heal(int healPoints)
+        {
+            CurrentLife += healPoints;
+        }
     }
 }
