@@ -238,7 +238,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
             //Life
-            for (int i = 0; i < _pingouinLife.MaxLife; i++)
+            for (int i = 0; i < _pingouinLife.CurrentLife; i++)
             {
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }
