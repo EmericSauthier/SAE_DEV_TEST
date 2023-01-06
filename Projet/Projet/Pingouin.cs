@@ -22,14 +22,18 @@ namespace Projet
     internal class Pingouin
     {
         private Vector2 position;
+        private Vector2 positionSaut;
+
         private AnimatedSprite perso;
 
         private double walkVelocity;
         private double slideVelocity;
         private double jumpVelocity;
+        private double gravity;
 
         private bool slide;
         private bool fly;
+        private bool jump;
 
         public Pingouin(float x, float y)
         {
@@ -37,6 +41,8 @@ namespace Projet
             this.slide = false;
             this.walkVelocity = 1;
             this.slideVelocity = 1.5;
+            this.gravity = 2.5;
+            this.jumpVelocity = 10;
         }
         
         public Vector2 Position
@@ -63,7 +69,7 @@ namespace Projet
                 this.perso = value;
             }
         }
-        public double VitesseMarche
+        public double WalkVelocity
         {
             get
             {
@@ -75,7 +81,7 @@ namespace Projet
                 this.walkVelocity = value;
             }
         }
-        public double VitesseSlide
+        public double SlideVelocity
         {
             get
             {
@@ -118,7 +124,7 @@ namespace Projet
             {
                 this.slide = false;
                 this.perso.Play("walkForward");
-                move = new Vector2((float)VitesseMarche, 0);
+                move = new Vector2((float)WalkVelocity, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
@@ -158,11 +164,22 @@ namespace Projet
             {
                 this.perso.Play("beforeJump");
                 this.fly = true;
-                move += new Vector2(0, -80);
+                this.jump = true;
+                this.positionSaut = this.position;
             }
             else
             {
                 this.perso.Play("jump");
+            }
+
+            if (this.positionSaut.Y - this.position.Y < 80 && this.jump)
+            {
+                move += new Vector2(0, (float)-this.jumpVelocity);
+            }
+            else
+            {
+                this.jump = false;
+                this.positionSaut = new Vector2();
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
@@ -181,7 +198,7 @@ namespace Projet
             if (!CheckBottom(mapLayer))
             {
                 this.Fly = true;
-                this.Position += new Vector2(0, 1);
+                this.Position += new Vector2(0, (float)this.gravity);
             }
             else
             {
