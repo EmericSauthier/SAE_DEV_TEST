@@ -169,25 +169,23 @@ namespace Projet
                 _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
-                // Collisions
+                // Collision du piège avec le pingouin
                 if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
                 {
                     _pingouinLife.TakeDamage(1, _chronoInvincibility);
                 }
-
+                // Collision du monstre avec le pingouin
                 if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
                 {
                     _pingouinLife.TakeDamage(1, _chronoInvincibility);
                 }
                 
-
                 // Mort
                 if(_pingouinLife.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
             }
-
         }
 
         public override void Draw(GameTime gameTime)
