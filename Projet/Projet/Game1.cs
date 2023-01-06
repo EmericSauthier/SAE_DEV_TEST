@@ -16,7 +16,7 @@ namespace Projet
 {
     public class Game1 : Game
     {
-        private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
+        public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
 
         private GraphicsDeviceManager _graphics;
         public SpriteBatch SpriteBatch { get; set; }
