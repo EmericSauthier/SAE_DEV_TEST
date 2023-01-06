@@ -75,6 +75,7 @@ namespace Projet
         private Rectangle rRecompense;
 
         private Texture2D _snowballTexture;
+        private Snowball[] _snowballs;
 
 
         public Niveau1(Game1 game) : base(game)
@@ -128,6 +129,8 @@ namespace Projet
 
             // Life
             _heartsPositions = new Vector2[3];
+
+
 
             base.Initialize();
         }

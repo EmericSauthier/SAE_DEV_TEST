@@ -25,9 +25,14 @@ namespace Projet
         private Vector2 position;
         private Vector2 velocity;
 
-        public Snowball(float x, float y)
+        public Snowball()
+        {
+            this.texture = null;
+        }
+        public Snowball(float x, float y, Texture2D texture)
         {
             this.Position = new Vector2(x, y);
+            this.Texture = texture;
         }
 
         public Texture2D Texture
