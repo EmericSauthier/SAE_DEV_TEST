@@ -90,7 +90,7 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(300, 870));
 
             // Camera
-            _scale = (float)0.5;
+            scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
