@@ -58,6 +58,8 @@ namespace Projet
 
         // Life
         private Life _pingouinLife;
+        private Texture2D _heartSprite;
+        private Vector2[] _heartsPositions;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -104,6 +106,9 @@ namespace Projet
             _chronoDep = 0;
             _chronoInvincibility = 0;
 
+            // Lifes
+            _heartsPositions = new Vector2[_pingouinLife.MaxLife];
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -126,7 +131,7 @@ namespace Projet
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             // Life
-            Texture2D heartSprite = Content.Load<Texture2D>("ceilingTrap.png");
+            _heartSprite = Content.Load<Texture2D>("Life/heart");
 
             base.LoadContent();
         }
@@ -168,6 +173,13 @@ namespace Projet
                 _chronoInvincibility += deltaSeconds;
                 _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
+
+                // Lifes
+                for (int i = 0; i < _pingouinLife.MaxLife; i++)
+                {
+                    _heartsPositions[i] = _positionChrono - new Vector2(500, 0);
+                    _heartsPositions[i] += new Vector2(50*i, 0);
+                }
 
                 // Collisions
                 if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
@@ -222,7 +234,10 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
             //Life
-            _pingouinLife.Draw(_myGame.SpriteBatch);
+            for (int i = 0; i < _pingouinLife.MaxLife; i++)
+            {
+                _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
+            }
 
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
