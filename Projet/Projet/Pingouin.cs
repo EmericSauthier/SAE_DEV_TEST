@@ -111,6 +111,11 @@ namespace Projet
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
+            if (keyboardState.IsKeyUp(Keys.Down))
+            {
+                this.slide = false;
+            }
+
             // Si le jeu est fini
             if (gameOver)
             {
@@ -118,19 +123,16 @@ namespace Projet
             }
             else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
-                this.slide = false;
                 Jump(ref move, keyboardState, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
-                this.slide = false;
                 this.perso.Play("walkForward");
                 if (!CheckRight(mapLayer))
                     move = new Vector2((float)walkVelocity, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
-                this.slide = false;
                 this.perso.Play("walkBehind");
                 if (!CheckLeft(mapLayer))
                     move = new Vector2((float)-walkVelocity, 0);
@@ -145,13 +147,12 @@ namespace Projet
                 else
                 {
                     this.perso.Play("slide");
-                    if (!CheckRight(mapLayer))
-                        move = new Vector2((float)slideVelocity, 0);
                 }
+                if (!CheckRight(mapLayer))
+                    move = new Vector2((float)slideVelocity, 0);
             }
             else
             {
-                this.slide = false;
                 this.perso.Play("idle");
             }
 
@@ -252,9 +253,9 @@ namespace Projet
         }
         public bool CheckTop(TiledMapTileLayer mapLayer)
         {
-            ushort left = (ushort)((this.Position.X - 50 * Niveau1._scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 50 * Niveau1._scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 60 * Niveau1._scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 60 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -266,9 +267,9 @@ namespace Projet
         }
         public bool CheckLeft(TiledMapTileLayer mapLayer)
         {
-            ushort x = (ushort)((this.Position.X - 50 * Niveau1._scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1._scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1._scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -280,9 +281,9 @@ namespace Projet
         }
         public bool CheckRight(TiledMapTileLayer mapLayer)
         {
-            ushort x = (ushort)((this.Position.X + 50 * Niveau1._scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1._scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1._scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
