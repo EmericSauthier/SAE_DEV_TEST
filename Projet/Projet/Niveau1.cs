@@ -138,12 +138,13 @@ namespace Projet
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
-            // Life
-            _heartSprite = Content.Load<Texture2D>("Life/heart");
-
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
             recompense.LoadContent(spriteCoin);
+
+            // Life
+            _heartSprite = Content.Load<Texture2D>("Life/heart");
+
 
             base.LoadContent();
         }
@@ -179,6 +180,11 @@ namespace Projet
                 _chronoDep += deltaSeconds;
                 _fox1.RightLeftMove(ref _chronoDep);
                 _fox1.Sprite.Update(deltaSeconds);
+
+                // Recompense
+                _chronoDep += deltaSeconds;
+                recompense.Sprite.Play("coin");
+                recompense.Sprite.Update(deltaSeconds);
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
