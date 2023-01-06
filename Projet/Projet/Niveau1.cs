@@ -34,11 +34,11 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
-        public int _largeurPingouin = 100, _hauteurPingouin = 100; // à déplacer ?
+        public int _largeurPingouin = 40, _hauteurPingouin = 40; // à déplacer ?
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int _largeurFox1 = 19, _hauteurFox1 = 14; // à déplacer 
+        public int _largeurFox1 = 19*3, _hauteurFox1 = 14*3; // à déplacer 
 
         // Traps
         Trap _ceilingTrap1;
@@ -141,8 +141,8 @@ namespace Projet
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
             // Chargement du sprite de la recompense
-            SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            recompense.LoadContent(spriteCoin);
+            //SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
+            //recompense.LoadContent(spriteCoin);
 
             base.LoadContent();
         }
@@ -205,7 +205,7 @@ namespace Projet
                 //Collision de la recompense avec le pingouin
                 if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
                 {
-                    _pingouinLife.TakeDamage(-1, ref _chronoInvincibility);
+                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
 
                 // Mort
@@ -255,6 +255,12 @@ namespace Projet
             // Affichage des ennemis et des pièges
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+
+            // Debug collision
+            _myGame.SpriteBatch.DrawPoint(_fox1.Position.X - 30, _fox1.Position.Y, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_fox1.Position.X - 30 + _largeurFox1, _fox1.Position.Y + _hauteurFox1, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawRectangle(new Rectangle((int)_fox1.Position.X - 30, (int)_fox1.Position.Y, (int)(_largeurFox1), (int)(_hauteurFox1)), Color.Red);
+            _myGame.SpriteBatch.DrawRectangle(new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(_largeurPingouin), (int)(_largeurPingouin)), Color.Blue);
 
             _myGame.SpriteBatch.End();
         }

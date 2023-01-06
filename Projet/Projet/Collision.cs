@@ -29,10 +29,10 @@ namespace Projet
         }
 
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingMonstreRampant(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, MonstreRampant monstre, int largeurMonstre, int hauteurMonstre , float scale)
+        public static bool IsCollidingMonstreRampant(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, MonstreRampant monstre, int largeurMonstre, int hauteurMonstre, float scale)
         {
-            Rectangle _hitBoxMonstre = new Rectangle((int)monstre.Position.X, (int)monstre.Position.Y + hauteurMonstre, (int)(largeurMonstre * scale), (int)(hauteurMonstre * scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
+            Rectangle _hitBoxMonstre = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y, (int)(largeurMonstre), (int)(hauteurMonstre));
+            Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin), (int)(hauteurPingouin));
 
             if (_hitBoxPingouin.Intersects(_hitBoxMonstre))
             {
@@ -44,8 +44,8 @@ namespace Projet
 
         public static bool IsCollidingRecompense(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, Recompenses recompense, int largeurRecompense, int hauteurRecompense, float scale)
         {
-            Rectangle _hitBoxRecompense = new Rectangle((int)recompense.Position.X, (int)recompense.Position.Y, (int)(largeurRecompense * scale), (int)(hauteurRecompense * scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
+            Rectangle _hitBoxRecompense = new Rectangle((int)recompense.Position.X, (int)recompense.Position.Y, (int)(largeurRecompense), (int)(hauteurRecompense));
+            Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin), (int)(hauteurPingouin));
 
             if (_hitBoxPingouin.Intersects(_hitBoxRecompense))
             {
