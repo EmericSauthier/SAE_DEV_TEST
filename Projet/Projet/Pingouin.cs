@@ -111,6 +111,11 @@ namespace Projet
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
+            if (keyboardState.IsKeyUp(Keys.Down))
+            {
+                this.slide = false;
+            }
+
             // Si le jeu est fini
             if (gameOver)
             {
@@ -118,19 +123,16 @@ namespace Projet
             }
             else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
-                this.slide = false;
                 Jump(ref move, keyboardState, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
-                this.slide = false;
                 this.perso.Play("walkForward");
                 if (!CheckRight(mapLayer))
                     move = new Vector2((float)walkVelocity, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
-                this.slide = false;
                 this.perso.Play("walkBehind");
                 if (!CheckLeft(mapLayer))
                     move = new Vector2((float)-walkVelocity, 0);
@@ -145,13 +147,12 @@ namespace Projet
                 else
                 {
                     this.perso.Play("slide");
-                    if (!CheckRight(mapLayer))
-                        move = new Vector2((float)slideVelocity, 0);
                 }
+                if (!CheckRight(mapLayer))
+                    move = new Vector2((float)slideVelocity, 0);
             }
             else
             {
-                this.slide = false;
                 this.perso.Play("idle");
             }
 
