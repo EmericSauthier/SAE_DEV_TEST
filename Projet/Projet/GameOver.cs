@@ -97,7 +97,7 @@ namespace Projet
                 //CONDITION RETOURNE PARTIE
                 else if (_mouseState.X >= positionMessageRejouer.X && _mouseState.Y >= positionMessageRejouer.Y && _mouseState.X <= positionMessageRejouer.X + messageRejouer.Length * 24 && _mouseState.Y <= positionMessageRejouer.Y + 24)
                 {
-                    //_myGame.clic.... = true;
+                    _myGame.clicNiveau1 = true;
                 }
             }
         }
@@ -113,10 +113,10 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", Win.positionMessageMenu, Color.White);
 
             //PINGOUIN
-            for (int i=0; i<6; i++)
-            {
-                _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
-            }
+            //for (int i=0; i<6; i++)
+            //{
+            //    _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
+            //}
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
