@@ -106,7 +106,7 @@ namespace Projet
             }
         }
 
-        public Vector2 Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
@@ -116,22 +116,22 @@ namespace Projet
             {
                 this.perso.Play("celebrate");
             }
-            else if (keyboardState.IsKeyDown(Keys.Space) || this.fly)
+            else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 this.slide = false;
-                move = Jump(ref move, keyboardState);
+                Jump(ref move, keyboardState, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
                 this.slide = false;
                 this.perso.Play("walkForward");
-                move = new Vector2((float)WalkVelocity, 0);
+                Walk(ref move, 1, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
                 this.slide = false;
                 this.perso.Play("walkBehind");
-                move = new Vector2((float)-walkVelocity, 0);
+                Walk(ref move, -1, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
@@ -153,8 +153,6 @@ namespace Projet
             }
 
             this.position += move;
-
-            return move;
         }
         public void Animate(String animation)
         {
@@ -188,7 +186,7 @@ namespace Projet
             }
         }
 
-        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState)
+        public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             float direction = 0;
 
@@ -204,7 +202,7 @@ namespace Projet
                 this.perso.Play("jump");
             }
 
-            if (this.positionSaut.Y - this.position.Y < 80 && this.jump)
+            if (this.positionSaut.Y - this.position.Y < 80 && this.jump && !CheckTop(mapLayer))
             {
                 move += new Vector2(0, (float)-this.jumpVelocity);
             }
@@ -214,16 +212,21 @@ namespace Projet
                 this.positionSaut = new Vector2();
             }
 
-            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left) && !CheckRight(mapLayer))
             {
                 move += new Vector2((float)walkVelocity, 0);
             }
-            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right) && !CheckLeft(mapLayer))
             {
                 move += new Vector2((float)-walkVelocity, 0);
             }
-
-            return move;
+        }
+        public void Walk(ref Vector2 move, int direction, TiledMapTileLayer mapLayer)
+        {
+            if ((direction == 1 && !CheckRight(mapLayer)) || (direction == -1 && !CheckLeft(mapLayer)))
+            {
+                move += new Vector2((float)(direction * this.walkVelocity));
+            }
         }
         public void Gravity(TiledMapTileLayer mapLayer)
         {
@@ -237,6 +240,7 @@ namespace Projet
                 this.Fly = false;
             }
         }
+
         public bool CheckBottom(TiledMapTileLayer mapLayer)
         {
             ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);

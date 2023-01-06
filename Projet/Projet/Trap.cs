@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Projet
 {
-    internal class AnimatedPress
+    internal class Trap
     {
         private Vector2 _position;
         private AnimatedSprite _sprite;
 
-        public AnimatedPress(Vector2 trapPosition)
+        public Trap(Vector2 trapPosition)
         {
             this.Position = trapPosition;
         }
@@ -49,12 +49,26 @@ namespace Projet
             Sprite = new AnimatedSprite(sprite);
         }
 
-        /*public void Activation(ref float time)
+        public void PressActivation(ref float time, ref bool canCollidingTrap)
         {
-            if(time > 1 && time < 1.1 && Game1.canCollidingTrap)
+            //System.Diagnostics.Debug.WriteLine(time);
+            canCollidingTrap = false;
+            if (time > 1 && time < 1.3)
             {
                 Sprite.Play("press");
             }
-        }*/
+            else if(time >= 1.5&& time < 2)
+            {
+                canCollidingTrap = true;
+            }
+            else if(time >= 2 && time < 4)  
+            {
+                canCollidingTrap = false;
+            }
+            else if(time >= 4)
+            {
+                time = 0;
+            }
+        }
     }
 }

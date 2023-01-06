@@ -10,6 +10,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using System;
 
 namespace Projet
 {
@@ -17,7 +18,7 @@ namespace Projet
     {
         private Game1 _myGame;
 
-        private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
+        public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
         private GraphicsDeviceManager _graphics;
 
         //SOURIS POUR GERER CLIC
@@ -33,12 +34,16 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
+        public int largeurPingouin = 128, hauteurPingouin = 128;
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
+        public int largeurFox1 = 19, hauteurFox1 = 14;
 
-        AnimatedPress _ceilingTrap1;
+        // Traps
+        Trap _ceilingTrap1;
         private float _chronoTrap1;
         public static bool canCollidingTrap;
+        public int largeurTrap1 = 64, hauteurTrap1 = 64;
 
         // GameManager
         private bool _gameOver;
@@ -79,7 +84,7 @@ namespace Projet
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
 
             // Traps
-            _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
+            _ceilingTrap1 = new Trap(new Vector2(300, 870));
 
             // Camera
             scale = (float)0.5;
@@ -108,8 +113,8 @@ namespace Projet
             _fox1.LoadContent(foxSprite);
 
             // Traps
-            //SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
-            //_ceilingTrap1.LoadContent(ceilingTrapSprite);
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             base.LoadContent();
         }
@@ -148,16 +153,15 @@ namespace Projet
                 _fox1.RightLeftMove(ref _chronoDep);
                 _fox1.Sprite.Update(deltaSeconds);
 
-                // Traps
-                //_chronoTrap1 += deltaSeconds;
-                //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
-                //_ceilingTrap1.Activation(ref deltaSeconds);
-                //_ceilingTrap1.Sprite.Update(deltaSeconds);
-                //if (IsCollidingTrap())
-                //{
-                //    _myGame.clicDead = true;
-                //}
+            // Traps
+            _chronoTrap1 += deltaSeconds;
+            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref canCollidingTrap);
+            if(Collision.IsCollidingTrap(_pingouin, largeurPingouin, hauteurPingouin, _ceilingTrap1, largeurTrap1, hauteurTrap1, scale, canCollidingTrap))
+            {
+                _myGame.clicDead = true;
             }
+            _ceilingTrap1.Sprite.Update(deltaSeconds);
+        }
 
         }
 
@@ -184,26 +188,15 @@ namespace Projet
 
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
 
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            // _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
-        }
-
-        private bool IsCollidingTrap()
-        {
-            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * scale), (int)(14 * scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * scale), (int)(128 * scale));
-
-            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
-            {
-                return true;
-            }
-            else return false;
         }
     }
 }
