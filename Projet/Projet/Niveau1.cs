@@ -42,7 +42,7 @@ namespace Projet
 
         // Traps
         Trap _ceilingTrap1;
-        private float _chronoTrap1;
+        private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
         public int _largeurTrap1 = 64, _hauteurTrap1 = 64;
 
@@ -98,6 +98,7 @@ namespace Projet
             // Chrono
             _chrono = 0;
             _chronoDep = 0;
+            _chronoInvincibility = 0;
 
             base.Initialize();
         }
@@ -159,18 +160,29 @@ namespace Projet
 
                 if(Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
                 {
-                    _myGame.clicDead = true;
+                    _pingouinLife -= 1;
                 }
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
+                _chronoInvincibility += deltaSeconds;
                 _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
 
                 if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
                 {
-                    _myGame.clicDead = true;
+                    if(_chronoInvincibility > 2)
+                    {
+                        _pingouinLife -= 1;
+                    }
+                    _chronoInvincibility = 0;
                 }
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
+
+                // Mort
+                if(_pingouinLife <= 0)
+                {
+                    _myGame.clicDead = true;
+                }
             }
 
         }
@@ -204,6 +216,8 @@ namespace Projet
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-100, 100), Color.White);
+
 
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
