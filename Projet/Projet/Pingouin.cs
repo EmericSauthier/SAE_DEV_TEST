@@ -27,6 +27,8 @@ namespace Projet
         private AnimatedSprite perso;
         private RectangleF hitBox;
 
+        private int pingouinLife;
+
         private double walkVelocity;
         private double slideVelocity;
         private double jumpVelocity;
