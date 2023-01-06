@@ -102,7 +102,7 @@ namespace Projet
             _pingouinGlisser.Perso = new AnimatedSprite(spriteSheet);
             _pingouinAvancer.Perso = new AnimatedSprite(spriteSheet);
 
-            _textureFond = Content.Load<Texture2D>("regle2");
+            _textureFond = Content.Load<Texture2D>("Decors/regle2");
 
             base.LoadContent();
         }

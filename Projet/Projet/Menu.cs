@@ -74,7 +74,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
             _pingouinG.Perso = new AnimatedSprite(spriteSheet);
             
-            _textureFond = Content.Load<Texture2D>("fondMenu");
+            _textureFond = Content.Load<Texture2D>("Decors/fondMenu");
 
 
             base.LoadContent();
