@@ -20,7 +20,6 @@ namespace Projet
             this.CurrentLife = maxLife;
             this.MaxLife = maxLife;
         }
-
         public int CurrentLife
         {
             get
@@ -33,7 +32,6 @@ namespace Projet
                 this.currentLife = value;
             }
         }
-
         public int MaxLife
         {
             get

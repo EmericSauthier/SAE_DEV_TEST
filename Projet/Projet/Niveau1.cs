@@ -49,6 +49,7 @@ namespace Projet
         //Recompense
         Recompenses recompense;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
+        bool recompensePrise = false;
 
         // GameManager
         private bool _gameOver;
@@ -147,8 +148,8 @@ namespace Projet
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
             // Chargement du sprite de la recompense
-            //SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            //recompense.LoadContent(spriteCoin);
+            SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
+            recompense.LoadContent(spriteCoin);
 
             base.LoadContent();
         }
@@ -198,6 +199,7 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50*i, 0);
                 }
 
+
                 // Collisions
                 if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, ref rPingouin))
                 {
@@ -208,11 +210,16 @@ namespace Projet
                 {
                     _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
-                //Collision de la recompense avec le pingouin
-                if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
+                if (!recompensePrise)
                 {
-                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                    //Collision de la recompense avec le pingouin
+                    if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
+                    {
+                        _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                        recompensePrise = true;
+                    }
                 }
+                
 
                 // Mort
                 if (_pingouinLife.CurrentLife <= 0)
@@ -261,6 +268,13 @@ namespace Projet
             // Affichage des ennemis et des pièges
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+
+            if (!recompensePrise)
+            {
+                //Affichage des recompenses si elle n'as pas ete prise
+                _myGame.SpriteBatch.Draw(recompense.Sprite, recompense.Position, 0, new Vector2((float)0.15));
+            }
+            
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
