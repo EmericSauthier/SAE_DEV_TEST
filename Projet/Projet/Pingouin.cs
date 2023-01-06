@@ -190,7 +190,6 @@ namespace Projet
             {
                 this.perso.Play("idle");
             }
-
             if (keyboardState.IsKeyDown(Keys.Enter))
             {
                 this.perso.Play("attack");
