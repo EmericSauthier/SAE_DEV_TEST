@@ -10,6 +10,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using System;
 
 namespace Projet
 {
@@ -36,7 +37,7 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
 
-        AnimatedPress _ceilingTrap1;
+        Trap _ceilingTrap1;
         private float _chronoTrap1;
         public static bool canCollidingTrap;
 
@@ -71,7 +72,7 @@ namespace Projet
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
 
             // Traps
-            _ceilingTrap1 = new AnimatedPress(new Vector2(300, 870));
+            _ceilingTrap1 = new Trap(new Vector2(300, 870));
 
             // Camera
             scale = (float)0.5;
@@ -100,8 +101,8 @@ namespace Projet
             _fox1.LoadContent(foxSprite);
 
             // Traps
-            //SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
-            //_ceilingTrap1.LoadContent(ceilingTrapSprite);
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             base.LoadContent();
         }
@@ -131,14 +132,14 @@ namespace Projet
             _fox1.Sprite.Update(deltaSeconds);
 
             // Traps
-            //_chronoTrap1 += deltaSeconds;
+            _chronoTrap1 += deltaSeconds;
             //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
-            //_ceilingTrap1.Activation(ref deltaSeconds);
-            //_ceilingTrap1.Sprite.Update(deltaSeconds);
-            //if (IsCollidingTrap())
-            //{
-            //    _myGame.clicDead = true;
-            //}
+            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref canCollidingTrap);
+            if(Collision.IsCollidingTrap(_ceilingTrap1, _pingouin, scale, canCollidingTrap))
+            {
+                _myGame.clicDead = true;
+            }
+            _ceilingTrap1.Sprite.Update(deltaSeconds);
         }
 
         public override void Draw(GameTime gameTime)
@@ -164,12 +165,13 @@ namespace Projet
 
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
 
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
 
             // Traps
-            // _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
         }
@@ -184,6 +186,76 @@ namespace Projet
                 return true;
             }
             else return false;
+        }
+
+        // A mettre dans Pingouin
+        public bool CheckBottom()
+        {
+            ushort left = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y + 60 * scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckTop()
+        {
+            ushort left = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort right = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort y = (ushort)((_pingouin.Position.Y - 60 * scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileLeft;
+            TiledMapTile? tileRight;
+
+            if ((_mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (_mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckLeft()
+        {
+            ushort x = (ushort)((_pingouin.Position.X - 50 * scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public bool CheckRight()
+        {
+            ushort x = (ushort)((_pingouin.Position.X + 50 * scale) / _mapLayer.TileWidth);
+            ushort top = (ushort)((_pingouin.Position.Y + 50 * scale) / _mapLayer.TileHeight);
+            ushort bottom = (ushort)((_pingouin.Position.Y - 50 * scale) / _mapLayer.TileHeight);
+
+            TiledMapTile? tileTop;
+            TiledMapTile? tileBottom;
+
+            if ((_mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (_mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+                return true;
+
+            return false;
+        }
+        public void Gravity()
+        {
+            if (!CheckBottom())
+            {
+                _pingouin.Fly = true;
+                _pingouin.Position += new Vector2(0, 1);
+            }
+            else
+            {
+                _pingouin.Fly = false;
+            }
         }
     }
 }
