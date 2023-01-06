@@ -174,17 +174,5 @@ namespace Projet
 
             _myGame.SpriteBatch.End();
         }
-
-        private bool IsCollidingTrap()
-        {
-            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * scale), (int)(14 * scale));
-            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * scale), (int)(128 * scale));
-
-            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
-            {
-                return true;
-            }
-            else return false;
-        }
     }
 }
