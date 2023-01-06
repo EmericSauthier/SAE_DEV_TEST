@@ -34,12 +34,16 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
+        public int largeurPingouin = 128, hauteurPingouin = 128;
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
+        public int largeurFox1 = 19, hauteurFox1 = 14;
 
+        // Traps
         Trap _ceilingTrap1;
         private float _chronoTrap1;
         public static bool canCollidingTrap;
+        public int largeurTrap1 = 64, hauteurTrap1 = 64;
 
         // GameManager
         private bool _gameOver;
@@ -135,7 +139,7 @@ namespace Projet
             _chronoTrap1 += deltaSeconds;
             //System.Diagnostics.Debug.WriteLine(_chronoTrap1);
             _ceilingTrap1.PressActivation(ref _chronoTrap1, ref canCollidingTrap);
-            if(Collision.IsCollidingTrap(_ceilingTrap1, _pingouin, scale, canCollidingTrap))
+            if(Collision.IsCollidingTrap(_pingouin, largeurPingouin, hauteurPingouin, _ceilingTrap1, largeurTrap1, hauteurTrap1, scale, canCollidingTrap))
             {
                 _myGame.clicDead = true;
             }
@@ -165,7 +169,7 @@ namespace Projet
 
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
+            //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
 
             // Ennemis
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
