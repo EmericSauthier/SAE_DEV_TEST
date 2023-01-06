@@ -106,13 +106,13 @@ namespace Projet
             }
         }
 
-        public Vector2 Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             Gravity(mapLayer);
             Vector2 move = Vector2.Zero;
 
             // Si le jeu est fini
-            if (gameOver || this.position.Y > Niveau1.HAUTEUR_FENETRE)
+            if (gameOver)
             {
                 this.perso.Play("celebrate");
             }
@@ -125,13 +125,13 @@ namespace Projet
             {
                 this.slide = false;
                 this.perso.Play("walkForward");
-                move = new Vector2((float)WalkVelocity, 0);
+                Walk(ref move, 1, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
                 this.slide = false;
                 this.perso.Play("walkBehind");
-                move = new Vector2((float)-walkVelocity, 0);
+                Walk(ref move, -1, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
@@ -153,8 +153,6 @@ namespace Projet
             }
 
             this.position += move;
-
-            return move;
         }
         public void Animate(String animation)
         {
@@ -223,6 +221,13 @@ namespace Projet
                 move += new Vector2((float)-walkVelocity, 0);
             }
         }
+        public void Walk(ref Vector2 move, int direction, TiledMapTileLayer mapLayer)
+        {
+            if ((direction == 1 && !CheckRight(mapLayer)) || (direction == -1 && !CheckLeft(mapLayer)))
+            {
+                move += new Vector2((float)(direction * this.walkVelocity));
+            }
+        }
         public void Gravity(TiledMapTileLayer mapLayer)
         {
             if (!CheckBottom(mapLayer))
@@ -235,6 +240,7 @@ namespace Projet
                 this.Fly = false;
             }
         }
+
         public bool CheckBottom(TiledMapTileLayer mapLayer)
         {
             ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
