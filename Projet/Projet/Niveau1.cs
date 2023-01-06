@@ -72,6 +72,7 @@ namespace Projet
         private Rectangle rFox;
         private Rectangle rTrap;
         private Rectangle rKillingFox;
+        private Rectangle rRecompense;
 
         private Texture2D _snowballTexture;
 
@@ -214,21 +215,21 @@ namespace Projet
                 // Lifes
                 for (int i = 0; i < _pingouinLife.MaxLife; i++)
                 {
-                    _heartsPositions[i] = _positionChrono - new Vector2(500, 0);
+                    _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2 , _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
                     _heartsPositions[i] += new Vector2(50*i, 0);
                 }
 
                 // Collisions
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
 
-                if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
+                if (Collision.IsCollidingTrap(_ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
                 {
                     _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
-                    if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (Collision.IsCollidingMonstreRampant(_fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
                         _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                     }
@@ -237,7 +238,7 @@ namespace Projet
                 if (!recompensePrise)
                 {
                     //Collision de la recompense avec le pingouin
-                    if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
+                    if (Collision.IsCollidingRecompense(recompense, largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                     {
                         if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
                         {
@@ -314,6 +315,10 @@ namespace Projet
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
+            if (!recompensePrise)
+            {
+                _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
+            }
             if (!isFox1Died)
             {
                 _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
