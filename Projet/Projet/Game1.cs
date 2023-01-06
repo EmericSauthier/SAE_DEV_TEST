@@ -97,7 +97,7 @@ namespace Projet
             _niveau1 = new Niveau1(this);
 
             //POLICE
-            police = Content.Load<SpriteFont>("Font/Font.spritefont");
+            police = Content.Load<SpriteFont>("Font/Font");
         }
 
         protected override void Update(GameTime gameTime)
