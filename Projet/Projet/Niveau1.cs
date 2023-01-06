@@ -34,17 +34,17 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
-        public int _largeurPingouin = 100, _hauteurPingouin = 100, _pingouinLife;
+        public int _largeurPingouin = 100, _hauteurPingouin = 100, _pingouinLife; // à déplacer ?
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int _largeurFox1 = 19, _hauteurFox1 = 14;
+        public int _largeurFox1 = 19, _hauteurFox1 = 14; // à déplacer 
 
         // Traps
         Trap _ceilingTrap1;
         private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
-        public int _largeurTrap1 = 64, _hauteurTrap1 = 64;
+        public int _largeurTrap1 = 64, _hauteurTrap1 = 64; // à déplacer 
 
         // GameManager
         private bool _gameOver;
@@ -88,7 +88,7 @@ namespace Projet
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(300, 870));
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             // Camera
             scale = (float)0.5;
@@ -160,7 +160,7 @@ namespace Projet
 
                 if(Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
                 {
-                    _pingouinLife -= 1;
+                    TakeDamage(1);
                 }
 
                 // Traps
@@ -170,11 +170,7 @@ namespace Projet
 
                 if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
                 {
-                    if(_chronoInvincibility > 2)
-                    {
-                        _pingouinLife -= 1;
-                    }
-                    _chronoInvincibility = 0;
+                    TakeDamage(1);
                 }
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
@@ -216,7 +212,7 @@ namespace Projet
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-100, 100), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
 
             // Ennemis
@@ -226,6 +222,15 @@ namespace Projet
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
+        }
+
+        private void TakeDamage(int damage)
+        {
+            if (_chronoInvincibility > 2)
+            {
+                _pingouinLife -= damage;
+            }
+            _chronoInvincibility = 0;
         }
     }
 }
