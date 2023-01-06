@@ -1,6 +1,6 @@
 {
   "textureAtlas": {
-    "texture": "..\\..\\..\\..\\..\\..\\..\\Downloads\\spritCoin.png",
+    "texture": "spritCoin.png",
     "regionWidth": 200,
     "regionHeight": 210
   },
