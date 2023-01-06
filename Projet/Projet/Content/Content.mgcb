@@ -18,7 +18,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ceilingTrap.png
+#begin Decors/flocon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -28,9 +28,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:ceilingTrap.png
+/build:Decors/flocon.png
 
-#begin flocon.png
+#begin Decors/fondGameOver.jfif
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -40,9 +40,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:flocon.png
+/build:Decors/fondGameOver.jfif
 
-#begin fondGameOver.jfif
+#begin Decors/fondMenu.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -52,9 +52,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:fondGameOver.jfif
+/build:Decors/fondMenu.jpg
 
-#begin fondMenu.jpg
+#begin Decors/regle2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -64,38 +64,60 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:fondMenu.jpg
+/build:Decors/regle2.png
 
-#begin Font.spritefont
+#begin Ennemis_pieges/ceilingTrap.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Ennemis_pieges/ceilingTrap.png
+
+#begin Ennemis_pieges/fox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Ennemis_pieges/fox.png
+
+#begin Font/Font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Font.spritefont
+/build:Font/Font.spritefont
 
-#begin FontGameOver.spritefont
+#begin Font/FontGameOver.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:FontGameOver.spritefont
+/build:Font/FontGameOver.spritefont
 
-#begin fox.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:fox.png
-
-#begin map.tmx
+#begin Maps/map.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
-/build:map.tmx
+/build:Maps/map.tmx
+
+#begin Maps/mapTest.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Maps/mapTest.tmx
+
+#begin Maps/snowmap1.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Maps/snowmap1.tmx
 
 #begin Perso/penguin.png
 /importer:TextureImporter
@@ -109,7 +131,7 @@
 /processorParam:TextureFormat=Color
 /build:Perso/penguin.png
 
-#begin plains.png
+#begin Tiles/plains.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,9 +141,14 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:plains.png
+/build:Tiles/plains.png
 
-#begin regle2.png
+#begin Tiles/plains.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Tiles/plains.tsx
+
+#begin Tiles/snowtiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,14 +158,14 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:regle2.png
+/build:Tiles/snowtiles.png
 
-#begin snowmap1.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:snowmap1.tmx
+#begin Tiles/snowtiles.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Tiles/snowtiles.tsx
 
-#begin SnowTiles.png
+#begin Tiles/spike.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -148,17 +175,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SnowTiles.png
+/build:Tiles/spike.png
 
-#begin spike.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:spike.png
+#begin Tiles/spike.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Tiles/spike.tsx
 

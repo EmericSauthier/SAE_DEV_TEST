@@ -28,10 +28,10 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Content\ceilingTrap.sf">
+    <None Update="Content\Ennemis_pieges\ceilingTrap.sf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\fox.sf">
+    <None Update="Content\Ennemis_pieges\fox.sf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\Perso\penguin.sf">
