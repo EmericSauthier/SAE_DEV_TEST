@@ -17,7 +17,7 @@ namespace Projet
     internal class Recompenses
     {
         private Vector2 position;
-        private Texture2D sprite;
+        private AnimatedSprite sprite;
         private string typeRecompense;
 
         public static int effetPoisson =1, effetPiece = -1;
@@ -42,7 +42,7 @@ namespace Projet
             }
         }
 
-        public Texture2D Sprite
+        public AnimatedSprite Sprite
         {
             get
             {
@@ -66,6 +66,11 @@ namespace Projet
             {
                 this.typeRecompense = value;
             }
+        }
+
+        public void LoadContent(SpriteSheet sprite)
+        {
+            Sprite = new AnimatedSprite(sprite);
         }
 
 
