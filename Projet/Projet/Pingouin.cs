@@ -155,6 +155,32 @@ namespace Projet
 
             return move;
         }
+        public void Animate(String animation)
+        {
+            switch (animation)
+            {
+                case "celebrate":
+                    this.perso.Play("celebrate");
+                    break;
+                case "walkForward":
+                    this.perso.Play("walkForward");
+                    break;
+                case "walkBehind":
+                    this.perso.Play("walkBehind");
+                    break;
+                case "slide":
+                    this.perso.Play("beforeSlide");
+                    this.perso.Play("slide");
+                    break;
+                case "jump":
+                    this.perso.Play("beforeJump");
+                    this.perso.Play("jump");
+                    break;
+                default:
+                    this.perso.Play("idle");
+                    break;
+            }
+        }
 
         public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState)
         {

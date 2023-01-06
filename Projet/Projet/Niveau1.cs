@@ -120,7 +120,6 @@ namespace Projet
             // Pingouin
             _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
             _pingouin.Perso.Update(deltaSeconds);
-            //_pingouin.Gravity(_mapLayer);
 
             // Chrono
             _chrono += deltaSeconds;
