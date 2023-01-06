@@ -39,8 +39,8 @@ namespace Projet
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
-            this.walkVelocity = 1;
-            this.slideVelocity = 1.5;
+            this.walkVelocity = 2;
+            this.slideVelocity = 2.5;
             this.gravity = 2.5;
             this.jumpVelocity = 10;
         }
@@ -255,7 +255,7 @@ namespace Projet
         {
             ushort left = (ushort)((this.Position.X - 40 * Niveau1.scale) / mapLayer.TileWidth);
             ushort right = (ushort)((this.Position.X + 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 60 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort y = (ushort)((this.Position.Y - 40 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -269,7 +269,7 @@ namespace Projet
         {
             ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
             ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -283,7 +283,7 @@ namespace Projet
         {
             ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
             ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
