@@ -17,7 +17,7 @@ namespace Projet
     {
         private Game1 _myGame;
 
-        private const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
+        public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
         private GraphicsDeviceManager _graphics;
 
         //SOURIS POUR GERER CLIC

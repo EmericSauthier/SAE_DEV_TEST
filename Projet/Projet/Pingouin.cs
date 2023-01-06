@@ -112,14 +112,14 @@ namespace Projet
             Vector2 move = Vector2.Zero;
 
             // Si le jeu est fini
-            if (gameOver)
+            if (gameOver || this.position.Y > Niveau1.HAUTEUR_FENETRE)
             {
                 this.perso.Play("celebrate");
             }
             else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 this.slide = false;
-                move = Jump(ref move, keyboardState, mapLayer);
+                Jump(ref move, keyboardState, mapLayer);
             }
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
@@ -188,7 +188,7 @@ namespace Projet
             }
         }
 
-        public Vector2 Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             float direction = 0;
 
@@ -214,16 +214,14 @@ namespace Projet
                 this.positionSaut = new Vector2();
             }
 
-            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left) && !CheckRight(mapLayer))
             {
                 move += new Vector2((float)walkVelocity, 0);
             }
-            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right) && !CheckLeft(mapLayer))
             {
                 move += new Vector2((float)-walkVelocity, 0);
             }
-
-            return move;
         }
         public void Gravity(TiledMapTileLayer mapLayer)
         {
