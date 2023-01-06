@@ -73,6 +73,7 @@ namespace Projet
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
             _pingouinLife = 3; // à déplacer ?
+
             if (_myGame.reprendre)
             {
                 _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y);
@@ -156,15 +157,21 @@ namespace Projet
                 _fox1.RightLeftMove(ref _chronoDep);
                 _fox1.Sprite.Update(deltaSeconds);
 
-            // Traps
-            _chronoTrap1 += deltaSeconds;
-            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
-            if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _scale, _canCollidingTrap))
-            {
-                _myGame.clicDead = true;
+                if(Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, _scale))
+                {
+                    _myGame.clicDead = true;
+                }
+
+                // Traps
+                _chronoTrap1 += deltaSeconds;
+                _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
+
+                if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _scale, _canCollidingTrap))
+                {
+                    _myGame.clicDead = true;
+                }
+                _ceilingTrap1.Sprite.Update(deltaSeconds);
             }
-            _ceilingTrap1.Sprite.Update(deltaSeconds);
-        }
 
         }
 

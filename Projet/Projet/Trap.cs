@@ -70,5 +70,10 @@ namespace Projet
                 time = 0;
             }
         }
+
+        public static void CollisionUpdate()
+        {
+
+        }
     }
 }
