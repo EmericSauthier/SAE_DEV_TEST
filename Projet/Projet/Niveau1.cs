@@ -74,7 +74,7 @@ namespace Projet
             // GameManager
             _gameOver = false;
 
-            // Pingouin
+            // Initialisation du pingouin et de sa position
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
 
             // Life
@@ -113,20 +113,20 @@ namespace Projet
         }
         public override void LoadContent()
         {
-            // Map
+            // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
-            // Pingouin
+            // Chargement du sprite du pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
-            // Ennemis
+            // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
 
-            // Traps
+            // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
@@ -186,32 +186,29 @@ namespace Projet
                 {
                     _pingouinLife.TakeDamage(1, _chronoInvincibility);
                 }
-
+                // Collision du monstre avec le pingouin
                 if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
                 {
                     _pingouinLife.TakeDamage(1, _chronoInvincibility);
                 }
                 
-
                 // Mort
                 if(_pingouinLife.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
             }
-
         }
 
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Render Map With Camera
+            // Application du zoom de la camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
-
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
-            // Pingouin
+            // Affichage du pingouin
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale));
 
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
@@ -228,7 +225,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
 
-            // Chrono
+            // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
@@ -239,10 +236,8 @@ namespace Projet
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }
 
-            // Ennemis
+            // Affichage des ennemis et des pièges
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
-
-            // Traps
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
