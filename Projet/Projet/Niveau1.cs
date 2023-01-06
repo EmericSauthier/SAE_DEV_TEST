@@ -34,7 +34,7 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
-        public int _largeurPingouin = 128, _hauteurPingouin = 128, _pingouinLife;
+        public int _largeurPingouin = 100, _hauteurPingouin = 100, _pingouinLife;
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
