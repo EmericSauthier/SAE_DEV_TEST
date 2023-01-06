@@ -47,11 +47,12 @@ namespace Projet
 
         public void TakeDamage(int damage, ref float invincibilityChrono)
         {
+
             if (invincibilityChrono > 2)
             {
                 CurrentLife -= damage;
+                invincibilityChrono = 0;
             }
-            invincibilityChrono = 0;
         }
 
         public void Heal(int healPoints)
