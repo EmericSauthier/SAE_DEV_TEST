@@ -119,9 +119,8 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Pingouin
-            _pingouin.Animate(_gameOver, _keyboardState);
+            _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
             _pingouin.Perso.Update(deltaSeconds);
-            Gravity();
 
             // Chrono
             _chrono += deltaSeconds;
@@ -145,6 +144,8 @@ namespace Projet
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             // Render Map With Camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
 
@@ -173,6 +174,18 @@ namespace Projet
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
+        }
+
+        private bool IsCollidingTrap()
+        {
+            Rectangle _hitBoxTrap = new Rectangle((int)_ceilingTrap1.Position.X, (int)_ceilingTrap1.Position.Y + 50, (int)(64 * scale), (int)(14 * scale));
+            Rectangle _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X, (int)_pingouin.Position.Y, (int)(128 * scale), (int)(128 * scale));
+
+            if (_hitBoxPingouin.Intersects(_hitBoxTrap))
+            {
+                return true;
+            }
+            else return false;
         }
 
         // A mettre dans Pingouin
