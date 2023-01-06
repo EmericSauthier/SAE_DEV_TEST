@@ -188,7 +188,7 @@ namespace Projet
             SpriteBatch.Begin();
 
             //DECO
-            SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
+            //SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
 
             //TEXTE
             SpriteBatch.DrawString(police, $"{_buttonMenu}", _posiButtonMenu, Color.Black);

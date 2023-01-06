@@ -1,0 +1,14 @@
+{
+  "textureAtlas": {
+    "texture": "..\\..\\..\\..\\..\\..\\..\\Downloads\\spritCoin.png",
+    "regionWidth": 200,
+    "regionHeight": 210
+  },
+  "cycles": {
+    "coin": {
+      "frames": [0,1,2,3,4,5],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}

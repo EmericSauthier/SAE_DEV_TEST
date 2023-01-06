@@ -140,6 +140,10 @@ namespace Projet
             // Life
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
+            // Chargement du sprite de la recompense
+            SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
+            recompense.LoadContent(spriteCoin);
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -198,9 +202,14 @@ namespace Projet
                 {
                     _pingouinLife.TakeDamage(1, _chronoInvincibility);
                 }
-                
+                //Collision de la recompense avec le pingouin
+                if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, recompense, largeurRecompense1, hauteurRecompense1, scale))
+                {
+                    _pingouinLife.TakeDamage(-1, _chronoInvincibility);
+                }
+
                 // Mort
-                if(_pingouinLife.CurrentLife <= 0)
+                if (_pingouinLife.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
