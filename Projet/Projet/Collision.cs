@@ -10,6 +10,7 @@ namespace Projet
 {
     internal class Collision
     {
+        // Nécessite changement fonctionnement des offsets
         public static bool IsCollidingTrap(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, Trap trap, int largeurTrap, int hauteurTrap, float scale, bool canCollidingtrap)
         {
             if (canCollidingtrap)
@@ -27,9 +28,10 @@ namespace Projet
 
         }
 
+        // Nécessite changement fonctionnement des offsets
         public static bool IsCollidingMonstreRampant(Pingouin pingouin, int largeurPingouin, int hauteurPingouin, MonstreRampant monstre, int largeurMonstre, int hauteurMonstre , float scale)
         {
-            Rectangle _hitBoxMonstre = new Rectangle((int)monstre.Position.X, (int)monstre.Position.Y, (int)(largeurMonstre * scale), (int)(hauteurMonstre * scale));
+            Rectangle _hitBoxMonstre = new Rectangle((int)monstre.Position.X, (int)monstre.Position.Y + hauteurMonstre, (int)(largeurMonstre * scale), (int)(hauteurMonstre * scale));
             Rectangle _hitBoxPingouin = new Rectangle((int)pingouin.Position.X, (int)pingouin.Position.Y, (int)(largeurPingouin * scale), (int)(hauteurPingouin * scale));
 
             if (_hitBoxPingouin.Intersects(_hitBoxMonstre))
