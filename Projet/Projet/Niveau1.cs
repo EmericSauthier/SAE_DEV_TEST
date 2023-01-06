@@ -34,17 +34,17 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
-        public int _largeurPingouin = 128, _hauteurPingouin = 128, _pingouinLife;
+        public int _largeurPingouin = 100, _hauteurPingouin = 100; // à déplacer ?
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int _largeurFox1 = 19, _hauteurFox1 = 14;
+        public int _largeurFox1 = 19, _hauteurFox1 = 14; // à déplacer 
 
         // Traps
         Trap _ceilingTrap1;
-        private float _chronoTrap1;
+        private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
-        public int _largeurTrap1 = 64, _hauteurTrap1 = 64;
+        public int _largeurTrap1 = 64, _hauteurTrap1 = 64; // à déplacer 
 
         //Recompense
         Recompenses recompense;
@@ -60,6 +60,10 @@ namespace Projet
         private float _chrono;
         private float _chronoDep;
 
+        // Life
+        private Life _pingouinLife;
+        private Texture2D _heartSprite;
+        private Vector2[] _heartsPositions;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -74,9 +78,12 @@ namespace Projet
             // GameManager
             _gameOver = false;
 
-            // Pingouin
-            //_pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
-            _pingouinLife = 3; // à déplacer ?
+            // Initialisation du pingouin et de sa position
+            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+
+            // Life
+            _pingouinLife = new Life(3);
+
             if (_myGame.reprendre)
             {
                 _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y);
@@ -91,7 +98,7 @@ namespace Projet
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(300, 870));
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
             recompense = new Recompenses(new Vector2(1150, 850), "piece");
@@ -104,41 +111,47 @@ namespace Projet
             // Chrono
             _chrono = 0;
             _chronoDep = 0;
+            _chronoInvincibility = 0;
+
+            // Lifes
+            _heartsPositions = new Vector2[_pingouinLife.MaxLife];
 
             base.Initialize();
         }
         public override void LoadContent()
         {
-            // Map
-            _tiledMap = Content.Load<TiledMap>("snowmap1");
+            // Chargement de la map et du TileLayer du sol/décor
+            _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
-            // Pingouin
+            // Chargement du sprite du pingouin
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
-            // Ennemis
-            SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
+            // Chargement du sprite du renard
+            SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
 
-            // Traps
-            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            // Chargement du sprite du piège
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
-            //Recompenses
-            //SpriteSheet piece = 
+            // Life
+            _heartSprite = Content.Load<Texture2D>("Life/heart");
 
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
+            // GameManager
+            _keyboardState = Keyboard.GetState();
+            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
-            if (keyboardState.IsKeyDown(Keys.Tab))
+            if (_keyboardState.IsKeyDown(Keys.Tab))
             {
-                _myGame.pause = true;
+                _myGame.pause = !_myGame.pause;
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
@@ -148,13 +161,9 @@ namespace Projet
                 // Camera
                 _camera.Update(gameTime, _pingouin);
 
-                // GameManager
-                _keyboardState = Keyboard.GetState();
-                float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                 // Pingouin
-                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position ddu pingouin pour pouvoir reprendre a la meme position
-                _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
+                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
+                _pingouin.Move(_gameOver, _keyboardState, _mapLayer);
                 _pingouin.Perso.Update(deltaSeconds);
 
                 // Chrono
@@ -168,53 +177,74 @@ namespace Projet
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
+                _chronoInvincibility += deltaSeconds;
                 _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
-                if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
+                _ceilingTrap1.Sprite.Update(deltaSeconds);
+
+                // Lifes
+                for (int i = 0; i < _pingouinLife.MaxLife; i++)
+                {
+                    _heartsPositions[i] = _positionChrono - new Vector2(500, 0);
+                    _heartsPositions[i] += new Vector2(50*i, 0);
+                }
+
+                // Collisions
+                if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
+                {
+                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                }
+                // Collision du monstre avec le pingouin
+                if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
+                {
+                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                }
+                
+                // Mort
+                if(_pingouinLife.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
-                _ceilingTrap1.Sprite.Update(deltaSeconds);
-
-                //Recompenses
-                /*if (Collision.IsCollidingRecompense(_pingouin, _largeurPingouin, _hauteurPingouin, Recompenses recompense, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
-                {
-                    _myGame.clicDead = true;
-                }*/
             }
-
         }
 
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Render Map With Camera
+            // Application du zoom de la camera
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
-
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
-            // Pingouin
+            // Affichage du pingouin
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale));
 
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
 
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
+
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Red, 5);
 
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
 
-            // Chrono
+            // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
-            // Ennemis
+            //Life
+            for (int i = 0; i < _pingouinLife.MaxLife; i++)
+            {
+                _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
+            }
+
+            // Affichage des ennemis et des pièges
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
-
-            // Traps
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();

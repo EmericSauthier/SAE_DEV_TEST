@@ -104,17 +104,19 @@ namespace Projet
             _niveau1 = new Niveau1(this);
 
             //POLICE
-            police = Content.Load<SpriteFont>("Font");
-
-            //DECO
-
-            _textureFond = Content.Load<Texture2D>("fondGame12");
+            police = Content.Load<SpriteFont>("Font/Font");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            //GESTION SOURIS
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            // Récupération des entrées
+            KeyboardState keyboardState = Keyboard.GetState();
             _mouseState = Mouse.GetState();
+
+            // Gestion de la souris
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (_mouseState.X >= _posiButtonMenu.X && _mouseState.Y >= _posiButtonMenu.Y && _mouseState.X <= _posiButtonMenu.X + _buttonMenu.Length * 24 && _mouseState.Y <= _posiButtonMenu.Y + 24)
@@ -126,22 +128,15 @@ namespace Projet
                     clicNiveau1 = true;
                 }
             }
-            
-            
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
-            //CHAMNGEMENT DE SCENE
-            KeyboardState keyboardState = Keyboard.GetState();
-            
-            //CONDITION POUR ALLER SUR LE MENU DU JEU
+            // CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
                 clicMenu = false;
                 pause = true;
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
-                //CONDITION POUR ALLER A LA SCENE WIN
+            // CONDITION POUR ALLER A LA SCENE WIN
             else if (keyboardState.IsKeyDown(Keys.A))
             {
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
@@ -152,31 +147,31 @@ namespace Projet
                 _menu.clicChoixNiv = false;
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
             }
-                //CONDITION POUR METTRE LA PAGE GAME OVER
+            // CONDITION POUR METTRE LA PAGE GAME OVER
             else if (clicDead)
             {
                 clicDead = false;
                 _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
             }
-                //CONDITION POUR FERMER LE JEU
+            // CONDITION POUR FERMER LE JEU
             else if (clicArret)
             {
                 Exit();
             }
-            //CONDITION POUR ALLER AUX REGLE DU JEU
+            // CONDITION POUR ALLER AUX REGLE DU JEU
             else if (clicRegle)
             {
                 clicRegle = false;
                 _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
             }
-            //CONDITION POUR LANCER LE NIVEAU 1
+            // CONDITION POUR LANCER LE NIVEAU 1
             else if (clicNiveau1)
             {
                 clicNiveau1 = false;
                 pause = false;
                 _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
             }
-            //CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
+            // CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
             else if (reprendre)
             {
                 pause = false;
