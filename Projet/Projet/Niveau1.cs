@@ -30,20 +30,21 @@ namespace Projet
 
         //JEU
         private Camera _camera;
-        public static float scale;
+        public static float _scale;
 
         // ENTITE
         private Pingouin _pingouin;
-        public int largeurPingouin = 128, hauteurPingouin = 128;
+        public int _largeurPingouin = 128, _hauteurPingouin = 128, _pingouinLife;
+        // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int largeurFox1 = 19, hauteurFox1 = 14;
+        public int _largeurFox1 = 19, _hauteurFox1 = 14;
 
         // Traps
         Trap _ceilingTrap1;
         private float _chronoTrap1;
-        public static bool canCollidingTrap;
-        public int largeurTrap1 = 64, hauteurTrap1 = 64;
+        public static bool _canCollidingTrap;
+        public int _largeurTrap1 = 64, _hauteurTrap1 = 64;
 
         // GameManager
         private bool _gameOver;
@@ -71,6 +72,7 @@ namespace Projet
 
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+            _pingouinLife = 3; // à déplacer ?
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
@@ -79,7 +81,7 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(300, 870));
 
             // Camera
-            scale = (float)0.5;
+            _scale = (float)0.5;
             _camera = new Camera();
             _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
@@ -137,8 +139,8 @@ namespace Projet
 
             // Traps
             _chronoTrap1 += deltaSeconds;
-            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref canCollidingTrap);
-            if(Collision.IsCollidingTrap(_pingouin, largeurPingouin, hauteurPingouin, _ceilingTrap1, largeurTrap1, hauteurTrap1, scale, canCollidingTrap))
+            _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
+            if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, _scale, _canCollidingTrap))
             {
                 _myGame.clicDead = true;
             }
@@ -155,16 +157,16 @@ namespace Projet
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale));
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(_scale));
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 60 * _scale, Color.Green, 5);
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Red, 5);
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 50 * scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y + 50 * _scale, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * _scale, _pingouin.Position.Y - 50 * _scale, Color.Blue, 5);
 
             // Chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {(int)_chrono}", _positionChrono, Color.White);

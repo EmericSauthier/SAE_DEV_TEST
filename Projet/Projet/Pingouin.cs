@@ -243,9 +243,9 @@ namespace Projet
 
         public bool CheckBottom(TiledMapTileLayer mapLayer)
         {
-            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y + 60 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y + 60 * Niveau1._scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -257,9 +257,9 @@ namespace Projet
         }
         public bool CheckTop(TiledMapTileLayer mapLayer)
         {
-            ushort left = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 60 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 60 * Niveau1._scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -271,9 +271,9 @@ namespace Projet
         }
         public bool CheckLeft(TiledMapTileLayer mapLayer)
         {
-            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X - 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1._scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1._scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -285,9 +285,9 @@ namespace Projet
         }
         public bool CheckRight(TiledMapTileLayer mapLayer)
         {
-            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X + 50 * Niveau1._scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * Niveau1._scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 50 * Niveau1._scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
