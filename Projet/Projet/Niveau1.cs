@@ -145,8 +145,8 @@ namespace Projet
                 float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 // Pingouin
-                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position ddu pingouin pour pouvoir reprendre a la meme position
-                _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
+                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
+                _pingouin.Move(_gameOver, _keyboardState, _mapLayer);
                 _pingouin.Perso.Update(deltaSeconds);
 
                 // Chrono

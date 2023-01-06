@@ -124,7 +124,7 @@ namespace Projet
             }
         }
 
-        public void Animate(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Move(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             /*
             Fonction permettant de lancer les animations et de faire bouger le pingouin
