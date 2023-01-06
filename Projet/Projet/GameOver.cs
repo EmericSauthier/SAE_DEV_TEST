@@ -68,10 +68,10 @@ namespace Projet
             }
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
-            _textureFond = Content.Load<Texture2D>("fondGameOver");
+            _textureFond = Content.Load<Texture2D>("Decor/fondGameOver.jfif");
 
             //POLICE
-            _policeGO = Content.Load<SpriteFont>("FontGameOver");
+            _policeGO = Content.Load<SpriteFont>("Font/FontGameOver.spritefont");
 
             base.LoadContent();
         }

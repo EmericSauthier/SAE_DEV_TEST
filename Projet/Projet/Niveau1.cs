@@ -105,7 +105,7 @@ namespace Projet
         public override void LoadContent()
         {
             // Map
-            _tiledMap = Content.Load<TiledMap>("snowmap1");
+            _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
@@ -114,11 +114,11 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
             // Ennemis
-            SpriteSheet foxSprite = Content.Load<SpriteSheet>("fox.sf", new JsonContentLoader());
+            SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             _fox1.LoadContent(foxSprite);
 
             // Traps
-            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("ceilingTrap.sf", new JsonContentLoader());
+            SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
             base.LoadContent();
