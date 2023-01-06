@@ -34,7 +34,7 @@ namespace Projet
 
         // ENTITE
         private Pingouin _pingouin;
-        public int _largeurPingouin = 100, _hauteurPingouin = 100, _pingouinLife; // à déplacer ?
+        public int _largeurPingouin = 100, _hauteurPingouin = 100; // à déplacer ?
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
@@ -56,6 +56,8 @@ namespace Projet
         private float _chrono;
         private float _chronoDep;
 
+        // Life
+        private Life _pingouinLife;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -72,7 +74,9 @@ namespace Projet
 
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
-            _pingouinLife = 3; // à déplacer ?
+
+            // Life
+            _pingouinLife = new Life(3);
 
             if (_myGame.reprendre)
             {
@@ -121,6 +125,9 @@ namespace Projet
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
             _ceilingTrap1.LoadContent(ceilingTrapSprite);
 
+            // Life
+            Texture2D heartSprite = Content.Load<Texture2D>("ceilingTrap.png");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -156,24 +163,26 @@ namespace Projet
                 _fox1.RightLeftMove(ref _chronoDep);
                 _fox1.Sprite.Update(deltaSeconds);
 
-                if(Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
-                {
-                    TakeDamage(1);
-                }
-
                 // Traps
                 _chronoTrap1 += deltaSeconds;
                 _chronoInvincibility += deltaSeconds;
                 _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
-
-                if(Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
-                {
-                    TakeDamage(1);
-                }
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
+                // Collisions
+                if (Collision.IsCollidingTrap(_pingouin, _largeurPingouin, _hauteurPingouin, _ceilingTrap1, _largeurTrap1, _hauteurTrap1, scale, _canCollidingTrap))
+                {
+                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                }
+
+                if (Collision.IsCollidingMonstreRampant(_pingouin, _largeurPingouin, _hauteurPingouin, _fox1, _largeurFox1, _hauteurFox1, scale))
+                {
+                    _pingouinLife.TakeDamage(1, _chronoInvincibility);
+                }
+                
+
                 // Mort
-                if(_pingouinLife <= 0)
+                if(_pingouinLife.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
@@ -211,21 +220,14 @@ namespace Projet
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-150, 100), Color.White);
 
+            //Life
+            _pingouinLife.Draw(_myGame.SpriteBatch);
 
             // Affichage des ennemis et des pièges
             _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             _myGame.SpriteBatch.End();
-        }
-
-        private void TakeDamage(int damage)
-        {
-            if (_chronoInvincibility > 2)
-            {
-                _pingouinLife -= damage;
-            }
-            _chronoInvincibility = 0;
         }
     }
 }
