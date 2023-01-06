@@ -105,7 +105,7 @@ namespace Projet
         public override void LoadContent()
         {
             // Map
-            _tiledMap = Content.Load<TiledMap>("Maps/mapTest");
+            _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
