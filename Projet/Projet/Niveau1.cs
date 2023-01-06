@@ -73,6 +73,15 @@ namespace Projet
             // Pingouin
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
             _pingouinLife = 3; // à déplacer ?
+            if (_myGame.reprendre)
+            {
+                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y);
+                _myGame.reprendre = false;
+            }
+            else
+            {
+                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+            }
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1150, 850), "fox", 1, 2.5);
@@ -114,28 +123,38 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            // Map
-            _tiledMapRenderer.Update(gameTime);
+            KeyboardState keyboardState = Keyboard.GetState();
 
-            // Camera
-            _camera.Update(gameTime, _pingouin);
+            //CONDITION POUR ALLER SUR LE MENU DU JEU
+            if (keyboardState.IsKeyDown(Keys.Tab))
+            {
+                _myGame.pause = true;
+            }
+            else if (!_myGame.pause || _myGame.reprendre)
+            {
+                // Map
+                _tiledMapRenderer.Update(gameTime);
 
-            // GameManager
-            _keyboardState = Keyboard.GetState();
-            float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                // Camera
+                _camera.Update(gameTime, _pingouin);
 
-            // Pingouin
-            _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
-            _pingouin.Perso.Update(deltaSeconds);
+                // GameManager
+                _keyboardState = Keyboard.GetState();
+                float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Chrono
-            _chrono += deltaSeconds;
-            _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
+                // Pingouin
+                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode());
+                _pingouin.Animate(_gameOver, _keyboardState, _mapLayer);
+                _pingouin.Perso.Update(deltaSeconds);
 
-            // Ennemis
-            _chronoDep += deltaSeconds;
-            _fox1.RightLeftMove(ref _chronoDep);
-            _fox1.Sprite.Update(deltaSeconds);
+                // Chrono
+                _chrono += deltaSeconds;
+                _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
+
+                // Ennemis
+                _chronoDep += deltaSeconds;
+                _fox1.RightLeftMove(ref _chronoDep);
+                _fox1.Sprite.Update(deltaSeconds);
 
             // Traps
             _chronoTrap1 += deltaSeconds;
@@ -145,6 +164,8 @@ namespace Projet
                 _myGame.clicDead = true;
             }
             _ceilingTrap1.Sprite.Update(deltaSeconds);
+        }
+
         }
 
         public override void Draw(GameTime gameTime)
