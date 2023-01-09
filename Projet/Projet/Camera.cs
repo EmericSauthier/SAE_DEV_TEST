@@ -56,8 +56,6 @@ namespace Projet
         public void Update(GameTime gameTime, Pingouin pingouin)
         {
             MoveCamera(gameTime);
-            System.Diagnostics.Debug.WriteLine(pingouin.Position.Y);
-            System.Diagnostics.Debug.WriteLine(_hauteurFen/3);
             if (pingouin.Position.Y <= _hauteurFen*3/4)
             {
                 CameraPosition = new Vector2(pingouin.Position.X, _hauteurFen*3/4);

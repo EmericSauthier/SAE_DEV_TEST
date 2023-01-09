@@ -29,6 +29,7 @@ namespace Projet
         private RectangleF hitBox;
 
         private float scale;
+        private float rotation;
 
         // Paramètres de vitesse
         private double walkVelocity;
@@ -72,6 +73,7 @@ namespace Projet
             this.CurrentLife = this.MaxLife;
 
             this.direction = "Right";
+            this.rotation = 0;
         }
         
         // Propriétés
