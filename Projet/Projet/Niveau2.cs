@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Projet
 {
-    internal class Niveau1 : GameScreen
+    internal class Niveau2 : GameScreen
     {
         private Game1 _myGame;
 
@@ -52,17 +52,18 @@ namespace Projet
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int _largeurFox1 = 19*3, _hauteurFox1 = 14*3; // à déplacer 
+        public int _largeurFox1 = 19 * 3, _hauteurFox1 = 14 * 3; // à déplacer 
         public bool isFox1Died;
 
         // Piège
         Trap _ceilingTrap1;
         private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
-        public int _largeurTrap1 = (64/2), _hauteurTrap1 = 64-20; // à déplacer 
+        public int _largeurTrap1 = (64 / 2), _hauteurTrap1 = 64 - 20; // à déplacer 
 
         //Recompense
-        Recompenses []coins;
+        Vector2[] _posiCoins;
+        Recompenses[] coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
         Song coinSound;
 
@@ -83,7 +84,7 @@ namespace Projet
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
 
-        public Niveau1(Game1 game) : base(game)
+        public Niveau2(Game1 game) : base(game)
         {
             _myGame = game;
         }
@@ -107,7 +108,7 @@ namespace Projet
             _chronoInvincibility = 0;
 
             // Initialisation du pingouin et de sa position
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
+            _pingouin = new Pingouin(500, 802, scale);
 
             if (_myGame.reprendre)
             {
@@ -116,7 +117,7 @@ namespace Projet
             }
             else
             {
-                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
+                _pingouin = new Pingouin(500, 802, scale);
             }
 
             // Ennemis
@@ -127,13 +128,14 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
-            _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054) };
-            coins = new Recompenses[4];
-            int x = 1150;
-            int y = 780;
-            for (int i=0; i <4; i++)
+            _posiPartiPortail = new Vector2[] {new Vector2(52,514), new Vector2(1878,1054), new Vector2(3170,1122)};
+            _posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
+            coins = new Recompenses[_posiCoins.Length];
+            int x = 986;
+            int y = 1122;
+            for (int i = 0; i < _posiCoins.Length; i++)
             {
-                coins[i] = new Recompenses(new Vector2(x+50*i, y), "piece", 0);
+                coins[i] = new Recompenses(_posiCoins[i], "piece", 0);
             }
 
             // Life
@@ -143,14 +145,14 @@ namespace Projet
             _partiRecolleter = 0;
             partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
-            closingPortal = new Recompenses(new Vector2(LARGEUR_FENETRE / 2-250, 500 + HAUTEUR_FENETRE / 2-50), "portal", 0);
+            closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
             base.Initialize();
         }
         public override void LoadContent()
         {
             // Chargement de la map et du TileLayer du sol/décor
-            _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
+            _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
@@ -170,7 +172,7 @@ namespace Projet
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            for (int i =0; i<4; i++)
+            for (int i = 0; i < _posiCoins.Length; i++)
             {
                 coins[i].LoadContent(spriteCoin);
             }
@@ -189,12 +191,14 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
+            
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //CONDITION POUR GAGNER
-            if (_partiRecolleter ==4)
+            if (_partiRecolleter == 4)
             {
                 openingPortal.etat = 0;
             }
@@ -214,7 +218,7 @@ namespace Projet
 
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
-                
+
                 _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
 
                 // Chrono
@@ -227,7 +231,7 @@ namespace Projet
                 _fox1.Sprite.Update(deltaSeconds);
 
                 // Recompense
-                for (int i =0; i<4; i++)
+                for (int i = 0; i < _posiCoins.Length; i++)
                 {
                     _chronoDep += deltaSeconds;
                     coins[i].Sprite.Play("coin");
@@ -252,8 +256,8 @@ namespace Projet
                 // Lifes
                 for (int i = 0; i < _pingouin.MaxLife; i++)
                 {
-                    _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2 , _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
-                    _heartsPositions[i] += new Vector2(50*i, 0);
+                    _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
+                    _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
                 // Collisions
@@ -271,9 +275,9 @@ namespace Projet
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
                     }
                 }
-                
-                
-                for (int i =0; i<4; i++)
+
+
+                for (int i = 0; i < _posiCoins.Length; i++)
                 {
                     if (coins[i].etat == 0)
                     {
@@ -283,10 +287,11 @@ namespace Projet
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
                                 double randomNb = new Random().NextDouble();
-                                if(randomNb > 0.5)
+                                if (randomNb > 0.5)
                                 {
                                     _pingouin.WalkVelocity *= 0.80;
-                                }else
+                                }
+                                else
                                 {
                                     _pingouin.WalkVelocity *= 1.20;
                                 }
@@ -308,7 +313,7 @@ namespace Projet
                 {
                     _myGame.clicDead = true;
                 }
-    }
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -346,7 +351,7 @@ namespace Projet
             }
 
             // Affichage du chrono
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20,0), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20, 0), Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
 
@@ -364,7 +369,7 @@ namespace Projet
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
             //Affichage des recompenses si elle n'as pas ete prise
-            for (int i = 0; i<4; i++)
+            for (int i = 0; i < _posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
@@ -389,14 +394,14 @@ namespace Projet
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
-            for (int i=0; i<4; i++)
+            for (int i = 0; i < _posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
                     _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
                 }
             }
-            
+
             if (!isFox1Died)
             {
                 _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
