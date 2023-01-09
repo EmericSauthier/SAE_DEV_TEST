@@ -56,7 +56,14 @@ namespace Projet
         public void Update(GameTime gameTime, Pingouin pingouin)
         {
             MoveCamera(gameTime);
-            CameraPosition = new Vector2(pingouin.Position.X, _hauteurFen);
+            if (pingouin.Position.Y <= _hauteurFen/ 3)
+            {
+                CameraPosition = new Vector2(pingouin.Position.X, pingouin.Position.Y);
+            } 
+            else
+            {
+                CameraPosition = new Vector2(pingouin.Position.X, _hauteurFen);
+            }
             OrthographicCamera.LookAt(CameraPosition);
         }
 
