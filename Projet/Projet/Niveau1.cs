@@ -79,6 +79,7 @@ namespace Projet
         //Portail
         private int _partiRecolleter;
         Recompenses partiPortail;
+        Recompenses openingPortal;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -138,6 +139,7 @@ namespace Projet
             //Portail
             _partiRecolleter = 0;
             partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
+            openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
 
             base.Initialize();
         }
@@ -176,6 +178,7 @@ namespace Projet
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             partiPortail.LoadContent(spritePortal);
+            openingPortal.LoadContent(spritePortal);
 
             base.LoadContent();
         }
@@ -184,6 +187,12 @@ namespace Projet
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //CONDITION POUR GAGNER
+            if (_partiRecolleter ==4)
+            {
+                openingPortal.etat = 0;
+            }
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
             if (_keyboardState.IsKeyDown(Keys.Tab))
@@ -223,7 +232,9 @@ namespace Projet
                 //Portail
                 _chronoDep += deltaSeconds;
                 partiPortail.Sprite.Play("portal");
+                openingPortal.Sprite.Play("openingPortal");
                 partiPortail.Sprite.Update(deltaSeconds);
+                openingPortal.Sprite.Update(deltaSeconds);
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -346,7 +357,14 @@ namespace Projet
             }
 
             //Affichage des parti du portail
-            _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
+            if (partiPortail.etat == 0)
+            {
+                _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
+            }
+            if (openingPortal.etat == 0)
+            {
+                _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(1));
+            }
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
