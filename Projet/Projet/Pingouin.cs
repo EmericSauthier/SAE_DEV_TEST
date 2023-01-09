@@ -29,6 +29,7 @@ namespace Projet
         private RectangleF hitBox;
 
         private float scale;
+        private float rotation;
 
         // Paramètres de vitesse
         private double walkVelocity;
@@ -72,6 +73,7 @@ namespace Projet
             this.CurrentLife = this.MaxLife;
 
             this.direction = "Right";
+            this.rotation = 0;
         }
         
         // Propriétés
@@ -193,6 +195,18 @@ namespace Projet
             set
             {
                 this.snowballTexture = value;
+            }
+        }
+        public float Rotation
+        {
+            get
+            {
+                return this.rotation;
+            }
+
+            set
+            {
+                this.rotation = value;
             }
         }
 
@@ -456,6 +470,8 @@ namespace Projet
             Fonction vérifiant la présence d'obsctale en-dessous du pingouin
             */
 
+            bool collision = false;
+
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
             ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
             ushort middle = (ushort)(this.Position.X / mapLayer.TileWidth);
@@ -466,11 +482,38 @@ namespace Projet
             TiledMapTile? tileMiddle;
             TiledMapTile? tileRight;
 
-            // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
+            int[] tilesId = new int[3] {-1, -1, -1};
 
-            return false;
+            // Récupération des différentes tiles, si l'une a une valeur, il y a collision
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank))
+            {
+                tilesId[0] = mapLayer.GetTile(left, y).GlobalIdentifier-1;
+                collision = true;
+            }
+            if (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank)
+            {
+                tilesId[1] = mapLayer.GetTile(middle, y).GlobalIdentifier - 1;
+                collision = true;
+            }
+            if (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank)
+            {
+                tilesId[2] = mapLayer.GetTile(right, y).GlobalIdentifier - 1;
+                collision = true;
+            }
+
+            //for (int i = 0; i < tilesId.Length; i++)
+            //{
+            //    if (tilesId[i] == 4 || tilesId[i] == 22 || tilesId[i] == 23 || tilesId[i] == 39)
+            //    {
+            //        if (rotation == 0)
+            //        {
+            //            this.Position += new Vector2(0, 1);
+            //        }
+            //        this.rotation = (float)0.30;
+            //    }
+            //}
+
+            return collision;
         }
         public bool CheckTop(TiledMapTileLayer mapLayer)
         {
