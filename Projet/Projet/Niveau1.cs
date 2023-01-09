@@ -70,15 +70,11 @@ namespace Projet
         private Texture2D _heartSprite;
         private Vector2[] _heartsPositions;
 
-
         //Debug rectangle
         private Rectangle rFox;
         private Rectangle rTrap;
         private Rectangle rKillingFox;
         private Rectangle rRecompense;
-
-        // Boules de neiges
-        private Texture2D _snowballTexture;
 
         //Portail
         private int _partiRecolleter;
@@ -156,8 +152,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
-            _pingouin.SnowballTexture = _snowballTexture;
+            _pingouin.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -177,9 +172,6 @@ namespace Projet
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
-
-            // Chargement de la texture de la boule de neige
-            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
