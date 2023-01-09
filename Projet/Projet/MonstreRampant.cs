@@ -21,6 +21,8 @@ namespace Projet
         private string enemy;
         private double vitesse;
         private double tempsArrivePosition;
+        private bool isMovingRight;
+
         /* CREATION VITESSE POUR TYPE DE RAMPANTS (POSSIBILITE D'AMELIORATION)
          private double _vitesseFox;
         private double _vitesseAutre;
@@ -107,6 +109,19 @@ namespace Projet
             }
         }
 
+        public bool IsMonsterRight
+        {
+            get
+            {
+                return this.isMovingRight;
+            }
+
+            set
+            {
+                this.isMovingRight = value;
+            }
+        }
+
         public void RightLeftMove(ref float time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
@@ -114,11 +129,13 @@ namespace Projet
             {
                 Position += new Vector2((float)Vitesse, 0);
                 Sprite.Play("rightWalking");
+                IsMonsterRight = true;
             }
             else if (time > tempsArrivePosition && time < tempsArrivePosition*2)
             {
                 Position -= new Vector2((float)Vitesse, 0);
                 Sprite.Play("leftWalking");
+                IsMonsterRight = false;
             }
             else time = 0;
         }

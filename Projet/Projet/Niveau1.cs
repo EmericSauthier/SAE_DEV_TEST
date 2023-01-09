@@ -232,7 +232,7 @@ namespace Projet
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
-                    if (Collision.IsCollidingMonstreRampant(_fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (Collision.IsCollidingMonstreRampant(_pingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
                         _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
                     }

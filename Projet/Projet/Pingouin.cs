@@ -38,6 +38,7 @@ namespace Projet
         private bool slide;
         private bool fly;
         private bool jump;
+        public bool isMovingRight;
 
         // Constructeur
         public Pingouin(float x, float y)
@@ -154,6 +155,7 @@ namespace Projet
             // Si le pingouin va à droite (flèche droite uniquement)
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
+                isMovingRight = true;
                 this.perso.Play("walkForward");
                 // Vérifie qu'il n'y a pas d'obstacles à droite
                 if (!CheckRight(mapLayer))
@@ -162,6 +164,7 @@ namespace Projet
             // Si le pingouin va à gauche (flèche gauche uniquement)
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
+                isMovingRight = false;
                 this.perso.Play("walkBehind");
                 // Vérifie qu'il n'y a pas d'obstacles à gauche
                 if (!CheckLeft(mapLayer))
@@ -170,6 +173,8 @@ namespace Projet
             // Si le pingouin glisse (flèche du bas)
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
+                isMovingRight = true;
+
                 // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
                 if (!this.slide)
                 {
