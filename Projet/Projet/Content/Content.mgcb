@@ -182,6 +182,11 @@
 /processorParam:TextureFormat=Color
 /build:Life/heart.png
 
+#begin Maps/desertMap.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Maps/desertMap.tmx
+
 #begin Maps/map.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
@@ -233,6 +238,23 @@
 /processorParam:TextureFormat=Color
 /build:Perso/snowball.png
 
+#begin Tiles/Desert.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/Desert.png
+
+#begin Tiles/Desert.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Tiles/Desert.tsx
+
 #begin Tiles/plains.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -283,4 +305,21 @@
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
 /build:Tiles/spike.tsx
+
+#begin Tiles/Temple Asset Pack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/Temple Asset Pack.png
+
+#begin Tiles/Temple Asset Pack.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Tiles/Temple Asset Pack.tsx
 
