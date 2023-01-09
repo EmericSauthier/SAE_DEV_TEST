@@ -70,6 +70,8 @@ namespace Projet
 
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
+
+            this.direction = "Right";
         }
         
         // Propriétés
@@ -253,12 +255,36 @@ namespace Projet
             // Si le jeu est fini
             if (gameOver)
             {
-                this.perso.Play("celebrate");
+                this.Animate("celebrate");
             }
             // Si le pingouin saute (touche espace) ou est dans les airs
             else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 Jump(ref move, keyboardState, mapLayer);
+            }
+            // Si le pingouin glisse (flèche du bas)
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                this.Animate("slide");
+                // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
+                if (!this.slide)
+                {
+                    this.slide = true;
+                }
+
+                if (isMovingRight)
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à droite
+                    if (!CheckRight(mapLayer))
+                        move = new Vector2((float)slideVelocity, 0);
+                }
+                else if (isMovingLeft)
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à gauche
+                    if (!CheckLeft(mapLayer))
+                        move = new Vector2((float)-slideVelocity, 0);
+                }
+
             }
             // Si le pingouin va à droite (flèche droite uniquement)
             else if (isMovingRight)
@@ -278,42 +304,7 @@ namespace Projet
                 if (!CheckLeft(mapLayer))
                     move = new Vector2((float)-walkVelocity, 0);
             }
-            // Si le pingouin glisse (flèche du bas)
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
-                if (!this.slide)
-                {
-                    if (isMovingLeft)
-                    {
-                        this.perso.Play($"beforeSlide{this.direction}");
-                    } else
-                    {
-                        this.perso.Play($"beforeSlide{this.direction}");
-                    }
-                    this.slide = true;
-                }
-                // S'il est déjà en trai de glisser, joue l'animation à plat ventre
-                else
-                {
-                    this.Animate("slide");
-                }
-
-                if (isMovingRight)
-                {
-                    // Vérifie qu'il n'y a pas d'obstacles à gauche
-                    if (!CheckRight(mapLayer))
-                        move = new Vector2((float)slideVelocity, 0);
-                }
-                else
-                {
-                    // Vérifie qu'il n'y a pas d'obstacles à gauche
-                    if (!CheckLeft(mapLayer))
-                        move = new Vector2((float)-slideVelocity, 0);
-                }
-                
-            }
-            // Si aucun mouvement n'est demandé, il reste immobile
+            // Si aucun mouvement n'est demandé, il reste immobile et joue son animation idle
             else
             {
                 this.Animate("idle");
@@ -349,11 +340,18 @@ namespace Projet
                     break;
                 // Joue l'animation de glisse
                 case "slide":
-                    this.perso.Play($"beforeSlide{this.direction}");
+                    if (!this.slide)
+                        this.perso.Play($"beforeSlide{this.direction}");
                     this.perso.Play($"slide{this.direction}");
                     break;
-                // Joue l'animation de saut
+                case "beforeJump":
+                    this.perso.Play($"beforeJump{this.direction}");
+                    break;
                 case "jump":
+                    this.perso.Play($"jump{this.direction}");
+                    break;
+                // Joue l'animation de saut
+                case "afterjump":
                     this.perso.Play($"afterJump{this.direction}");
                     break;
                 // Joue l'animation de base (immobile)
@@ -369,13 +367,9 @@ namespace Projet
             // Joue l'animation d'attaque en fonction du sens du personnage
             if (this.isMovingLeft)
             {
-                this.perso.Play("attackLeft");
                 direction = -1;
             }
-            else
-            {
-                this.Animate("attackRight");
-            }
+            this.Animate("attack");
 
             // Ajoute une boule de neige au tableau
             Snowball[] newSnowballsArray = new Snowball[this.snowballs.Length + 1];
@@ -397,13 +391,7 @@ namespace Projet
             // il joue une animation et on attribue ces valeurs aux variables suivantes
             if (!fly)
             {
-                if (isMovingLeft)
-                {
-                    this.perso.Play("beforeJumpLeft");
-                } else
-                {
-                    this.perso.Play("beforeJumpRight");
-                }
+                this.Animate("beforejump");
 
                 this.fly = true;
                 this.jump = true;
@@ -412,7 +400,7 @@ namespace Projet
             // S'il est déjà dans les airs, il joue l'animation suivante
             else
             {
-                this.perso.Play($"jump{this.direction}");
+                this.Animate("jump");
             }
 
             // Si le pingouin est en train de sauter,
