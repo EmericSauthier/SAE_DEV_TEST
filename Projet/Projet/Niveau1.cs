@@ -133,8 +133,6 @@ namespace Projet
             // Life
             _heartsPositions = new Vector2[3];
 
-
-
             base.Initialize();
         }
         public override void LoadContent()
@@ -160,7 +158,7 @@ namespace Projet
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
             recompense.LoadContent(spriteCoin);
 
-            // Life
+            // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
             // Chargement de la texture de la boule de neige
@@ -189,14 +187,9 @@ namespace Projet
 
                 // Pingouin
                 _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
-                _pingouin.Move(_gameOver, _keyboardState, _mapLayer);
+                _pingouin.InputsManager(_gameOver, _keyboardState, _mapLayer);
 
-                if (_keyboardState.IsKeyDown(Keys.Enter))
-                {
-                    _pingouin.Perso.Play("attack");
-                }
-
-                _pingouin.Perso.Update(deltaSeconds);
+                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
 
                 // Chrono
                 _chrono += deltaSeconds;
@@ -258,7 +251,6 @@ namespace Projet
                         }
                     }
                 }
-                
 
                 // Mort
                 if (_pingouinLife.CurrentLife <= 0)
@@ -272,8 +264,9 @@ namespace Projet
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Application du zoom de la camera
+            // Application du zoom de la caméra
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
+            // Affichage par rapport à la caméra
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Affichage du pingouin
@@ -292,6 +285,12 @@ namespace Projet
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
+
+            // Affichage des boules de neige
+            for (int i = 0; i < _pingouin.Snowballs.Length; i++)
+            {
+                _myGame.SpriteBatch.Draw(_snowballTexture, _pingouin.Snowballs[i].Position, Color.White);
+            }
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20,0), Color.White);
