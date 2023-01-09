@@ -80,6 +80,7 @@ namespace Projet
         private int _partiRecolleter;
         Recompenses partiPortail;
         Recompenses openingPortal;
+        Recompenses closingPortal;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -140,6 +141,7 @@ namespace Projet
             _partiRecolleter = 0;
             partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
+            closingPortal = new Recompenses(new Vector2(LARGEUR_FENETRE / 2-30, 500 + HAUTEUR_FENETRE / 2), "portal", 0);
 
             base.Initialize();
         }
@@ -179,6 +181,7 @@ namespace Projet
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             partiPortail.LoadContent(spritePortal);
             openingPortal.LoadContent(spritePortal);
+            closingPortal.LoadContent(spritePortal);
 
             base.LoadContent();
         }
@@ -233,8 +236,10 @@ namespace Projet
                 _chronoDep += deltaSeconds;
                 partiPortail.Sprite.Play("portal");
                 openingPortal.Sprite.Play("openingPortal");
+                openingPortal.Sprite.Play("closingPortal");
                 partiPortail.Sprite.Update(deltaSeconds);
                 openingPortal.Sprite.Update(deltaSeconds);
+                closingPortal.Sprite.Update(deltaSeconds);
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -373,6 +378,10 @@ namespace Projet
             if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(1));
+            }
+            if (closingPortal.etat == 0)
+            {
+                _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(1));
             }
 
             // Debug collision
