@@ -28,6 +28,8 @@ namespace Projet
         private AnimatedSprite perso;
         private RectangleF hitBox;
 
+        private float scale;
+
         // Paramètres de vitesse
         private double walkVelocity;
         private double slideVelocity;
@@ -40,7 +42,7 @@ namespace Projet
         private bool jump;
 
         // Constructeur
-        public Pingouin(float x, float y)
+        public Pingouin(float x, float y, float scale=1)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
@@ -48,6 +50,7 @@ namespace Projet
             this.slideVelocity = 2.5;
             this.gravity = 2.5;
             this.jumpVelocity = 10;
+            this.scale = scale;
         }
         
         // Propriétés
@@ -306,9 +309,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
-            ushort left = (ushort)((this.Position.X - 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y + 60 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y + 60 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -326,9 +329,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en haut à droite
-            ushort left = (ushort)((this.Position.X - 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 40 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 40 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -346,9 +349,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en bas à gauche
-            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X - 50 * this.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -366,9 +369,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à droite et en bas à droite
-            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X + 50 * this.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;

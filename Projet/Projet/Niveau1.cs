@@ -18,49 +18,51 @@ namespace Projet
     {
         private Game1 _myGame;
 
+        // Fenêtre
         public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
         private GraphicsDeviceManager _graphics;
 
-        //SOURIS POUR GERER CLIC
-        private MouseState _mouseState;
+        // GameManager
+        private bool _gameOver;
 
-        //MAP
+        // Gestion des entrées
+        private MouseState _mouseState;
+        private KeyboardState _keyboardState;
+
+        // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
+        private TiledMapTileLayer _mapLayer;
 
         //JEU
         private Camera _camera;
         public static float scale;
 
+        // Chrono
+        private Vector2 _positionChrono;
+        private float _chrono;
+        private float _chronoDep;
+
         // ENTITE
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
-        // Fox
+        
+        // Renard
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         public int _largeurFox1 = 19*3, _hauteurFox1 = 14*3; // à déplacer 
         public bool isFox1Died;
 
-        // Traps
+        // Piège
         Trap _ceilingTrap1;
         private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
         public int _largeurTrap1 = (64/2), _hauteurTrap1 = 64-20; // à déplacer 
 
-        //Recompense
+        // Recompense
         Recompenses recompense;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
         bool recompensePrise = false;
-
-        // GameManager
-        private bool _gameOver;
-        private KeyboardState _keyboardState;
-        private TiledMapTileLayer _mapLayer;
-
-        // Chrono
-        private Vector2 _positionChrono;
-        private float _chrono;
-        private float _chronoDep;
 
         // Life
         private Life _pingouinLife;
@@ -74,6 +76,7 @@ namespace Projet
         private Rectangle rKillingFox;
         private Rectangle rRecompense;
 
+        // Boules de neiges
         private Texture2D _snowballTexture;
         private Snowball[] _snowballs;
 
@@ -88,11 +91,11 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             _myGame.Window.Title = "Jeu du pingouin";
 
-            // GameManager
+            // Etat de la partie
             _gameOver = false;
 
             // Initialisation du pingouin et de sa position
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
 
             // Life
             _pingouinLife = new Life(3);
