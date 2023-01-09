@@ -1,6 +1,6 @@
 {
   "textureAtlas": {
-    "texture": "E:\\fac\\Purple Portal Sprite Sheet.png",
+    "texture": "Portal.png",
     "regionWidth": 64,
     "regionHeight": 64
   },
