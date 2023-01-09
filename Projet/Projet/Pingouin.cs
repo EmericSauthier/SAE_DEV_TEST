@@ -43,6 +43,8 @@ namespace Projet
         private bool isMovingLeft;
         public bool isMovingRight;
 
+        public String direction;
+
         // Life
         private int currentLife;
         private int maxLife;
@@ -227,16 +229,19 @@ namespace Projet
             {
                 this.isMovingLeft = true;
                 this.isMovingRight = false;
+                this.direction = "Left";
             } 
             else if (!keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
             {
                 this.isMovingRight = true;
                 this.isMovingLeft = false;
+                this.direction = "Right";
             }
             else
             {
                 this.isMovingLeft = false;
                 this.isMovingRight = false;
+                this.direction = "Right";
             }
 
             // Vérification de l'état de la touche entrée
@@ -281,24 +286,17 @@ namespace Projet
                 {
                     if (isMovingLeft)
                     {
-                        this.perso.Play("beforeSlideLeft");
+                        this.perso.Play($"beforeSlide{this.direction}");
                     } else
                     {
-                        this.perso.Play("beforeSlideRight");
+                        this.perso.Play($"beforeSlide{this.direction}");
                     }
                     this.slide = true;
                 }
                 // S'il est déjà en trai de glisser, joue l'animation à plat ventre
                 else
                 {
-                    if (isMovingLeft)
-                    {
-                        this.perso.Play("slideLeft");
-                    }
-                    else
-                    {
-                        this.perso.Play("slideRight");
-                    }
+                    this.Animate("slide");
                 }
 
                 if (isMovingRight)
@@ -318,7 +316,7 @@ namespace Projet
             // Si aucun mouvement n'est demandé, il reste immobile
             else
             {
-                this.perso.Play("idle");
+                this.Animate("idle");
             }
 
             // Applique le mouvement à la position du pingouin
@@ -339,7 +337,7 @@ namespace Projet
                     break;
                 // Joue l'animation d'attaque
                 case "attack":
-                    this.perso.Play("Attack");
+                    this.perso.Play($"attack{this.direction}");
                     break;
                 // Joue l'animation de déplacement vers la droite
                 case "walkForward":
@@ -351,12 +349,12 @@ namespace Projet
                     break;
                 // Joue l'animation de glisse
                 case "slide":
-                    this.perso.Play("beforeSlideLeft");
-                    this.perso.Play("slideLeft");
+                    this.perso.Play($"beforeSlide{this.direction}");
+                    this.perso.Play($"slide{this.direction}");
                     break;
                 // Joue l'animation de saut
                 case "jump":
-                    this.perso.Play("afterJumpLeft");
+                    this.perso.Play($"afterJump{this.direction}");
                     break;
                 // Joue l'animation de base (immobile)
                 default:
@@ -367,8 +365,17 @@ namespace Projet
 
         public void Attack()
         {
-            // Joue l'animation d'attaque
-            this.Animate("Attack");
+            int direction = 1;
+            // Joue l'animation d'attaque en fonction du sens du personnage
+            if (this.isMovingLeft)
+            {
+                this.perso.Play("attackLeft");
+                direction = -1;
+            }
+            else
+            {
+                this.Animate("attackRight");
+            }
 
             // Ajoute une boule de neige au tableau
             Snowball[] newSnowballsArray = new Snowball[this.snowballs.Length + 1];
@@ -377,6 +384,7 @@ namespace Projet
                 newSnowballsArray[i] = this.snowballs[i];
             }
             newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X, this.Position.Y, this.snowballTexture);
+            newSnowballsArray[newSnowballsArray.Length - 1].Velocity *= direction;
             this.snowballs = newSnowballsArray;
         }
         public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
@@ -404,7 +412,7 @@ namespace Projet
             // S'il est déjà dans les airs, il joue l'animation suivante
             else
             {
-                this.perso.Play("jump");
+                this.perso.Play($"jump{this.direction}");
             }
 
             // Si le pingouin est en train de sauter,
