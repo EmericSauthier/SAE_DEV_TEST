@@ -253,7 +253,7 @@ namespace Projet
                         //Collision de la recompense avec le pingouin
                         if (Collision.IsCollidingRecompense(coins[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                         {
-                            if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                            if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
                                 _pingouin.WalkVelocity *= 0.80;
                                 coins[i].etat = 1;
@@ -262,7 +262,7 @@ namespace Projet
                             else
                             {
                                 coins[i].etat = 1;
-                                _pingouinLife.Heal(1);
+                                _pingouin.Heal(1);
                                 MediaPlayer.Play(coinSound);
                             }
                         }
