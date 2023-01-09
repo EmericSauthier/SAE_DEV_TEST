@@ -29,7 +29,7 @@ namespace Projet
         }
 
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingMonstreRampant(MonstreRampant monstre, int largeurMonstre, int hauteurMonstre, ref bool isMonsterDied, ref Rectangle rectangleFoxDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
+        public static bool IsCollidingMonstreRampant(Pingouin pingouin, MonstreRampant monstre, int largeurMonstre, int hauteurMonstre, ref bool isMonsterDied, ref Rectangle rectangleFoxDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
         {
             rectangleFoxDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y, (int)(largeurMonstre), (int)(hauteurMonstre));
             rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 10, (int)(largeurMonstre)-16, 10);
@@ -42,6 +42,15 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(rectangleFoxDebug))
             {
+                if((monstre.IsMonsterRight && pingouin.isMovingRight) || (!monstre.IsMonsterRight && pingouin.isMovingRight))
+                {
+                    pingouin.Position -= new Vector2(10, 0);
+                }
+                else
+                {
+                    pingouin.Position += new Vector2(10, 0);
+                }
+
                 return true;
             }
             else return false;

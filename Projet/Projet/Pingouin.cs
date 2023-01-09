@@ -38,6 +38,11 @@ namespace Projet
         private bool slide;
         private bool fly;
         private bool jump;
+        public bool isMovingRight;
+
+        // Life
+        private int currentLife;
+        private int maxLife;
 
         // Constructeur
         public Pingouin(float x, float y)
@@ -48,6 +53,8 @@ namespace Projet
             this.slideVelocity = 2.5;
             this.gravity = 2.5;
             this.jumpVelocity = 10;
+            this.MaxLife = 3;
+            this.CurrentLife = this.MaxLife;
         }
         
         // Propriétés
@@ -124,6 +131,31 @@ namespace Projet
             }
         }
 
+        public int CurrentLife
+        {
+            get
+            {
+                return this.currentLife;
+            }
+
+            set
+            {
+                this.currentLife = value;
+            }
+        }
+        public int MaxLife
+        {
+            get
+            {
+                return this.maxLife;
+            }
+
+            set
+            {
+                this.maxLife = value;
+            }
+        }
+
         public void Move(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             /*
@@ -154,6 +186,7 @@ namespace Projet
             // Si le pingouin va à droite (flèche droite uniquement)
             else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
             {
+                isMovingRight = true;
                 this.perso.Play("walkForward");
                 // Vérifie qu'il n'y a pas d'obstacles à droite
                 if (!CheckRight(mapLayer))
@@ -162,6 +195,7 @@ namespace Projet
             // Si le pingouin va à gauche (flèche gauche uniquement)
             else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
+                isMovingRight = false;
                 this.perso.Play("walkBehind");
                 // Vérifie qu'il n'y a pas d'obstacles à gauche
                 if (!CheckLeft(mapLayer))
@@ -170,6 +204,8 @@ namespace Projet
             // Si le pingouin glisse (flèche du bas)
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
+                isMovingRight = true;
+
                 // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
                 if (!this.slide)
                 {
@@ -378,6 +414,22 @@ namespace Projet
                 return true;
 
             return false;
+        }
+
+        // LIFE
+        public void TakeDamage(int damage, ref float invincibilityChrono)
+        {
+
+            if (invincibilityChrono > 2)
+            {
+                CurrentLife -= damage;
+                invincibilityChrono = 0;
+            }
+        }
+
+        public void Heal(int healPoints)
+        {
+            CurrentLife += healPoints;
         }
     }
 }
