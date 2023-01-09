@@ -106,16 +106,16 @@ namespace Projet
             _chronoInvincibility = 0;
 
             // Initialisation du pingouin et de sa position
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), _snowballTexture, scale);
+            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
 
             if (_myGame.reprendre)
             {
-                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y, _snowballTexture, scale);
+                _pingouin = new Pingouin(_myGame.dernierePosiPingouin.X, _myGame.dernierePosiPingouin.Y, scale);
                 _myGame.reprendre = false;
             }
             else
             {
-                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), _snowballTexture, scale);
+                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
             }
 
             // Ennemis
@@ -194,9 +194,10 @@ namespace Projet
                 _camera.Update(gameTime, _pingouin);
 
                 // Pingouin
-                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
-                _pingouin.InputsManager(_gameOver, _keyboardState, _mapLayer);
+                _pingouin.SnowballTexture = _snowballTexture;
 
+                _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
+                
                 _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
 
                 // Chrono

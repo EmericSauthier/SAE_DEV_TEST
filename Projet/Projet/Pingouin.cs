@@ -51,7 +51,7 @@ namespace Projet
         private Texture2D snowballTexture;
 
         // Constructeur
-        public Pingouin(float x, float y, Texture2D snowballTexture, float scale=1)
+        public Pingouin(float x, float y, float scale=1)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
@@ -64,7 +64,6 @@ namespace Projet
             this.scale = scale;
 
             this.snowballs = new Snowball[0];
-            this.snowballTexture = snowballTexture;
 
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
