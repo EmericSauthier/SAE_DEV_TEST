@@ -36,10 +36,11 @@ namespace Projet
         private double jumpVelocity;
         private double gravity;
 
-        // Etat du pingouin (en train de glisser, en l'air, en train de sauter)
+        // Etat du pingouin (en train de glisser, en l'air, en train de sauter, se déplace vers la gauche/droite)
         private bool slide;
         private bool fly;
         private bool jump;
+        private bool isMovingLeft;
         public bool isMovingRight;
 
         // Life
@@ -220,6 +221,24 @@ namespace Projet
             {
                 this.slide = false;
             }
+
+            // Vérification de l'état des flèches droite et gauche
+            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            {
+                this.isMovingLeft = true;
+                this.isMovingRight = false;
+            } 
+            else if (!keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+            {
+                this.isMovingRight = true;
+                this.isMovingLeft = false;
+            }
+            else
+            {
+                this.isMovingLeft = false;
+                this.isMovingRight = false;
+            }
+
             // Vérification de l'état de la touche entrée
             if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5)
             {
@@ -237,7 +256,7 @@ namespace Projet
                 Jump(ref move, keyboardState, mapLayer);
             }
             // Si le pingouin va à droite (flèche droite uniquement)
-            else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            else if (isMovingRight)
             {
                 isMovingRight = true;
                 this.perso.Play("walkForward");
@@ -246,7 +265,7 @@ namespace Projet
                     move = new Vector2((float)walkVelocity, 0);
             }
             // Si le pingouin va à gauche (flèche gauche uniquement)
-            else if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            else if (isMovingLeft)
             {
                 isMovingRight = false;
                 this.perso.Play("walkBehind");
@@ -257,22 +276,44 @@ namespace Projet
             // Si le pingouin glisse (flèche du bas)
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                isMovingRight = true;
-
                 // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
                 if (!this.slide)
                 {
-                    this.perso.Play("beforeSlide");
+                    if (isMovingLeft)
+                    {
+                        this.perso.Play("beforeSlideLeft");
+                    } else
+                    {
+                        this.perso.Play("beforeSlideRight");
+                    }
                     this.slide = true;
                 }
                 // S'il est déjà en trai de glisser, joue l'animation à plat ventre
                 else
                 {
-                    this.perso.Play("slide");
+                    if (isMovingLeft)
+                    {
+                        this.perso.Play("slideLeft");
+                    }
+                    else
+                    {
+                        this.perso.Play("slideRight");
+                    }
                 }
-                // Vérifie qu'il n'y a pas d'obstacles à gauche
-                if (!CheckRight(mapLayer))
-                    move = new Vector2((float)slideVelocity, 0);
+
+                if (isMovingRight)
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à gauche
+                    if (!CheckRight(mapLayer))
+                        move = new Vector2((float)slideVelocity, 0);
+                }
+                else
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à gauche
+                    if (!CheckLeft(mapLayer))
+                        move = new Vector2((float)-slideVelocity, 0);
+                }
+                
             }
             // Si aucun mouvement n'est demandé, il reste immobile
             else
@@ -310,12 +351,12 @@ namespace Projet
                     break;
                 // Joue l'animation de glisse
                 case "slide":
-                    this.perso.Play("beforeSlide");
-                    this.perso.Play("slide");
+                    this.perso.Play("beforeSlideLeft");
+                    this.perso.Play("slideLeft");
                     break;
                 // Joue l'animation de saut
                 case "jump":
-                    this.perso.Play("afterJump");
+                    this.perso.Play("afterJumpLeft");
                     break;
                 // Joue l'animation de base (immobile)
                 default:
@@ -348,7 +389,14 @@ namespace Projet
             // il joue une animation et on attribue ces valeurs aux variables suivantes
             if (!fly)
             {
-                this.perso.Play("beforeJump");
+                if (isMovingLeft)
+                {
+                    this.perso.Play("beforeJumpLeft");
+                } else
+                {
+                    this.perso.Play("beforeJumpRight");
+                }
+
                 this.fly = true;
                 this.jump = true;
                 this.positionSaut = this.position;
