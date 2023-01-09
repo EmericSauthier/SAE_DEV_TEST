@@ -18,6 +18,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/coinSound.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/coinSound.mp3
+
 #begin Decors/flocon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -77,6 +83,36 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Decors/fondMenu.jpg
+
+#begin Decors/Portal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Decors/Portal.png
+
+#begin Decors/portal.sf
+/importer:SpriteFactoryContentImporter
+/processor:SpriteFactoryContentProcessor
+/processorParam:ContentType=MonoGame.Extended MonoGame.Extended.Animations.SpriteFactory.SpriteFactoryFileReader, MonoGame.Extended.Animations
+/build:Decors/portal.sf
+
+#begin Decors/portalPart.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Decors/portalPart.png
 
 #begin Decors/regle2.png
 /importer:TextureImporter

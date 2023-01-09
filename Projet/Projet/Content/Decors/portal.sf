@@ -1,0 +1,24 @@
+{
+  "textureAtlas": {
+    "texture": "E:\\fac\\Purple Portal Sprite Sheet.png",
+    "regionWidth": 64,
+    "regionHeight": 64
+  },
+  "cycles": {
+    "openingPortal": {
+      "frames": [8,9,10,11,12,13,14,15],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "closingPortal": {
+      "frames": [16,17,18,19,20,21,22],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "portal": {
+      "frames": [0,1,2,3,4,5,6,7],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}
