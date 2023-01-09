@@ -79,7 +79,6 @@ namespace Projet
 
         // Boules de neiges
         private Texture2D _snowballTexture;
-        private Snowball[] _snowballs;
 
         //Portail
         private int _partiRecolleter;
@@ -113,7 +112,7 @@ namespace Projet
 
             if (_myGame.reprendre)
             {
-                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y, scale);
+                _pingouin = new Pingouin(_myGame.dernierePosiPingouin.X, _myGame.dernierePosiPingouin.Y, scale);
                 _myGame.reprendre = false;
             }
             else
@@ -205,9 +204,8 @@ namespace Projet
                 _camera.Update(gameTime, _pingouin);
 
                 // Pingouin
-                _myGame._dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
-                _pingouin.InputsManager(_gameOver, _keyboardState, _mapLayer);
-
+                _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
+                
                 _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
 
                 // Chrono

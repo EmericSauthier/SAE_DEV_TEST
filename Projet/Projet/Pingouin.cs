@@ -48,10 +48,9 @@ namespace Projet
 
         // Tableau de boule de neige
         private Snowball[] snowballs;
-        private Texture2D snowballTexture;
 
         // Constructeur
-        public Pingouin(float x, float y, Texture2D snowballTexture, float scale=1)
+        public Pingouin(float x, float y, float scale=1)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
@@ -64,7 +63,6 @@ namespace Projet
             this.scale = scale;
 
             this.snowballs = new Snowball[0];
-            this.snowballTexture = snowballTexture;
 
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
@@ -155,18 +153,6 @@ namespace Projet
                 this.snowballs = value;
             }
         }
-        public Texture2D SnowballTexture
-        {
-            get
-            {
-                return this.snowballTexture;
-            }
-
-            set
-            {
-                this.snowballTexture = value;
-            }
-        }
         public int CurrentLife
         {
             get
@@ -222,7 +208,7 @@ namespace Projet
                 this.slide = false;
             }
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyUp(Keys.Enter))
+            if (keyboardState.IsKeyUp(Keys.Enter) && this.snowballs.Length <= 5)
             {
                 this.Attack();
             }

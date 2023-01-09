@@ -21,6 +21,7 @@ namespace Projet
         private string enemy;
         private double vitesse;
         private double tempsArrivePosition;
+        private bool IsMovingRight;
         
 
         public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
@@ -92,7 +93,6 @@ namespace Projet
                 this.tempsArrivePosition = value;
             }
         }
-
         public bool IsMonsterRight
         {
             get

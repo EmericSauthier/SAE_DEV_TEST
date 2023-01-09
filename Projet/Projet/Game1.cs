@@ -51,14 +51,17 @@ namespace Projet
         private Vector2 _posiButtonMenu;
 
         //GESTION SOURIS
-        private MouseState _mouseState;*/
+        private MouseState _mouseState;
+        */
 
         //SAUVEGARDE
-        public Vector2 _dernierePosiPingouin;
+        public Vector2 dernierePosiPingouin;
+
         /*
         //DECO
         private Texture2D _textureFond;
-        private Vector2 _positionFond;*/
+        private Vector2 _positionFond;
+        */
 
         public Game1()
         {
