@@ -255,7 +255,7 @@ namespace Projet
                 for (int i = 0; i < _pingouin.MaxLife; i++)
                 {
                     _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2 , _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
-                    _heartsPositions[i] += new Vector2(50*i, 0);
+                    _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
                 // Collisions
