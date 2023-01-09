@@ -260,6 +260,30 @@ namespace Projet
             {
                 Jump(ref move, keyboardState, mapLayer);
             }
+            // Si le pingouin glisse (flèche du bas)
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                this.Animate("slide");
+                // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
+                if (!this.slide)
+                {
+                    this.slide = true;
+                }
+
+                if (isMovingRight)
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à droite
+                    if (!CheckRight(mapLayer))
+                        move = new Vector2((float)slideVelocity, 0);
+                }
+                else if (isMovingLeft)
+                {
+                    // Vérifie qu'il n'y a pas d'obstacles à gauche
+                    if (!CheckLeft(mapLayer))
+                        move = new Vector2((float)-slideVelocity, 0);
+                }
+
+            }
             // Si le pingouin va à droite (flèche droite uniquement)
             else if (isMovingRight)
             {
@@ -277,41 +301,6 @@ namespace Projet
                 // Vérifie qu'il n'y a pas d'obstacles à gauche
                 if (!CheckLeft(mapLayer))
                     move = new Vector2((float)-walkVelocity, 0);
-            }
-            // Si le pingouin glisse (flèche du bas)
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
-                if (!this.slide)
-                {
-                    if (isMovingLeft)
-                    {
-                        this.perso.Play($"beforeSlide{this.direction}");
-                    } else
-                    {
-                        this.perso.Play($"beforeSlide{this.direction}");
-                    }
-                    this.slide = true;
-                }
-                // S'il est déjà en trai de glisser, joue l'animation à plat ventre
-                else
-                {
-                    this.Animate("slide");
-                }
-
-                if (isMovingRight)
-                {
-                    // Vérifie qu'il n'y a pas d'obstacles à gauche
-                    if (!CheckRight(mapLayer))
-                        move = new Vector2((float)slideVelocity, 0);
-                }
-                else
-                {
-                    // Vérifie qu'il n'y a pas d'obstacles à gauche
-                    if (!CheckLeft(mapLayer))
-                        move = new Vector2((float)-slideVelocity, 0);
-                }
-                
             }
             // Si aucun mouvement n'est demandé, il reste immobile
             else
@@ -349,7 +338,8 @@ namespace Projet
                     break;
                 // Joue l'animation de glisse
                 case "slide":
-                    this.perso.Play($"beforeSlide{this.direction}");
+                    if (!this.slide)
+                        this.perso.Play($"beforeSlide{this.direction}");
                     this.perso.Play($"slide{this.direction}");
                     break;
                 // Joue l'animation de saut
