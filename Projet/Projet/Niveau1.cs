@@ -34,7 +34,8 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _mapLayer;
+        private TiledMapTileLayer _groundLayer;
+        private TiledMapTileLayer _deadLayer;
 
         //JEU
         private Camera _camera;
@@ -150,7 +151,8 @@ namespace Projet
             // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _groundLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
@@ -213,7 +215,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
                 
-                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
+                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _groundLayer, _deadLayer);
 
                 // Chrono
                 _chrono += deltaSeconds;

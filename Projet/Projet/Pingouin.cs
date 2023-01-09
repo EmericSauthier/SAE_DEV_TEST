@@ -210,20 +210,21 @@ namespace Projet
             }
         }
 
-        public void Update(bool gameOver, float deltaTime, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Update(bool gameOver, float deltaTime, KeyboardState keyboardState, TiledMapTileLayer groundLayer, TiledMapTileLayer deadLayer)
         {
             /*
             Fonction d'update du pingouin. Elle permet de centraliser toute les opérations à effectuer lors de chaque frame. 
             */
 
             // Application de la gravité
-            this.Gravity(mapLayer);
+            this.Gravity(groundLayer);
+            gameOver = this.CheckBottom(deadLayer) || gameOver;
             
-            this.SnowballsUpdate(mapLayer);
+            this.SnowballsUpdate(groundLayer);
             // Application d'un mouvement si commander par l'utilisateur
-            this.InputsManager(gameOver, keyboardState, mapLayer);
+            this.InputsManager(gameOver, keyboardState, groundLayer);
             this.perso.Update(deltaTime);
-            this.SnowballsUpdate(mapLayer);
+            this.SnowballsUpdate(groundLayer);
         }
 
         public void InputsManager(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
