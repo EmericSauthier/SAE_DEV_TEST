@@ -21,10 +21,7 @@ namespace Projet
         private string enemy;
         private double vitesse;
         private double tempsArrivePosition;
-        /* CREATION VITESSE POUR TYPE DE RAMPANTS (POSSIBILITE D'AMELIORATION)
-         private double _vitesseFox;
-        private double _vitesseAutre;
-         */
+        
 
         public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
@@ -33,18 +30,7 @@ namespace Projet
             this.Enemy = enemy;
             this.TempsArrivePosition = tempsArrivePosition;
         }
-        /* POSSIBILITER D'AMELIORATION EN METTANT AUTOMATIQUEMENT LA VITESSE CELON LE TYPE DE RAMPANTS
-         public MonstreRampant(Vector2 position, string enemy, double tempsArrivePosition)
-        {
-            this.Position = position;
-            if (ennemy == "fox")
-                this.Vitesse = _vitesseFox;
-            else
-                this.Vitesse = _vitesse;
-            this.Enemy = enemy;
-            this.TempsArrivePosition = tempsArrivePosition;
-        }
-         */
+        
 
         public Vector2 Position
         {

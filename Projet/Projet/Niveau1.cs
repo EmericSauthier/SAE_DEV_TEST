@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
@@ -11,6 +12,7 @@ using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System;
+using System.Collections.Generic;
 
 namespace Projet
 {
@@ -48,9 +50,9 @@ namespace Projet
         public int _largeurTrap1 = (64/2), _hauteurTrap1 = 64-20; // à déplacer 
 
         //Recompense
-        Recompenses recompense;
+        Recompenses []coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
-        bool recompensePrise = false;
+        Song coinSound;
 
         // GameManager
         private bool _gameOver;
@@ -74,6 +76,7 @@ namespace Projet
         private Rectangle rKillingFox;
         private Rectangle rRecompense;
 
+        //BOULE DE NEIGE
         private Texture2D _snowballTexture;
         private Snowball[] _snowballs;
 
@@ -115,7 +118,13 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
-            recompense = new Recompenses(new Vector2(1150, 780), "piece");
+            coins = new Recompenses[4];
+            int x = 1150;
+            int y = 780;
+            for (int i=0; i <4; i++)
+            {
+                coins[i] = new Recompenses(new Vector2(x+50*i, y), "piece", 0);
+            }
 
             // Camera
             scale = (float)0.5;
@@ -155,7 +164,11 @@ namespace Projet
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            recompense.LoadContent(spriteCoin);
+            for (int i =0; i<4; i++)
+            {
+                coins[i].LoadContent(spriteCoin);
+            }
+            coinSound = Content.Load<Song>("Audio/coinSound");
 
             // Life
             _heartSprite = Content.Load<Texture2D>("Life/heart");
@@ -205,9 +218,12 @@ namespace Projet
                 _fox1.Sprite.Update(deltaSeconds);
 
                 // Recompense
-                _chronoDep += deltaSeconds;
-                recompense.Sprite.Play("coin");
-                recompense.Sprite.Update(deltaSeconds);
+                for (int i =0; i<4; i++)
+                {
+                    _chronoDep += deltaSeconds;
+                    coins[i].Sprite.Play("coin");
+                    coins[i].Sprite.Update(deltaSeconds);
+                }
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -238,23 +254,30 @@ namespace Projet
                     }
                 }
                 
-                if (!recompensePrise)
+                
+                for (int i =0; i<4; i++)
                 {
-                    //Collision de la recompense avec le pingouin
-                    if (Collision.IsCollidingRecompense(recompense, largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                    if (coins[i].etat == 0)
                     {
-                        if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                        //Collision de la recompense avec le pingouin
+                        if (Collision.IsCollidingRecompense(coins[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                         {
-                            _pingouin.WalkVelocity *= 0.80;
-                            recompensePrise = true;
-                        }
-                        else
-                        {
-                            recompensePrise = true;
-                            _pingouinLife.Heal(1);
+                            if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                            {
+                                _pingouin.WalkVelocity *= 0.80;
+                                coins[i].etat = 1;
+                                MediaPlayer.Play(coinSound);
+                            }
+                            else
+                            {
+                                coins[i].etat = 1;
+                                _pingouinLife.Heal(1);
+                                MediaPlayer.Play(coinSound);
+                            }
                         }
                     }
                 }
+                
                 
 
                 // Mort
@@ -308,20 +331,27 @@ namespace Projet
             }
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
-            if (!recompensePrise)
+            //Affichage des recompenses si elle n'as pas ete prise
+            for (int i = 0; i<4; i++)
             {
-                //Affichage des recompenses si elle n'as pas ete prise
-                _myGame.SpriteBatch.Draw(recompense.Sprite, recompense.Position, 0, new Vector2((float)0.15));
+                if (coins[i].etat == 0)
+                {
+                    _myGame.SpriteBatch.Draw(coins[i].Sprite, coins[i].Position, 0, new Vector2((float)0.15));
+                }
             }
             
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
-            if (!recompensePrise)
+            for (int i=0; i<4; i++)
             {
-                _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
+                if (coins[i].etat == 0)
+                {
+                    _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
+                }
             }
+            
             if (!isFox1Died)
             {
                 _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);

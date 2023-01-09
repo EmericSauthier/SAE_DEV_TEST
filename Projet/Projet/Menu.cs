@@ -55,6 +55,7 @@ namespace Projet
 
             //GESTION CLIC
             clicChoixNiv = false;
+            _myGame.clicMenu = false;
 
             //INITIALISATION TEXTE AFFICHER
             regle = "Notes de pingouin";
