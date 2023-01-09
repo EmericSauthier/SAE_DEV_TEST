@@ -79,8 +79,10 @@ namespace Projet
 
         // Boules de neiges
         private Texture2D _snowballTexture;
-        private Snowball[] _snowballs;
 
+        //Portail
+        private int _partiRecolleter;
+        Recompenses partiPortail;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -137,6 +139,10 @@ namespace Projet
             // Life
             _heartsPositions = new Vector2[3];
 
+            //Portail
+            _partiRecolleter = 0;
+            partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -147,8 +153,11 @@ namespace Projet
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
             // Chargement du sprite du pingouin
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            _pingouin.Perso = new AnimatedSprite(spriteSheet);
+            _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
+
+            // Chargement de la texture de la boule de neige
+            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+            _pingouin.SnowballTexture = _snowballTexture;
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -172,6 +181,10 @@ namespace Projet
             // Chargement de la texture de la boule de neige
             _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
+            //Chargement du sprite du portail
+            SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
+            partiPortail.LoadContent(spritePortal);
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -194,8 +207,6 @@ namespace Projet
                 _camera.Update(gameTime, _pingouin);
 
                 // Pingouin
-                _pingouin.SnowballTexture = _snowballTexture;
-
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
                 
                 _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
@@ -216,6 +227,11 @@ namespace Projet
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
                 }
+
+                //Portail
+                _chronoDep += deltaSeconds;
+                partiPortail.Sprite.Play("portal");
+                partiPortail.Sprite.Update(deltaSeconds);
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -336,7 +352,9 @@ namespace Projet
                     _myGame.SpriteBatch.Draw(coins[i].Sprite, coins[i].Position, 0, new Vector2((float)0.15));
                 }
             }
-            
+
+            //Affichage des parti du portail
+            _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);

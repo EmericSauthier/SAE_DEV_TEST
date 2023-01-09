@@ -154,18 +154,6 @@ namespace Projet
                 this.snowballs = value;
             }
         }
-        public Texture2D SnowballTexture
-        {
-            get
-            {
-                return this.snowballTexture;
-            }
-
-            set
-            {
-                this.snowballTexture = value;
-            }
-        }
         public int CurrentLife
         {
             get
@@ -188,6 +176,18 @@ namespace Projet
             set
             {
                 this.maxLife = value;
+            }
+        }
+        public Texture2D SnowballTexture
+        {
+            get
+            {
+                return this.snowballTexture;
+            }
+
+            set
+            {
+                this.snowballTexture = value;
             }
         }
 
@@ -221,7 +221,7 @@ namespace Projet
                 this.slide = false;
             }
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyUp(Keys.Enter))
+            if (keyboardState.IsKeyUp(Keys.Enter) && this.snowballs.Length <= 5)
             {
                 this.Attack();
             }
