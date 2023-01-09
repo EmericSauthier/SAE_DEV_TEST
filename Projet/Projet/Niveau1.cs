@@ -118,7 +118,7 @@ namespace Projet
             }
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 6);
+            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
             isFox1Died = false;
 
             // Traps
