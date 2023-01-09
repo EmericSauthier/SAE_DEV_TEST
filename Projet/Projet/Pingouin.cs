@@ -208,7 +208,7 @@ namespace Projet
                 this.slide = false;
             }
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyUp(Keys.Enter))
+            if (keyboardState.IsKeyUp(Keys.Enter) && this.snowballs.Length <= 5)
             {
                 this.Attack();
             }
