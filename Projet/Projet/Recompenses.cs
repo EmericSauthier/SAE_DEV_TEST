@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
@@ -19,10 +21,11 @@ namespace Projet
         private Vector2 position;
         private AnimatedSprite sprite;
         private string typeRecompense;
+        public int etat;
 
         public static int effetPoisson =1, effetPiece = -1;
 
-        public Recompenses(Vector2 position, string typeRecompense)
+        public Recompenses(Vector2 position, string typeRecompense, int etat)
         {
             this.Position = position;
             this.Sprite = sprite;

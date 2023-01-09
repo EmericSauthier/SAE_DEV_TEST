@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 using MonoGame.Extended;
 using MonoGame.Extended.Content;
@@ -42,7 +43,7 @@ namespace Projet
         public bool clicParametres;
         public bool pause;
         public bool reprendre;
-
+        /*
         //TEXTE
         private string _buttonPlay;
         private string _buttonMenu;
@@ -50,14 +51,14 @@ namespace Projet
         private Vector2 _posiButtonMenu;
 
         //GESTION SOURIS
-        private MouseState _mouseState;
+        private MouseState _mouseState;*/
 
         //SAUVEGARDE
         public Vector2 _dernierePosiPingouin;
-
+        /*
         //DECO
         private Texture2D _textureFond;
-        private Vector2 _positionFond;
+        private Vector2 _positionFond;*/
 
         public Game1()
         {
@@ -80,7 +81,7 @@ namespace Projet
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
-
+            /*
             //BOUTON
             _buttonMenu = "Menu";
             _buttonPlay = "Jouer";
@@ -89,7 +90,8 @@ namespace Projet
 
             //DECO
             _positionFond = new Vector2(0, 0);
-
+            */
+            clicMenu = true;
             base.Initialize();
         }
 
@@ -117,6 +119,7 @@ namespace Projet
 
             // Récupération des entrées
             KeyboardState keyboardState = Keyboard.GetState();
+            /*
             _mouseState = Mouse.GetState();
 
             // Gestion de la souris
@@ -130,7 +133,7 @@ namespace Projet
                 {
                     clicNiveau1 = true;
                 }
-            }
+            }*/
 
             // CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
@@ -194,14 +197,14 @@ namespace Projet
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             SpriteBatch.Begin();
-
+            /*
             //DECO
             //SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
 
             //TEXTE
             SpriteBatch.DrawString(police, $"{_buttonMenu}", _posiButtonMenu, Color.Black);
             SpriteBatch.DrawString(police, $"{_buttonPlay}", _posiButtonPlay, Color.Black);
-
+            */
             SpriteBatch.End();
             
             base.Draw(gameTime);

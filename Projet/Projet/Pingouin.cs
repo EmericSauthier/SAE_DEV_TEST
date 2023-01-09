@@ -28,6 +28,8 @@ namespace Projet
         private AnimatedSprite perso;
         private RectangleF hitBox;
 
+        private float scale;
+
         // Paramètres de vitesse
         private double walkVelocity;
         private double slideVelocity;
@@ -44,8 +46,12 @@ namespace Projet
         private int currentLife;
         private int maxLife;
 
+        // Tableau de boule de neige
+        private Snowball[] snowballs;
+        private Texture2D snowballTexture;
+
         // Constructeur
-        public Pingouin(float x, float y)
+        public Pingouin(float x, float y, Texture2D snowballTexture, float scale=1)
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
@@ -53,6 +59,9 @@ namespace Projet
             this.slideVelocity = 2.5;
             this.gravity = 2.5;
             this.jumpVelocity = 10;
+            this.scale = scale;
+            this.snowballs = new Snowball[0];
+            this.snowballTexture = snowballTexture;
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
         }
@@ -80,6 +89,18 @@ namespace Projet
             set
             {
                 this.perso = value;
+            }
+        }
+        public RectangleF HitBox
+        {
+            get
+            {
+                return this.hitBox;
+            }
+
+            set
+            {
+                this.hitBox = value;
             }
         }
         public double WalkVelocity
@@ -118,16 +139,28 @@ namespace Projet
                 this.fly = value;
             }
         }
-        public RectangleF HitBox
+        internal Snowball[] Snowballs
         {
             get
             {
-                return this.hitBox;
+                return this.snowballs;
             }
 
             set
             {
-                this.hitBox = value;
+                this.snowballs = value;
+            }
+        }
+        public Texture2D SnowballTexture
+        {
+            get
+            {
+                return this.snowballTexture;
+            }
+
+            set
+            {
+                this.snowballTexture = value;
             }
         }
 
@@ -156,14 +189,27 @@ namespace Projet
             }
         }
 
-        public void Move(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        public void Update(bool gameOver, float deltaTime, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             /*
-            Fonction permettant de lancer les animations et de faire bouger le pingouin
+            Fonction d'update du pingouin. Elle permet de centraliser toute les opérations à effectuer lors de chaque frame. 
             */
 
             // Application de la gravité
-            Gravity(mapLayer);
+            this.Gravity(mapLayer);
+
+            // Application d'un mouvement si commander par l'utilisateur
+            this.InputsManager(gameOver, keyboardState, mapLayer);
+            this.perso.Update(deltaTime);
+
+            this.SnowballsUpdate(mapLayer);
+        }
+
+        public void InputsManager(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
+        {
+            /*
+            Fonction permettant de lancer les animations et de faire bouger le pingouin si les entrées correspondent
+            */
 
             Vector2 move = Vector2.Zero;
 
@@ -171,6 +217,11 @@ namespace Projet
             if (keyboardState.IsKeyUp(Keys.Down))
             {
                 this.slide = false;
+            }
+            // Vérification de l'état de la touche entrée
+            if (keyboardState.IsKeyUp(Keys.Enter))
+            {
+                this.Attack();
             }
 
             // Si le jeu est fini
@@ -233,8 +284,7 @@ namespace Projet
         public void Animate(String animation)
         {
             /* 
-            (Surcharge de la fonction précédente)
-            Fonction d'animation du personnage sans déplacement
+            Fonction d'animation du personnage
             */
 
             // Switch en fonction du nom de l'animation passé en paramètre
@@ -243,6 +293,10 @@ namespace Projet
                 // Joue l'animation de célébration
                 case "celebrate":
                     this.perso.Play("celebrate");
+                    break;
+                // Joue l'animation d'attaque
+                case "attack":
+                    this.perso.Play("Attack");
                     break;
                 // Joue l'animation de déplacement vers la droite
                 case "walkForward":
@@ -268,6 +322,20 @@ namespace Projet
             }
         }
 
+        public void Attack()
+        {
+            // Joue l'animation d'attaque
+            this.Animate("Attack");
+
+            // Ajoute une boule de neige au tableau
+            Snowball[] newSnowballsArray = new Snowball[this.snowballs.Length + 1];
+            for (int i = 0; i < this.snowballs.Length; i++)
+            {
+                newSnowballsArray[i] = this.snowballs[i];
+            }
+            newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X, this.Position.Y, this.snowballTexture);
+            this.snowballs = newSnowballsArray;
+        }
         public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
             /*
@@ -293,7 +361,7 @@ namespace Projet
             // que la différence de hauteur entre sa position au moment du saut et sa position actuelle est inférieur à 80
             // et qu'il n'y a pas d'obstacles au-dessus de lui, on applique un mouvement vertical
             // (Cela permet de fluidifier le mouvement de saut et de ne pas téléporter le pingouin)
-            if (this.jump && this.positionSaut.Y - this.position.Y < 80 && !CheckTop(mapLayer))
+            if (this.jump && this.positionSaut.Y - this.position.Y < 100 && !CheckTop(mapLayer))
             {
                 move += new Vector2(0, (float)-this.jumpVelocity);
             }
@@ -335,6 +403,7 @@ namespace Projet
                 this.fly = false;
             }
         }
+
         public bool CheckBottom(TiledMapTileLayer mapLayer)
         {
             /*
@@ -342,9 +411,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
-            ushort left = (ushort)((this.Position.X - 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y + 60 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y + 60 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -362,9 +431,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en haut à droite
-            ushort left = (ushort)((this.Position.X - 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 40 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
+            ushort y = (ushort)((this.Position.Y - 40 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
             TiledMapTile? tileRight;
@@ -382,9 +451,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en bas à gauche
-            ushort x = (ushort)((this.Position.X - 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X - 50 * this.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -402,9 +471,9 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en haut à droite et en bas à droite
-            ushort x = (ushort)((this.Position.X + 50 * Niveau1.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * Niveau1.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * Niveau1.scale) / mapLayer.TileHeight);
+            ushort x = (ushort)((this.Position.X + 50 * this.scale) / mapLayer.TileWidth);
+            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
             TiledMapTile? tileBottom;
@@ -414,6 +483,33 @@ namespace Projet
                 return true;
 
             return false;
+        }
+
+        public void SnowballsUpdate(TiledMapTileLayer mapLayer)
+        {
+            int countNull = 0;
+            for (int i = 0; i < this.snowballs.Length; i++)
+            {
+                if (this.snowballs[i].Collide(mapLayer)) // Vérification des collisions avec le décor
+                {
+                    this.snowballs[i] = null;
+                    countNull++;
+                }
+                else
+                {
+                    this.snowballs[i].Move();
+                }
+            }
+
+            Snowball[] temp = this.snowballs;
+            this.snowballs = new Snowball[this.snowballs.Length - countNull];
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (temp[i] != null)
+                {
+                    this.snowballs[i] = temp[i];
+                }
+            }
         }
 
         // LIFE
