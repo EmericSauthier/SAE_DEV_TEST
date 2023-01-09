@@ -55,13 +55,17 @@ namespace Projet
         {
             this.Position = new Vector2(x, y);
             this.slide = false;
+
+            this.gravity = 2.5;
             this.walkVelocity = 2;
             this.slideVelocity = 2.5;
-            this.gravity = 2.5;
             this.jumpVelocity = 10;
+
             this.scale = scale;
+
             this.snowballs = new Snowball[0];
             this.snowballTexture = snowballTexture;
+
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
         }
@@ -163,7 +167,6 @@ namespace Projet
                 this.snowballTexture = value;
             }
         }
-
         public int CurrentLife
         {
             get
@@ -512,7 +515,6 @@ namespace Projet
             }
         }
 
-        // LIFE
         public void TakeDamage(int damage, ref float invincibilityChrono)
         {
 
@@ -522,7 +524,6 @@ namespace Projet
                 invincibilityChrono = 0;
             }
         }
-
         public void Heal(int healPoints)
         {
             CurrentLife += healPoints;
