@@ -81,6 +81,9 @@ namespace Projet
         private Texture2D _snowballTexture;
         private Snowball[] _snowballs;
 
+        //Portail
+        private int _partiRecolleter;
+        Recompenses partiPortail;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -137,6 +140,10 @@ namespace Projet
             // Life
             _heartsPositions = new Vector2[3];
 
+            //Portail
+            _partiRecolleter = 0;
+            partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -171,6 +178,10 @@ namespace Projet
 
             // Chargement de la texture de la boule de neige
             _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+
+            //Chargement du sprite du portail
+            SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
+            partiPortail.LoadContent(spritePortal);
 
             base.LoadContent();
         }
@@ -215,6 +226,11 @@ namespace Projet
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
                 }
+
+                //Portail
+                _chronoDep += deltaSeconds;
+                partiPortail.Sprite.Play("portal");
+                partiPortail.Sprite.Update(deltaSeconds);
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -335,7 +351,9 @@ namespace Projet
                     _myGame.SpriteBatch.Draw(coins[i].Sprite, coins[i].Position, 0, new Vector2((float)0.15));
                 }
             }
-            
+
+            //Affichage des parti du portail
+            _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
