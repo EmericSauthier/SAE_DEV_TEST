@@ -94,6 +94,16 @@ namespace Projet
             // Etat de la partie
             _gameOver = false;
 
+            // Camera
+            scale = (float)0.5;
+            _camera = new Camera();
+            _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+
+            // Chrono
+            _chrono = 0;
+            _chronoDep = 0;
+            _chronoInvincibility = 0;
+
             // Initialisation du pingouin et de sa position
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
 
@@ -102,12 +112,12 @@ namespace Projet
 
             if (_myGame.reprendre)
             {
-                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y);
+                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y, scale);
                 _myGame.reprendre = false;
             }
             else
             {
-                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
+                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
             }
 
             // Ennemis
@@ -119,16 +129,6 @@ namespace Projet
 
             //Recompenses
             recompense = new Recompenses(new Vector2(1150, 780), "piece");
-
-            // Camera
-            scale = (float)0.5;
-            _camera = new Camera();
-            _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-
-            // Chrono
-            _chrono = 0;
-            _chronoDep = 0;
-            _chronoInvincibility = 0;
 
             // Life
             _heartsPositions = new Vector2[3];
