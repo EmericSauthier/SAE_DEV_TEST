@@ -55,7 +55,7 @@ namespace Projet
         */
 
         //SAUVEGARDE
-        public static Vector2 dernierePosiPingouin;
+        public Vector2 dernierePosiPingouin;
 
         /*
         //DECO
