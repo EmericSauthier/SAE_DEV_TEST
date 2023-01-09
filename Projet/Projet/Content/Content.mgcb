@@ -24,6 +24,12 @@
 /processorParam:Quality=Best
 /build:Audio/coinSound.mp3
 
+#begin Audio/recupAllPortal.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/recupAllPortal.mp3
+
 #begin Decors/flocon.png
 /importer:TextureImporter
 /processor:TextureProcessor

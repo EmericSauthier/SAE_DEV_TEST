@@ -78,7 +78,7 @@ namespace Projet
 
         //Portail
         private int _partiRecolleter;
-        Recompenses partiPortail;
+        Recompenses[] partiPortail;
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
@@ -127,7 +127,6 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
-            _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054) };
             coins = new Recompenses[4];
             int x = 1150;
             int y = 780;
@@ -140,8 +139,13 @@ namespace Projet
             _heartsPositions = new Vector2[3];
 
             //Portail
+            _posiPartiPortail = new Vector2[] { new Vector2(1070, 642), new Vector2(2801, 300) };
             _partiRecolleter = 0;
-            partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
+            partiPortail = new Recompenses[_posiPartiPortail.Length];
+            for (int i = 0; i < _posiPartiPortail.Length; i++)
+            {
+                partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
+            }
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
             closingPortal = new Recompenses(new Vector2(LARGEUR_FENETRE / 2-250, 500 + HAUTEUR_FENETRE / 2-50), "portal", 0);
 
@@ -181,7 +185,11 @@ namespace Projet
 
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
-            partiPortail.LoadContent(spritePortal);
+            for (int i=0; i < _posiPartiPortail.Length; i++)
+            {
+                partiPortail[i].LoadContent(spritePortal);
+            }
+            
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
 
@@ -189,12 +197,13 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //CONDITION POUR GAGNER
-            if (_partiRecolleter ==4)
+            if (_partiRecolleter ==_posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
             }
@@ -236,12 +245,15 @@ namespace Projet
 
                 //Portail
                 _chronoDep += deltaSeconds;
-                partiPortail.Sprite.Play("portal");
                 openingPortal.Sprite.Play("openingPortal");
                 openingPortal.Sprite.Play("closingPortal");
-                partiPortail.Sprite.Update(deltaSeconds);
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
+                for(int i=0; i < _posiPartiPortail.Length; i++)
+                {
+                    partiPortail[i].Sprite.Play("portal");
+                    partiPortail[i].Sprite.Update(deltaSeconds);
+                }
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -373,9 +385,12 @@ namespace Projet
             }
 
             //Affichage des parti du portail
-            if (partiPortail.etat == 0)
+            for(int i =0; i < _posiPartiPortail.Length; i++)
             {
-                _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
+                if (partiPortail[i].etat == 0)
+                {
+                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.5));
+                }
             }
             if (openingPortal.etat == 0)
             {

@@ -198,7 +198,7 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //CONDITION POUR GAGNER
-            if (_partiRecolleter == 4)
+            if (_partiRecolleter == _posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
             }
