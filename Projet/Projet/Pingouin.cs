@@ -414,14 +414,16 @@ namespace Projet
 
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
             ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort middle = (ushort)(this.Position.X / mapLayer.TileWidth);
             ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
             ushort y = (ushort)((this.Position.Y + 60 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
+            TiledMapTile? tileMiddle;
             TiledMapTile? tileRight;
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
                 return true;
 
             return false;
@@ -434,14 +436,16 @@ namespace Projet
 
             // Définition de deux points et de deux tiles, en haut à gauche et en haut à droite
             ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
+            ushort middle = (ushort)(this.Position.X / mapLayer.TileWidth);
             ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
             ushort y = (ushort)((this.Position.Y - 40 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileLeft;
+            TiledMapTile? tileMiddle;
             TiledMapTile? tileRight;
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
+            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
                 return true;
 
             return false;
@@ -455,13 +459,15 @@ namespace Projet
             // Définition de deux points et de deux tiles, en haut à gauche et en bas à gauche
             ushort x = (ushort)((this.Position.X - 50 * this.scale) / mapLayer.TileWidth);
             ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort middle = (ushort)((this.Position.Y + 10 * this.scale) / mapLayer.TileHeight);
             ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
+            TiledMapTile? tileMiddle;
             TiledMapTile? tileBottom;
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, middle, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
                 return true;
 
             return false;
@@ -475,13 +481,15 @@ namespace Projet
             // Définition de deux points et de deux tiles, en haut à droite et en bas à droite
             ushort x = (ushort)((this.Position.X + 50 * this.scale) / mapLayer.TileWidth);
             ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
+            ushort middle = (ushort)((this.Position.Y + 10 * this.scale) / mapLayer.TileHeight);
             ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
 
             TiledMapTile? tileTop;
+            TiledMapTile? tileMiddle;
             TiledMapTile? tileBottom;
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
+            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, middle, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
                 return true;
 
             return false;
