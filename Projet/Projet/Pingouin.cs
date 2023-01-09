@@ -221,7 +221,7 @@ namespace Projet
                 this.slide = false;
             }
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyUp(Keys.Enter) && this.snowballs.Length <= 5)
+            if (keyboardState.IsKeyUp(Keys.Enter) && this.snowballs.Length < 5)
             {
                 this.Attack();
             }
@@ -505,11 +505,13 @@ namespace Projet
 
             Snowball[] temp = this.snowballs;
             this.snowballs = new Snowball[this.snowballs.Length - countNull];
+            int index = 0;
             for (int i = 0; i < temp.Length; i++)
             {
                 if (temp[i] != null)
                 {
-                    this.snowballs[i] = temp[i];
+                    this.snowballs[index] = temp[i];
+                    index++;
                 }
             }
         }
