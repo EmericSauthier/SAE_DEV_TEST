@@ -80,7 +80,6 @@ namespace Projet
         // Boules de neiges
         private Texture2D _snowballTexture;
 
-
         public Niveau1(Game1 game) : base(game)
         {
             _myGame = game;
@@ -146,8 +145,11 @@ namespace Projet
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
 
             // Chargement du sprite du pingouin
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            _pingouin.Perso = new AnimatedSprite(spriteSheet);
+            _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
+
+            // Chargement de la texture de la boule de neige
+            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+            _pingouin.SnowballTexture = _snowballTexture;
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -167,9 +169,6 @@ namespace Projet
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
-
-            // Chargement de la texture de la boule de neige
-            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             base.LoadContent();
         }
