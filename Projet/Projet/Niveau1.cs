@@ -275,7 +275,14 @@ namespace Projet
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
-                                _pingouin.WalkVelocity *= 0.80;
+                                double randomNb = new Random().NextDouble();
+                                if(randomNb > 0.5)
+                                {
+                                    _pingouin.WalkVelocity *= 0.80;
+                                }else
+                                {
+                                    _pingouin.WalkVelocity *= 1.20;
+                                }
                                 coins[i].etat = 1;
                                 MediaPlayer.Play(coinSound);
                             }
