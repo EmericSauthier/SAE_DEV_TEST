@@ -21,7 +21,7 @@ namespace Projet
         private string enemy;
         private double vitesse;
         private double tempsArrivePosition;
-        private bool IsMovingRight;
+        private bool isMovingRight;
         
 
         public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
