@@ -303,30 +303,14 @@ namespace Projet
 
             // Application du zoom de la caméra
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
+
             // Affichage par rapport à la caméra
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
-
-            // Affichage du pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale));
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Red, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
 
             // Affichage des boules de neige
             for (int i = 0; i < _pingouin.Snowballs.Length; i++)
             {
-                _myGame.SpriteBatch.Draw(_snowballTexture, _pingouin.Snowballs[i].Position, Color.White);
+                _myGame.SpriteBatch.Draw(_pingouin.SnowballTexture, _pingouin.Snowballs[i].Position, Color.White);
             }
 
             // Affichage du chrono
@@ -382,6 +366,29 @@ namespace Projet
                 _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
                 _myGame.SpriteBatch.DrawRectangle(rKillingFox, Color.DarkOrange);
             }
+
+            _myGame.SpriteBatch.End();
+
+
+
+            _myGame.SpriteBatch.Begin();
+
+            // Affichage du pingouin
+            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
+
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40, _pingouin.Position.Y + 60, Color.Green, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40, _pingouin.Position.Y + 60, Color.Green, 5);
+
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40, _pingouin.Position.Y - 40, Color.Orange, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40, _pingouin.Position.Y - 40, Color.Orange, 5);
+
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50, _pingouin.Position.Y + 50, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50, _pingouin.Position.Y, Color.Red, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50, _pingouin.Position.Y - 30, Color.Red, 5);
+
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50, _pingouin.Position.Y + 50, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50, _pingouin.Position.Y, Color.Blue, 5);
+            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50, _pingouin.Position.Y - 30, Color.Blue, 5);
 
             _myGame.SpriteBatch.End();
         }
