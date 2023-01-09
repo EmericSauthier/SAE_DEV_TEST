@@ -40,6 +40,10 @@ namespace Projet
         private bool jump;
         public bool isMovingRight;
 
+        // Life
+        private int currentLife;
+        private int maxLife;
+
         // Constructeur
         public Pingouin(float x, float y)
         {
@@ -49,6 +53,8 @@ namespace Projet
             this.slideVelocity = 2.5;
             this.gravity = 2.5;
             this.jumpVelocity = 10;
+            this.MaxLife = 3;
+            this.CurrentLife = this.MaxLife;
         }
         
         // Propriétés
@@ -122,6 +128,31 @@ namespace Projet
             set
             {
                 this.hitBox = value;
+            }
+        }
+
+        public int CurrentLife
+        {
+            get
+            {
+                return this.currentLife;
+            }
+
+            set
+            {
+                this.currentLife = value;
+            }
+        }
+        public int MaxLife
+        {
+            get
+            {
+                return this.maxLife;
+            }
+
+            set
+            {
+                this.maxLife = value;
             }
         }
 
@@ -383,6 +414,22 @@ namespace Projet
                 return true;
 
             return false;
+        }
+
+        // LIFE
+        public void TakeDamage(int damage, ref float invincibilityChrono)
+        {
+
+            if (invincibilityChrono > 2)
+            {
+                CurrentLife -= damage;
+                invincibilityChrono = 0;
+            }
+        }
+
+        public void Heal(int healPoints)
+        {
+            CurrentLife += healPoints;
         }
     }
 }

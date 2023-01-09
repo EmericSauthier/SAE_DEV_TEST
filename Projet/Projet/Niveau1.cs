@@ -35,6 +35,7 @@ namespace Projet
         // ENTITE
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
+        private Rectangle _hitBoxPingouin;
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
@@ -63,10 +64,9 @@ namespace Projet
         private float _chronoDep;
 
         // Life
-        private Life _pingouinLife;
         private Texture2D _heartSprite;
         private Vector2[] _heartsPositions;
-        private Rectangle _hitBoxPingouin;
+
 
         //Debug rectangle
         private Rectangle rFox;
@@ -93,9 +93,6 @@ namespace Projet
 
             // Initialisation du pingouin et de sa position
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2));
-
-            // Life
-            _pingouinLife = new Life(3);
 
             if (_myGame.reprendre)
             {
@@ -129,8 +126,6 @@ namespace Projet
 
             // Life
             _heartsPositions = new Vector2[3];
-
-
 
             base.Initialize();
         }
@@ -216,7 +211,7 @@ namespace Projet
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
                 // Lifes
-                for (int i = 0; i < _pingouinLife.MaxLife; i++)
+                for (int i = 0; i < _pingouin.MaxLife; i++)
                 {
                     _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2 , _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
                     _heartsPositions[i] += new Vector2(50*i, 0);
@@ -227,14 +222,14 @@ namespace Projet
 
                 if (Collision.IsCollidingTrap(_ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
                 {
-                    _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                    _pingouin.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
                     if (Collision.IsCollidingMonstreRampant(_pingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
-                        _pingouinLife.TakeDamage(1, ref _chronoInvincibility);
+                        _pingouin.TakeDamage(1, ref _chronoInvincibility);
                     }
                 }
                 
@@ -243,7 +238,7 @@ namespace Projet
                     //Collision de la recompense avec le pingouin
                     if (Collision.IsCollidingRecompense(recompense, largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                     {
-                        if (_pingouinLife.CurrentLife == _pingouinLife.MaxLife)
+                        if (_pingouin.CurrentLife == _pingouin.MaxLife)
                         {
                             _pingouin.WalkVelocity *= 0.80;
                             recompensePrise = true;
@@ -251,14 +246,12 @@ namespace Projet
                         else
                         {
                             recompensePrise = true;
-                            _pingouinLife.Heal(1);
+                            _pingouin.Heal(1);
                         }
                     }
                 }
-                
-
                 // Mort
-                if (_pingouinLife.CurrentLife <= 0)
+                if (_pingouin.CurrentLife <= 0)
                 {
                     _myGame.clicDead = true;
                 }
@@ -296,7 +289,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
 
             //Life
-            for (int i = 0; i < _pingouinLife.CurrentLife; i++)
+            for (int i = 0; i < _pingouin.CurrentLife; i++)
             {
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }

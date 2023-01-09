@@ -44,11 +44,11 @@ namespace Projet
             {
                 if((monstre.IsMonsterRight && pingouin.isMovingRight) || (!monstre.IsMonsterRight && pingouin.isMovingRight))
                 {
-                    pingouin.Position -= new Vector2(2, 0);
+                    pingouin.Position -= new Vector2(10, 0);
                 }
                 else
                 {
-                    pingouin.Position += new Vector2(2, 0);
+                    pingouin.Position += new Vector2(10, 0);
                 }
 
                 return true;
