@@ -79,7 +79,6 @@ namespace Projet
 
         // Boules de neiges
         private Texture2D _snowballTexture;
-        private Snowball[] _snowballs;
 
 
         public Niveau1(Game1 game) : base(game)
