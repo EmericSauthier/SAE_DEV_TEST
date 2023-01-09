@@ -106,16 +106,16 @@ namespace Projet
             _chronoInvincibility = 0;
 
             // Initialisation du pingouin et de sa position
-            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
+            _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), _snowballTexture, scale);
 
             if (_myGame.reprendre)
             {
-                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y, scale);
+                _pingouin = new Pingouin(_myGame._dernierePosiPingouin.X, _myGame._dernierePosiPingouin.Y, _snowballTexture, scale);
                 _myGame.reprendre = false;
             }
             else
             {
-                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
+                _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), _snowballTexture, scale);
             }
 
             // Ennemis
