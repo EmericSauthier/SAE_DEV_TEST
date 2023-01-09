@@ -194,8 +194,6 @@ namespace Projet
                 _camera.Update(gameTime, _pingouin);
 
                 // Pingouin
-                _pingouin.SnowballTexture = _snowballTexture;
-
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
                 
                 _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);

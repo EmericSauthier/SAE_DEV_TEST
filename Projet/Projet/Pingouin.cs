@@ -48,7 +48,6 @@ namespace Projet
 
         // Tableau de boule de neige
         private Snowball[] snowballs;
-        private Texture2D snowballTexture;
 
         // Constructeur
         public Pingouin(float x, float y, float scale=1)
@@ -152,18 +151,6 @@ namespace Projet
             set
             {
                 this.snowballs = value;
-            }
-        }
-        public Texture2D SnowballTexture
-        {
-            get
-            {
-                return this.snowballTexture;
-            }
-
-            set
-            {
-                this.snowballTexture = value;
             }
         }
         public int CurrentLife
