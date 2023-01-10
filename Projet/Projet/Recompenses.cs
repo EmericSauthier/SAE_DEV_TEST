@@ -24,7 +24,7 @@ namespace Projet
         public int etat;
         private int hauteur;
 
-        public static int effetPoisson =1, effetPiece = -1;
+        public static int effetPiece = -1;
         private int largeur;
         private Rectangle rectangleSprite;
 
@@ -33,7 +33,6 @@ namespace Projet
             this.Position = position;
             this.Sprite = sprite;
             this.TypeRecompense = typeRecompense;
-
             UpdateDimensions();
             UpdateBoxes();
             this.etat = etat;
@@ -133,6 +132,11 @@ namespace Projet
         public void UpdateDimensions()
         {
             if(this.TypeRecompense == "piece")
+            {
+                this.Largeur = 10;
+                this.Hauteur = 10;
+            }
+            else if(this.TypeRecompense == "portal")
             {
                 this.Largeur = 10;
                 this.Hauteur = 10;

@@ -132,7 +132,7 @@ namespace Projet
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1386, 1027), "press");
+            _ceilingTrap1 = new Trap(new Vector2(1302, 1027), "press");
 
             //Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
