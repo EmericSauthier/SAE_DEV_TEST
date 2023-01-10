@@ -179,7 +179,7 @@ namespace Projet
             }
         }
 
-        public void IdleFlying(ref float time)
+        public void IdleFlying(ref double time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
             if (time <= tempsArrivePosition)

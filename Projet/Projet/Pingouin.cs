@@ -429,11 +429,13 @@ namespace Projet
             // on applique un mouvement vertical vers le bas
             if (!Collision.MapCollision(this.CheckBottom(), mapLayer))
             {
+                System.Diagnostics.Debug.WriteLine(!Collision.MapCollision(this.CheckBottom(), mapLayer));
                 this.fly = true;
                 this.position += new Vector2(0, (float)this.gravityVelocity);
             }
             else
             {
+                System.Diagnostics.Debug.WriteLine("Not flying");
                 this.fly = false;
             }
         }
@@ -497,7 +499,7 @@ namespace Projet
             return new Point[] { new Point(x, top), new Point(x, middle), new Point(x, bottom) };
         }
 
-        public void TakeDamage(int damage, ref float invincibilityChrono)
+        public void TakeDamage(int damage, ref double invincibilityChrono)
         {
 
             if (invincibilityChrono > 2)
