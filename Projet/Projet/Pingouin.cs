@@ -267,7 +267,6 @@ namespace Projet
             // Vérification de l'état de la touche entrée
             if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5 && this.timer >= 1)
             {
-                System.Diagnostics.Debug.WriteLine("Timer : " + timer);
                 timer = 0;
                 this.Attack();
             }
