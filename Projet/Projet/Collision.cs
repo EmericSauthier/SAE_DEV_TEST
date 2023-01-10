@@ -91,7 +91,6 @@ namespace Projet
 
         public static bool IsCollidingRecompense(Recompenses recompense, Rectangle hitboxPingouin)
         {
-
             if (hitboxPingouin.Intersects(recompense.RectangleSprite))
             {
                 return true;

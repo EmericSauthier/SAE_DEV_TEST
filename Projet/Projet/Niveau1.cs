@@ -51,7 +51,6 @@ namespace Projet
         List<Trap> traps;
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
-        private Rectangle _hitBoxPingouin;
 
         //Recompense
         Recompenses []coins;
@@ -305,12 +304,10 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                // Collisions 
-                _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
                 // Collisions des traps avec le pingouin
                 for (int i = 0; i < traps.Count; i++)
                 {
-                    if (Collision.IsCollidingTrap(traps[i], _hitBoxPingouin))
+                    if (Collision.IsCollidingTrap(traps[i], _pingouin.HitBox))
                     {
                         _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         MediaPlayer.Play(trapTouchPingouin);
@@ -321,7 +318,7 @@ namespace Projet
                 {
                     if (!monstresRampants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _pingouin.HitBox))
                         {
                             _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                             MediaPlayer.Play(monsterTouchPingouin);
@@ -334,7 +331,7 @@ namespace Projet
                 {
                     if (!monstresVolants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
                         {
                             _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         }
@@ -347,7 +344,7 @@ namespace Projet
                     if (coins[i].etat == 0)
                     {
                         // Collision de la recompense avec le pingouin
-                        if (Collision.IsCollidingRecompense(coins[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(coins[i], _pingouin.HitBox))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
@@ -376,7 +373,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
@@ -415,39 +412,39 @@ namespace Projet
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(Chrono.chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
 
-            //Affichage du nombre de parti de portaill recuperer
+            // Affichage du nombre de parti de portaill recuperer
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
 
-            //Debug Position
+            // Debug Position
             _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _heartsPositions[0] + new Vector2(0, 100), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _heartsPositions[0] + new Vector2(0, 200), Color.White);
 
 
-            //Life
+            // Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
             {
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }
 
-            //Fox
+            // Fox
             for (int i = 0; i < monstresRampants.Count; i++)
             {
                 monstresRampants[i].Affiche(_myGame);
             }
 
-            //Trap
+            // Trap
             for (int i = 0; i < traps.Count; i++)
             {
                 traps[i].Affiche(_myGame);
             }
 
-            //Eagle
+            // Eagle
             for (int i = 0; i < monstresVolants.Count; i++)
             {
                 monstresVolants[i].Affiche(_myGame);
             }
 
-            //Affichage des recompenses si elle n'as pas ete prise
+            // Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i<4; i++)
             {
                 if (coins[i].etat == 0)
@@ -456,7 +453,7 @@ namespace Projet
                 }
             }
 
-            //Affichage des parti du portail
+            // Affichage des parti du portail
             for(int i =0; i < _posiPartiPortail.Length; i++)
             {
                 if (partiPortail[i].etat == 0)
@@ -472,9 +469,6 @@ namespace Projet
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }
-
-            // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
 
             for (int i=0; i<4; i++)
             {

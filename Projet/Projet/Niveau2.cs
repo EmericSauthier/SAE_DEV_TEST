@@ -426,7 +426,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
@@ -437,7 +437,7 @@ namespace Projet
                 if (openingPortal.etat == 0)
                 {
                     //Collision des moreau de portail avec le pingouin
-                    if (Collision.IsCollidingRecompense(openingPortal, _hitBoxPingouin))
+                    if (Collision.IsCollidingRecompense(openingPortal, _pingouin.HitBox))
                     {
                         _myGame.clicWin = true;
                     }
@@ -462,22 +462,6 @@ namespace Projet
 
             // Affichage du pingouin
             _pingouin.Affiche(_myGame);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Red, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20, 0), Color.White);
