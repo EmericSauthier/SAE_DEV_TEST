@@ -304,7 +304,6 @@ namespace Projet
                 }
 
                 // Traps
-                Chrono.chronoInvincibility += deltaSeconds;
                 _ceilingTrap1.PressActivation(ref Chrono.chronoTrap);
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
