@@ -78,6 +78,7 @@ namespace Projet
         private Rectangle rRecompense;
 
         //Portail
+        private Vector2 _recoltePosition;
         private int _partiRecolleter;
         Recompenses[] partiPortail;
         Recompenses openingPortal;
@@ -245,6 +246,9 @@ namespace Projet
                     coins[i].Sprite.Update(deltaSeconds);
                 }
 
+                //Compteur morceau de portail recolleter
+                _recoltePosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2 + 50);
+
                 //Portail
                 _chronoDep += deltaSeconds;
                 openingPortal.Sprite.Play("openingPortal");
@@ -363,6 +367,9 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20,0), Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
+
+            //Affichage du nombre de parti de portaill recuperer
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
 
             //Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
