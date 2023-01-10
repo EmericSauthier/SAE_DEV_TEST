@@ -35,6 +35,7 @@ namespace Projet
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
         private TiledMapTileLayer _mapLayer;
+        private TiledMapTileLayer _deadLayer;
 
         //JEU
         private Camera _camera;
@@ -79,7 +80,8 @@ namespace Projet
 
         //Portail
         private int _partiRecolleter;
-        Recompenses partiPortail;
+        private Vector2 _recoltePosition;
+        Recompenses[] partiPortail;
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
@@ -128,7 +130,7 @@ namespace Projet
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
 
             //Recompenses
-            _posiPartiPortail = new Vector2[] {new Vector2(52,514), new Vector2(1878,1054), new Vector2(3170,1122)};
+            _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780,99), new Vector2(2430,292) };
             _posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
             coins = new Recompenses[_posiCoins.Length];
             int x = 986;
@@ -143,7 +145,11 @@ namespace Projet
 
             //Portail
             _partiRecolleter = 0;
-            partiPortail = new Recompenses(new Vector2(x, y), "portal", 0);
+            partiPortail = new Recompenses[_posiPartiPortail.Length];
+            for (int i = 0; i < _posiPartiPortail.Length; i++)
+            {
+                partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
+            }
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
             closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
@@ -155,6 +161,7 @@ namespace Projet
             _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
@@ -183,7 +190,10 @@ namespace Projet
 
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
-            partiPortail.LoadContent(spritePortal);
+            for (int i = 0; i < _posiPartiPortail.Length; i++)
+            {
+                partiPortail[i].LoadContent(spritePortal);
+            }
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
 
@@ -219,7 +229,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer);
+                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer, _deadLayer);
 
                 // Chrono
                 _chrono += deltaSeconds;
@@ -238,14 +248,20 @@ namespace Projet
                     coins[i].Sprite.Update(deltaSeconds);
                 }
 
+                //Compteur morceau de portail recolleter
+                _recoltePosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2+50);
+
                 //Portail
                 _chronoDep += deltaSeconds;
-                partiPortail.Sprite.Play("portal");
                 openingPortal.Sprite.Play("openingPortal");
                 openingPortal.Sprite.Play("closingPortal");
-                partiPortail.Sprite.Update(deltaSeconds);
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
+                for (int i = 0; i < _posiPartiPortail.Length; i++)
+                {
+                    partiPortail[i].Sprite.Play("portal");
+                    partiPortail[i].Sprite.Update(deltaSeconds);
+                }
 
                 // Traps
                 _chronoTrap1 += deltaSeconds;
@@ -307,6 +323,18 @@ namespace Projet
                         }
                     }
                 }
+                for (int i = 0; i < _posiPartiPortail.Length; i++)
+                {
+                    if (partiPortail[i].etat == 0)
+                    {
+                        //Collision de la recompense avec le pingouin
+                        if (Collision.IsCollidingRecompense(partiPortail[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        {
+                            _partiRecolleter += 1;
+                            partiPortail[i].etat = 1;
+                        }
+                    }
+                }
 
                 // Mort
                 if (_pingouin.CurrentLife <= 0)
@@ -355,6 +383,9 @@ namespace Projet
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
 
+            //Affichage du nombre de parti de portaill recuperer
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
+
             //Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
             {
@@ -378,10 +409,14 @@ namespace Projet
             }
 
             //Affichage des parti du portail
-            if (partiPortail.etat == 0)
+            for (int i=0; i < _posiPartiPortail.Length; i++)
             {
-                _myGame.SpriteBatch.Draw(partiPortail.Sprite, partiPortail.Position, 0, new Vector2((float)0.15));
+                if (partiPortail[i].etat == 0)
+                {
+                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.15));
+                }
             }
+            
             if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
