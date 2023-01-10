@@ -146,7 +146,7 @@ namespace Projet
             {
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
-            openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
+            openingPortal = new Recompenses(new Vector2(6246, 740), "portal", 1);
             closingPortal = new Recompenses(new Vector2(6246,740), "portal", 0);
 
             _snowballs = new Snowball[0];
