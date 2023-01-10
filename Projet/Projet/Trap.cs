@@ -125,7 +125,7 @@ namespace Projet
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void PressActivation(ref float time)
+        public void PressActivation(ref double time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
             this.CanCollidingTrap = false;

@@ -178,7 +178,7 @@ namespace Projet
             }
         }
 
-        public void RightLeftMove(ref float time)
+        public void RightLeftMove(ref double time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
             if (time <= tempsArrivePosition)
