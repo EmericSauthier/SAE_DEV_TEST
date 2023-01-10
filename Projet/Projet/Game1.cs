@@ -32,7 +32,6 @@ namespace Projet
         private Regle _regle;
         private Niveau1 _niveau1;
         private Niveau2 _niveau2;
-        private Parametres _parametres;
         public static SpriteFont police; //police pour le texte
         
         //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
@@ -43,7 +42,6 @@ namespace Projet
         public bool clicRegle;
         public bool clicNiveau1;
         public bool clicNiveau2;
-        public bool clicParametres;
         public bool pause;
         public bool reprendre;
 
@@ -103,7 +101,6 @@ namespace Projet
             _regle = new Regle(this);
             _niveau1 = new Niveau1(this);
             _niveau2 = new Niveau2(this);
-            _parametres = new Parametres(this);
 
             //POLICE
             police = Content.Load<SpriteFont>("Font/Font");
@@ -152,11 +149,6 @@ namespace Projet
             {
                 clicRegle = false;
                 _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
-            }// CONDITION POUR ALLER AUX PARAMETRES
-            else if (clicParametres)
-            {
-                clicParametres = false;
-                _screenManager.LoadScreen(_parametres, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR LANCER LE NIVEAU 1
             else if (clicNiveau1)

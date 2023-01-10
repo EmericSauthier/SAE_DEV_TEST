@@ -123,7 +123,7 @@ namespace Projet
             monstresVolants.Add(new MonstreVolant(new Vector2(2000, 500), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
-            traps.Add(new Trap(new Vector2(1480, 800), "press"));
+            traps.Add(new Trap(new Vector2(2728, 897), "press"));
             traps.Add(new Trap(new Vector2(480, 800), "press"));
 
             //Recompenses
@@ -147,7 +147,7 @@ namespace Projet
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
-            closingPortal = new Recompenses(new Vector2(LARGEUR_FENETRE / 2-250, 500 + HAUTEUR_FENETRE / 2-50), "portal", 0);
+            closingPortal = new Recompenses(new Vector2(6246,740), "portal", 0);
 
             _snowballs = new Snowball[0];
 
@@ -204,6 +204,8 @@ namespace Projet
             {
                 partiPortail[i].LoadContent(spritePortal);
             }
+            openingPortal.LoadContent(spritePortal);
+            closingPortal.LoadContent(spritePortal);
 
 
             //Chargement des audio
@@ -212,13 +214,13 @@ namespace Projet
             monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
             trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
-            openingPortal.LoadContent(spritePortal);
-            closingPortal.LoadContent(spritePortal);
 
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
+
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -237,6 +239,36 @@ namespace Projet
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
+                //Code cheat
+                if (_keyboardState.IsKeyDown(Keys.C))
+                {
+                    _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                    for (int i = 0; i < _posiPartiPortail.Length; i++)
+                    {
+                        partiPortail[i].etat = 0;
+                    }
+                }
+                if (_keyboardState.IsKeyDown(Keys.Insert))
+                {
+                    _pingouin.Position = new Vector2(6246, 740); //Le pingouin est tp a son point de départ
+                }
+                if (_keyboardState.IsKeyDown(Keys.V))
+                {
+                    _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
+                }
+                if (_keyboardState.IsKeyDown(Keys.End))
+                {
+                    _pingouin.Position = new Vector2(1150, 780); //Le pingouin est tp a la zone de fin
+                }
+                if (_keyboardState.IsKeyDown(Keys.Up))
+                {
+                    _pingouin.Position += new Vector2(0, -5);
+                }
+                if (_keyboardState.IsKeyDown(Keys.P))
+                {
+                    _pingouin.WalkVelocity = 2;
+                }
+
                 // Map
                 _tiledMapRenderer.Update(gameTime);
 
@@ -380,6 +412,15 @@ namespace Projet
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
                         }
+                    }
+                }
+                //Collision avec le portail de changement de niveau
+                if (openingPortal.etat == 0)
+                {
+                    //Collision des moreau de portail avec le pingouin
+                    if (Collision.IsCollidingRecompense(openingPortal, _pingouin.HitBox))
+                    {
+                        _myGame.clicWin = true;
                     }
                 }
 
