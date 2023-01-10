@@ -112,7 +112,6 @@ namespace Projet
                 this.isMovingRight = value;
             }
         }
-
         public bool IsDied
         {
             get
@@ -125,7 +124,6 @@ namespace Projet
                 this.isDied = value;
             }
         }
-
         public int Largeur
         {
             get
@@ -138,7 +136,6 @@ namespace Projet
                 this.largeur = value;
             }
         }
-
         public int Hauteur
         {
             get
@@ -151,7 +148,6 @@ namespace Projet
                 this.hauteur = value;
             }
         }
-
         public Rectangle RectangleSprite
         {
             get
@@ -164,7 +160,6 @@ namespace Projet
                 this.rectangleSprite = value;
             }
         }
-
         public Rectangle RectangleKill
         {
             get
@@ -214,7 +209,7 @@ namespace Projet
 
         public void UpdateBoxes()
         {
-            if(enemy == "fox")
+            if (enemy == "fox")
             {
                 this.RectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
                 this.RectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 10, (int)(this.Largeur) - 16, 10);
