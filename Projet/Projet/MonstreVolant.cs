@@ -21,6 +21,7 @@ namespace Projet
         private bool isDied;
 
         private int largeur, hauteur;
+        private Rectangle rectangleSprite, rectangleKill;
 
         public MonstreVolant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition, int largeurMonstre, int hauteurMonstre)
         {
@@ -33,6 +34,7 @@ namespace Projet
 
             this.Largeur = largeurMonstre;
             this.Hauteur = hauteurMonstre;
+            UpdateBoxes();
         }
 
         public Vector2 Position
@@ -152,6 +154,32 @@ namespace Projet
             }
         }
 
+        public Rectangle RectangleSprite
+        {
+            get
+            {
+                return this.rectangleSprite;
+            }
+
+            set
+            {
+                this.rectangleSprite = value;
+            }
+        }
+
+        public Rectangle RectangleKill
+        {
+            get
+            {
+                return this.rectangleKill;
+            }
+
+            set
+            {
+                this.rectangleKill = value;
+            }
+        }
+
         public void IdleFlying(ref float time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
@@ -175,14 +203,22 @@ namespace Projet
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void Affiche(Game1 game, Rectangle rSprite, Rectangle rKilling)
+        public void Affiche(Game1 game)
         {
             if (!IsDied)
             {
                 game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(2, 2));
                 // DEBUG
-                game.SpriteBatch.DrawRectangle(rSprite, Color.Green);
-                game.SpriteBatch.DrawRectangle(rKilling, Color.DarkGreen);
+                game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
+                game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
+            }
+        }
+        public void UpdateBoxes()
+        {
+            if (enemy == "eagle")
+            {
+                this.RectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y - 12, (int)(this.Largeur), (int)(this.Hauteur));
+                this.RectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 20, (int)(this.Largeur) - 16, 10);
             }
         }
     }
