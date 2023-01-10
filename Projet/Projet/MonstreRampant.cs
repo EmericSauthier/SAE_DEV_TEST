@@ -173,5 +173,16 @@ namespace Projet
         {           
             Sprite = new AnimatedSprite(sprite);
         }
+
+        public void Affiche(Game1 game, Rectangle rSprite, Rectangle rKilling)
+        {
+            if (!IsDied)
+            {
+                game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(2, 2));
+                // DEBUG
+                game.SpriteBatch.DrawRectangle(rSprite, Color.Green);
+                game.SpriteBatch.DrawRectangle(rKilling, Color.DarkGreen);
+            }
+        }
     }
 }

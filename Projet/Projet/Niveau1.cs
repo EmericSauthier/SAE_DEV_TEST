@@ -389,19 +389,14 @@ namespace Projet
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }
 
-            // Affichage des ennemis et des pièges
-            if (!_fox1.IsDied)
-            {
-                _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
-            }
+            //Fox
+            _fox1.Affiche(_myGame, rFox, rKillingFox);
+
             //Trap
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
 
-            // Eagle
-            if (!_eagle1.IsDied)
-            {
-                _myGame.SpriteBatch.Draw(_eagle1.Sprite, _eagle1.Position, 0, new Vector2(2, 2));
-            }
+            //Eagle
+            _eagle1.Affiche(_myGame, rEagle, rKillingEagle);
 
             //Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i<4; i++)
@@ -438,17 +433,6 @@ namespace Projet
                 {
                     _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
                 }
-            }
-            
-            if (!_fox1.IsDied)
-            {
-                _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
-                _myGame.SpriteBatch.DrawRectangle(rKillingFox, Color.DarkOrange);
-            }
-            if (!_eagle1.IsDied)
-            {
-                _myGame.SpriteBatch.DrawRectangle(rEagle, Color.Green);
-                _myGame.SpriteBatch.DrawRectangle(rKillingEagle, Color.DarkGreen);
             }
 
             _myGame.SpriteBatch.End();
