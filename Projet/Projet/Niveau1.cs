@@ -116,7 +116,7 @@ namespace Projet
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 6));
-            monstresRampants.Add(new MonstreRampant(new Vector2(2430, 730), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12));
@@ -268,7 +268,7 @@ namespace Projet
                 // Volants
                 for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].IdleFlying(ref Chrono.chronoDepEagle);
+                    monstresVolants[i].Move(ref Chrono.chronoDepEagle);
                     monstresVolants[i].Sprite.Update(deltaSeconds);
                     monstresVolants[i].UpdateBoxes();
                 }

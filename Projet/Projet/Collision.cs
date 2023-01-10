@@ -67,6 +67,11 @@ namespace Projet
                 monstre.IsDied = true;
             }
 
+            if (hitboxPingouin.Intersects(monstre.RectangleDetection))
+            {
+                monstre.HasSawPlayer = true;
+            }else monstre.HasSawPlayer = false;
+
             if (hitboxPingouin.Intersects(monstre.RectangleSprite))
             {
                 if ((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
