@@ -48,11 +48,11 @@ namespace Projet
         private float _chronoDepEagle1;
 
         // ENTITE
+        List<MonstreRampant> monstresRampants;
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
         private Rectangle _hitBoxPingouin;
         // Fox
-        MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         // Eagle
         MonstreVolant _eagle1;
@@ -126,8 +126,11 @@ namespace Projet
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 19*3, 14*3);
-
             _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12, 50, 30);
+
+            // Tableau monstre rampant
+            monstresRampants = new List<MonstreRampant>();
+            monstresRampants.Add(_fox1);
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
@@ -242,8 +245,11 @@ namespace Projet
 
                 // Ennemis
                 _chronoDepFox1 += deltaSeconds;
-                _fox1.RightLeftMove(ref _chronoDepFox1);
-                _fox1.Sprite.Update(deltaSeconds);
+                for (int i = 0; i < monstresRampants.Count; i++)
+                {
+                    monstresRampants[i].RightLeftMove(ref _chronoDepFox1);
+                    monstresRampants[i].Sprite.Update(deltaSeconds);
+                }
 
                 _chronoDepEagle1 += deltaSeconds;
                 _eagle1.IdleFlying(ref _chronoDepEagle1);
@@ -292,13 +298,17 @@ namespace Projet
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
-                if (!_fox1.IsDied)
+                for (int i = 0; i < monstresRampants.Count; i++)
                 {
-                    if (Collision.IsCollidingMonstre(_pingouin, _fox1, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (!monstresRampants[i].IsDied)
                     {
-                        _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], ref rFox, ref rKillingFox, _hitBoxPingouin))
+                        {
+                            _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        }
                     }
                 }
+
                 // Collision du monstre avec le pingouin
                 if (!_eagle1.IsDied)
                 {
@@ -390,7 +400,10 @@ namespace Projet
             }
 
             //Fox
-            _fox1.Affiche(_myGame, rFox, rKillingFox);
+            for (int i = 0; i < monstresRampants.Count; i++)
+            {
+                monstresRampants[i].Affiche(_myGame, rFox, rKillingFox);
+            }
 
             //Trap
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
