@@ -19,13 +19,19 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isDied;
 
-        public MonstreVolant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
+        private int largeur, hauteur;
+
+        public MonstreVolant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition, int largeurMonstre, int hauteurMonstre)
         {
             this.Position = position;
             this.Enemy = enemy;
             this.Vitesse = vitesse;
             this.TempsArrivePosition = tempsArrivePosition;
             vitessePoursuite = this.Vitesse * 1.3;
+            IsDied = false;
+
+            this.Largeur = largeurMonstre;
+            this.Hauteur = hauteurMonstre;
         }
 
         public Vector2 Position
@@ -116,6 +122,32 @@ namespace Projet
             set
             {
                 this.isDied = value;
+            }
+        }
+
+        public int Largeur
+        {
+            get
+            {
+                return this.largeur;
+            }
+
+            set
+            {
+                this.largeur = value;
+            }
+        }
+
+        public int Hauteur
+        {
+            get
+            {
+                return this.hauteur;
+            }
+
+            set
+            {
+                this.hauteur = value;
             }
         }
 
