@@ -128,9 +128,7 @@ namespace Projet
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
 
-            //Recompenses
-            _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780,99), new Vector2(2430,292) };
-            _posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
+            //Recompenses_posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
             coins = new Recompenses[_posiCoins.Length];
             int x = 986;
             int y = 1122;
@@ -143,6 +141,7 @@ namespace Projet
             _heartsPositions = new Vector2[3];
 
             //Portail
+            _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780, 99), new Vector2(2430, 292) };
             _partiRecolleter = 0;
             partiPortail = new Recompenses[_posiPartiPortail.Length];
             for (int i = 0; i < _posiPartiPortail.Length; i++)

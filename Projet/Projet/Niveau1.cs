@@ -356,6 +356,18 @@ namespace Projet
                         }
                     }
                 }
+                for (int i = 0; i < _posiPartiPortail.Length; i++)
+                {
+                    if (partiPortail[i].etat == 0)
+                    {
+                        //Collision des moreau de portail avec le pingouin
+                        if (Collision.IsCollidingRecompense(partiPortail[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        {
+                            _partiRecolleter += 1;
+                            partiPortail[i].etat = 1;
+                        }
+                    }
+                }
 
                 // Mort
                 if (_pingouin.CurrentLife <= 0)
