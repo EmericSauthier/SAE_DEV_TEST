@@ -54,6 +54,8 @@ namespace Projet
         private Snowball[] snowballs;
         private Texture2D snowballTexture;
 
+        private float timer;
+
         // Constructeur
         public Pingouin(float x, float y, float scale=1)
         {
@@ -219,6 +221,7 @@ namespace Projet
             // Application de la gravité
             this.Gravity(groundLayer);
             gameOver = this.CheckBottom(deadLayer) || gameOver;
+            timer += deltaTime;
             
             this.SnowballsUpdate(groundLayer);
             // Application d'un mouvement si commander par l'utilisateur
@@ -262,18 +265,15 @@ namespace Projet
             }
 
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5)
+            if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5 && this.timer >= 1)
             {
+                System.Diagnostics.Debug.WriteLine("Timer : " + timer);
+                timer = 0;
                 this.Attack();
             }
 
-            // Si le jeu est fini
-            if (gameOver)
-            {
-                this.Animate("celebrate");
-            }
             // Si le pingouin saute (touche espace) ou est dans les airs
-            else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
+            if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 Jump(ref move, keyboardState, mapLayer);
             }
@@ -392,7 +392,7 @@ namespace Projet
             {
                 newSnowballsArray[i] = this.snowballs[i];
             }
-            newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X, this.Position.Y, this.snowballTexture);
+            newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, this.snowballTexture);
             newSnowballsArray[newSnowballsArray.Length - 1].Velocity *= direction;
             this.snowballs = newSnowballsArray;
         }
@@ -581,6 +581,10 @@ namespace Projet
                 return true;
 
             return false;
+        }
+        public bool isCollidingSprite(RectangleF spriteHitBox)
+        {
+            return this.hitBox.Intersects(spriteHitBox);
         }
 
         public void SnowballsUpdate(TiledMapTileLayer mapLayer)
