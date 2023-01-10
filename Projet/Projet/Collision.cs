@@ -59,8 +59,8 @@ namespace Projet
 
         public static bool IsCollidingMonstre(Pingouin pingouin, MonstreVolant monstre, ref Rectangle rectangleMonstreDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
         {
-            rectangleMonstreDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y - 12, (int)(monstre.LargeurMonstre), (int)(monstre.HauteurMonstre));
-            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 20, (int)(monstre.LargeurMonstre) - 16, 10);
+            rectangleMonstreDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y - 12, (int)(monstre.Largeur), (int)(monstre.Hauteur));
+            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 20, (int)(monstre.Largeur) - 16, 10);
 
 
             if (hitboxPingouin.Intersects(rectangleKillingMonster))
