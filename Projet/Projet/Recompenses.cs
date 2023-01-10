@@ -36,6 +36,7 @@ namespace Projet
 
             UpdateDimensions();
             UpdateBoxes();
+            this.etat = etat;
         }
 
         public Vector2 Position
