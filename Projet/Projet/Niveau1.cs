@@ -119,8 +119,8 @@ namespace Projet
             monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
-            monstresVolants.Add(new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12));
-            monstresVolants.Add(new MonstreVolant(new Vector2(300, 850), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(2000, 500), "eagle", 1, 12));
 
             // Traps
             Trap _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
@@ -268,7 +268,7 @@ namespace Projet
                 // Volants
                 for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].Move(ref Chrono.chronoDepEagle);
+                    monstresVolants[i].Move(ref Chrono.chronoDepEagle, _pingouin);
                     monstresVolants[i].Sprite.Update(deltaSeconds);
                     monstresVolants[i].UpdateBoxes();
                 }
