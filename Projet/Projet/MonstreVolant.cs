@@ -19,9 +19,10 @@ namespace Projet
         private bool isMovingRight; //ajout isMovingUp pour collision verticale ?
         private double tempsArrivePosition;
         private bool isDied;
+        private bool hasSawPlayer;
 
         private int largeur, hauteur;
-        private Rectangle rectangleSprite, rectangleKill;
+        private Rectangle rectangleSprite, rectangleKill, rectangleDetection;
 
         public MonstreVolant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
@@ -179,22 +180,52 @@ namespace Projet
             }
         }
 
-        public void IdleFlying(ref double time)
+        public Rectangle RectangleDetection
         {
-            //System.Diagnostics.Debug.WriteLine(time);
-            if (time <= tempsArrivePosition)
+            get
             {
-                Position += new Vector2((float)Vitesse, 0);
-                Sprite.Play("flyRight");
-                IsMovingRight = true;
+                return this.rectangleDetection;
             }
-            else if (time > tempsArrivePosition && time < tempsArrivePosition * 2)
+
+            set
             {
-                Position -= new Vector2((float)Vitesse, 0);
-                Sprite.Play("flyLeft");
-                IsMovingRight = false;
+                this.rectangleDetection = value;
             }
-            else time = 0;
+        }
+
+        public bool HasSawPlayer
+        {
+            get
+            {
+                return this.hasSawPlayer;
+            }
+
+            set
+            {
+                this.hasSawPlayer = value;
+            }
+        }
+
+        public void Move(ref double time)
+        {
+            if (!HasSawPlayer)
+            {
+                //System.Diagnostics.Debug.WriteLine(time);
+                if (time <= tempsArrivePosition)
+                {
+                    Position += new Vector2((float)Vitesse, 0);
+                    Sprite.Play("flyRight");
+                    IsMovingRight = true;
+                }
+                else if (time > tempsArrivePosition && time < tempsArrivePosition * 2)
+                {
+                    Position -= new Vector2((float)Vitesse, 0);
+                    Sprite.Play("flyLeft");
+                    IsMovingRight = false;
+                }
+                else time = 0;
+            }
+
         }
 
         public void LoadContent(SpriteSheet sprite)
@@ -210,6 +241,7 @@ namespace Projet
                 // DEBUG
                 game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
                 game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
+                game.SpriteBatch.DrawRectangle(this.RectangleDetection, Color.DarkGreen);
             }
         }
         public void UpdateBoxes()
@@ -218,6 +250,7 @@ namespace Projet
             {
                 this.RectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y - 12, (int)(this.Largeur), (int)(this.Hauteur));
                 this.RectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 20, (int)(this.Largeur) - 16, 10);
+                this.RectangleDetection = new Rectangle((int)(this.Position.X - 200), (int)(this.Position.Y - 150), this.Largeur * 10, this.Hauteur*10);
             }
         }
         public void UpdateDimensions()
