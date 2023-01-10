@@ -133,16 +133,16 @@ namespace Projet
 
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
-            monstresRampants.Add(new MonstreRampant(new Vector2(1000, 850), "fox", 0.5, 6));
-            monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(1558, 340), "fox", 0.5, 6));
+            monstresRampants.Add(new MonstreRampant(new Vector2(2619, 432), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
-            monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
-            monstresVolants.Add(new MonstreVolant(new Vector2(2000, 500), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(632, 67), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(2504, 292), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
-            traps.Add(new Trap(new Vector2(1480, 800), "press"));
-            traps.Add(new Trap(new Vector2(480, 800), "press"));
+            traps.Add(new Trap(new Vector2(1296, 1026), "press"));
+            traps.Add(new Trap(new Vector2(1778, 1154), "press"));
 
             //Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
@@ -168,7 +168,7 @@ namespace Projet
             {
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
-            openingPortal = new Recompenses(new Vector2(3054, 322), "portal", 1);
+            openingPortal = new Recompenses(new Vector2(3054, 292), "portal", 1);
             closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
             _snowballs = new Snowball[0];
@@ -239,7 +239,7 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
+            
             
             // GameManager
             _keyboardState = Keyboard.GetState();
@@ -283,6 +283,10 @@ namespace Projet
                 if (_keyboardState.IsKeyDown(Keys.Up))
                 {
                     _pingouin.Position += new Vector2(0, -5);
+                }
+                if (_keyboardState.IsKeyDown(Keys.P))
+                {
+                    _pingouin.WalkVelocity = 2;
                 }
                 
                 

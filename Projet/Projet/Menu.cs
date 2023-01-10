@@ -33,7 +33,6 @@ namespace Projet
         public static Vector2 positionNiv;
         public static string quitter;
         public static Vector2 positionQuitter;
-        public static Vector2 positionParametres;
 
 
         //GESTION SOURIS
@@ -64,8 +63,7 @@ namespace Projet
             quitter = "Quitter";
 
             positionRegle = new Vector2(300+regle.Length*12, 200);
-            positionParametres = new Vector2(positionRegle.X, positionRegle.Y + 100);
-            positionJouer = new Vector2(positionParametres.X, positionParametres.Y + 100);
+            positionJouer = new Vector2(positionRegle.X, positionRegle.Y + 100);
             positionNiv = new Vector2(positionRegle.X, positionJouer.Y+100);
             positionQuitter = new Vector2(positionRegle.X, positionNiv.Y+100);
             base.Initialize();
@@ -122,11 +120,6 @@ namespace Projet
                 {
                     _myGame.reprendre = true;
                 }
-                // envoie a la scene des parametres
-                else if (_mouseState.X >= positionParametres.X && _mouseState.Y >= positionParametres.Y && _mouseState.X <= positionParametres.X + 175 && _mouseState.Y <= positionParametres.Y + 32)
-                {
-                    _myGame.clicParametres = true;
-                }
 
             }
         }
@@ -142,7 +135,6 @@ namespace Projet
 
             //TEXTE
             _myGame.SpriteBatch.DrawString(Game1.police, $"{regle}", positionRegle, Color.Black);
-            _myGame.SpriteBatch.DrawString(Game1.police, "Parametres", positionParametres, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{jouer}", positionJouer, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{niv}", positionNiv, Color.Black);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{quitter}", positionQuitter, Color.Black);
