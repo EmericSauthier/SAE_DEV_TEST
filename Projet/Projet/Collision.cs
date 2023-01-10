@@ -1,16 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended.Sprites;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using MonoGame.Extended;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Tiled.Renderers;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Screens;
+using MonoGame.Extended.Screens.Transitions;
+
 namespace Projet
 {
     internal class Collision
     {
-
         // Nécessite changement fonctionnement des offsets
         public static bool IsCollidingTrap(Trap trap, bool canCollidingtrap, ref Rectangle rectangleTrapDebug, Rectangle hitboxPingouin)
         {
@@ -95,6 +105,25 @@ namespace Projet
             }
             else return false;
 
+        }
+
+        public bool SpriteCollision(RectangleF rect1, RectangleF rect2)
+        {
+            return rect1.Intersects(rect2);
+        }
+
+        public bool MapCollision(Point[] pointTab, TiledMapTileLayer mapLayer)
+        {
+            TiledMapTile? tile;
+
+            for (int i = 0; i < pointTab.Length; i++)
+            {
+                if (mapLayer.TryGetTile((ushort)pointTab[i].X, (ushort)pointTab[i].Y, out tile) != false && !tile.Value.IsBlank)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
