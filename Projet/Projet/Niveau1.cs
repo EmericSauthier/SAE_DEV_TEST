@@ -86,6 +86,7 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+        Song recupAllPortalSound;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -207,7 +208,8 @@ namespace Projet
             {
                 partiPortail[i].LoadContent(spritePortal);
             }
-            
+            recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
 
@@ -223,6 +225,7 @@ namespace Projet
             if (_partiRecolleter ==_posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
+                MediaPlayer.Play(recupAllPortalSound);
             }
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
@@ -430,14 +433,14 @@ namespace Projet
             {
                 if (partiPortail[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.5));
+                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.35));
                 }
             }
             if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (closingPortal.etat == 0)
+            if (_chrono <2)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }

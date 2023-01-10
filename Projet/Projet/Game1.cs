@@ -38,6 +38,7 @@ namespace Projet
         //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
         public bool clicMenu;
         public bool clicDead;
+        public bool clicWin;
         public bool clicArret;
         public bool clicRegle;
         public bool clicNiveau1;
@@ -109,8 +110,9 @@ namespace Projet
                 _screenManager.LoadScreen(_menu, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR ALLER A LA SCENE WIN
-            else if (keyboardState.IsKeyDown(Keys.A))
+            else if (keyboardState.IsKeyDown(Keys.A)||clicWin)
             {
+                clicWin = false;
                 _screenManager.LoadScreen(_win, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR ALLER A LA SCENE DU CHOIX DE NIVEAU
