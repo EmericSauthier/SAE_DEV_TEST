@@ -314,10 +314,7 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                // Collisions
-                _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
-
-                if (Collision.IsCollidingTrap(_ceilingTrap1, _hitBoxPingouin))
+                if (Collision.IsCollidingTrap(_ceilingTrap1, _pingouin.HitBox))
                 {
                     _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                     MediaPlayer.Play(trapTouchPingouin);
@@ -368,7 +365,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
@@ -379,7 +376,7 @@ namespace Projet
                 if (openingPortal.etat == 0)
                 {
                     //Collision des moreau de portail avec le pingouin
-                    if (Collision.IsCollidingRecompense(openingPortal, _hitBoxPingouin))
+                    if (Collision.IsCollidingRecompense(openingPortal, _pingouin.HitBox))
                     {
                         _myGame.clicWin = true;
                     }
