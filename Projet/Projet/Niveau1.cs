@@ -61,7 +61,6 @@ namespace Projet
         //Recompense
         Recompenses []coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
-        Song coinSound;
 
         // Life
         private Texture2D _heartSprite;
@@ -77,7 +76,13 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+
+        //Audio
         Song recupAllPortalSound;
+        Song coinSound;
+        Song monsterTouchPingouin;
+        Song trapTouchPingouin;
+
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -203,7 +208,6 @@ namespace Projet
             {
                 coins[i].LoadContent(spriteCoin);
             }
-            coinSound = Content.Load<Song>("Audio/coinSound");
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
@@ -214,7 +218,13 @@ namespace Projet
             {
                 partiPortail[i].LoadContent(spritePortal);
             }
+
+
+            //Chargement des audio
+            coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+            monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
+            trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
@@ -322,6 +332,7 @@ namespace Projet
                     if (Collision.IsCollidingTrap(traps[i], _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        MediaPlayer.Play(trapTouchPingouin);
                     }
                 }
                 // Collision des rampants avec le pingouin
@@ -332,6 +343,7 @@ namespace Projet
                         if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
                         {
                             _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                            MediaPlayer.Play(monsterTouchPingouin);
                         }
                     }
                 }
