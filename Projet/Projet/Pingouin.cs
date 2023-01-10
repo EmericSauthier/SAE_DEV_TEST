@@ -229,9 +229,10 @@ namespace Projet
             this.perso.Update(deltaTime);
             this.SnowballsUpdate(groundLayer);
         }
-        public void Affiche(Game game)
+        public void Affiche(Game1 game)
         {
             // Affichage du pingouin
+            System.Diagnostics.Debug.WriteLine("Affichge");
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
 
             // Affichage des boules de neige
