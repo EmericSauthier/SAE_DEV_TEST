@@ -266,7 +266,6 @@ namespace Projet
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
                 _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
-                _pingouin.Update(deltaSeconds, _groundLayer);
 
                 // Chrono
                 _chrono += deltaSeconds;
