@@ -121,13 +121,9 @@ namespace Projet
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
             monstresVolants.Add(new MonstreVolant(new Vector2(2000, 500), "eagle", 1, 12));
-
-            // Traps
-            Trap _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
-
             // Tableau Traps
             traps = new List<Trap>();
-            traps.Add(_ceilingTrap1);
+            traps.Add(new Trap(new Vector2(1480, 800), "press"));
             traps.Add(new Trap(new Vector2(480, 800), "press"));
 
             //Recompenses
