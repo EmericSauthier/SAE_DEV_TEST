@@ -65,7 +65,6 @@ namespace Projet
         Vector2[] _posiCoins;
         Recompenses[] coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
-        Song coinSound;
 
         // Life
         private Texture2D _heartSprite;
@@ -84,7 +83,12 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+
+        //Son
         Song recupAllPortalSound;
+        Song coinSound;
+        Song monsterTouchPingouin;
+        Song trapTouchPingouin;
 
         public Niveau2(Game1 game) : base(game)
         {
@@ -187,7 +191,6 @@ namespace Projet
             {
                 coins[i].LoadContent(spriteCoin);
             }
-            coinSound = Content.Load<Song>("Audio/coinSound");
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
@@ -200,7 +203,12 @@ namespace Projet
             }
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
+
+            //Audio
+            coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+            monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
+            trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
             base.LoadContent();
         }
@@ -311,6 +319,7 @@ namespace Projet
                 if (Collision.IsCollidingTrap(_ceilingTrap1, _hitBoxPingouin))
                 {
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                    MediaPlayer.Play(trapTouchPingouin);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
@@ -318,6 +327,7 @@ namespace Projet
                     if (Collision.IsCollidingMonstre(_pingouin, _fox1, _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        MediaPlayer.Play(monsterTouchPingouin);
                     }
                 }
 
