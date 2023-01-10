@@ -271,10 +271,10 @@ namespace Projet
                     coins[i].Sprite.Update(deltaSeconds);
                 }
 
-                //Compteur morceau de portail recolleter
+                // Compteur morceau de portail recolleter
                 _recoltePosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2 + 50);
 
-                //Portail
+                // Portail
                 openingPortal.Sprite.Play("openingPortal");
                 openingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);
@@ -331,7 +331,7 @@ namespace Projet
                 {
                     if (coins[i].etat == 0)
                     {
-                        //Collision de la recompense avec le pingouin
+                        // Collision de la recompense avec le pingouin
                         if (Collision.IsCollidingRecompense(coins[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
