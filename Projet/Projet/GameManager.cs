@@ -64,13 +64,13 @@ namespace Projet
             }
 
             // Vérification de l'état des flèches droite et gauche
-            if (keyboardState.IsKeyDown(Game1.gauche) && !keyboardState.IsKeyDown(Game1.droite) && !Collision.MapCollision(pingouin.CheckLeft(), ground))
+            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
             {
-                pingouin.Direction = "Left";
                 pingouin.IsMovingLeft = true;
                 pingouin.IsMovingRight = false;
+                pingouin.Direction = "Left";
             }
-            else if (!keyboardState.IsKeyDown(Game1.gauche) && keyboardState.IsKeyDown(Game1.droite) && !Collision.MapCollision(pingouin.CheckRight(), ground))
+            else if (!keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
             {
                 pingouin.IsMovingRight = true;
                 pingouin.IsMovingLeft = false;
@@ -88,7 +88,6 @@ namespace Projet
             {
                 _timer = 0;
                 int direction = 1;
-
                 // Joue l'animation d'attaque en fonction du sens du personnage
                 if (pingouin.IsMovingLeft)
                 {
@@ -111,22 +110,10 @@ namespace Projet
             // Si le pingouin saute (touche espace) ou est dans les airs
             if (keyboardState.IsKeyDown(Game1.sauter) || pingouin.Fly)
             {
+                System.Diagnostics.Debug.WriteLine("Right : " + pingouin.IsMovingRight + "\nLeft : " + pingouin.IsMovingLeft);
                 if (!Collision.MapCollision(pingouin.CheckTop(), ground))
                 {
-                    int direction = 0;
-                    if (pingouin.IsMovingRight && !Collision.MapCollision(pingouin.CheckRight(), ground))
-                    {
-                        direction = 1;
-                    }
-                    else if (pingouin.IsMovingLeft && !Collision.MapCollision(pingouin.CheckRight(), ground))
-                    {
-                        direction = -1;
-                    }
-                    else
-                    {
-                        direction = 0;
-                    }
-                    pingouin.Jump(direction);
+                    pingouin.Jump(ground);
                 }
                 else
                 {

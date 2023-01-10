@@ -307,22 +307,26 @@ namespace Projet
             // Affichage du pingouin
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
             //game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 2);
-            
-            //game.SpriteBatch.DrawPoint(this.Position.X - 40 * scale, this.Position.Y + 60 * scale, Color.Green, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X, this.Position.Y + 60 * scale, Color.Green, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X + 40 * scale, this.Position.Y + 60 * scale, Color.Green, 5);
 
-            //game.SpriteBatch.DrawPoint(this.Position.X - 40 * scale, this.Position.Y - 40 * scale, Color.Orange, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X, this.Position.Y - 40 * scale, Color.Orange, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X + 40 * scale, this.Position.Y - 40 * scale, Color.Orange, 5);
+            foreach (Point point in this.CheckBottom())
+            {
+                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Green, 5);
+            }
 
-            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y + 50 * scale, Color.Red, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, Color.Red, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y - 30 * scale, Color.Red, 5);
+            foreach (Point point in this.CheckTop())
+            {
+                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Orange, 5);
+            }
 
-            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y + 50 * scale, Color.Blue, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y + 10 * scale, Color.Blue, 5);
-            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y - 30 * scale, Color.Blue, 5);
+            foreach (Point point in this.CheckLeft())
+            {
+                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Blue, 5);
+            }
+
+            foreach (Point point in this.CheckRight())
+            {
+                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Red, 5);
+            }
         }
         public void Animate(String animation)
         {
@@ -385,7 +389,7 @@ namespace Projet
                 this.position += new Vector2((float)-walkVelocity, 0);
             }
         }
-        public void Jump(int direction=0)
+        public void Jump(TiledMapTileLayer mapLayer)
         {
             /*
             Fonction gérant le saut du pingouin
@@ -411,7 +415,7 @@ namespace Projet
             // que la différence de hauteur entre sa position au moment du saut et sa position actuelle est inférieur à 80
             // et qu'il n'y a pas d'obstacles au-dessus de lui, on applique un mouvement vertical
             // (Cela permet de fluidifier le mouvement de saut et de ne pas téléporter le pingouin)
-            if (this.jumpState && (this.positionSaut.Y - this.position.Y) < 100)
+            if (this.jumpState && this.positionSaut.Y - this.position.Y < 100 && !Collision.MapCollision(this.CheckTop(), mapLayer))
             {
                 this.position += new Vector2(0, (float)-this.jumpVelocity);
             }
@@ -422,8 +426,18 @@ namespace Projet
                 this.positionSaut = new Vector2();
             }
 
-            // Si l'utilisateur presse la flèche de droite ou de gauche, la direction est appliquée, sinon multiplication par 0
-            this.position += new Vector2((float)walkVelocity, 0) * direction;
+            // Si l'utilisateur presse la flèche de droite et qu'il n'y a pas d'obstacles à droite,
+            // on applique un mouvement horizontal vers la droite
+            if (this.isMovingRight && !Collision.MapCollision(this.CheckRight(), mapLayer))
+            {
+                this.position += new Vector2((float)walkVelocity, 0);
+            }
+            // Si l'utilisateur presse la flèche de gauche et qu'il n'y a pas d'obstacles à gauche,
+            // on applique un mouvement horizontal vers la gauche
+            else if (this.isMovingLeft && !Collision.MapCollision(this.CheckLeft(), mapLayer))
+            {
+                this.position += new Vector2((float)-walkVelocity, 0);
+            }
         }
         public void Slide(int direction=0)
         {

@@ -412,17 +412,9 @@ namespace Projet
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20,0), Color.White);
-            //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(Chrono.chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Renard : {Math.Round(Chrono.chronoDepFox, 2)}", _positionChrono + new Vector2(-170, 200), Color.White);
 
             //Affichage du nombre de parti de portaill recuperer
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
-
-            //Debug Position
-            _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _heartsPositions[0] + new Vector2(0, 100), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _heartsPositions[0] + new Vector2(0, 200), Color.White);
-
 
             //Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
