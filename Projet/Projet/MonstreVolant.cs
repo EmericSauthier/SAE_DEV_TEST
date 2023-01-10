@@ -206,7 +206,7 @@ namespace Projet
             }
         }
 
-        public void Move(ref double time)
+        public void Move(ref double time, Pingouin pingouin)
         {
             if (!HasSawPlayer)
             {
@@ -224,6 +224,27 @@ namespace Projet
                     IsMovingRight = false;
                 }
                 else time = 0;
+            }
+            else
+            {
+                if(this.position.X > pingouin.Position.X)
+                {
+                    Sprite.Play("flyLeft");
+                    this.position.X -= (float)vitessePoursuite;
+                }
+                else
+                {
+                    Sprite.Play("flyRight");
+                    this.position.X += (float)vitessePoursuite;
+                }
+
+                if(this.position.Y > pingouin.Position.Y)
+                {
+                    this.position.Y -= (float)Vitesse;
+                }else
+                {
+                    this.position.Y += (float)Vitesse;
+                }
             }
 
         }
