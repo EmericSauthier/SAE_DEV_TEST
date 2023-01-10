@@ -113,17 +113,13 @@ namespace Projet
                 _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
             }
 
-            // Ennemis
-            MonstreRampant _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
-            MonstreVolant _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12);
-
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
-            monstresRampants.Add(_fox1);
-            monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12));
+            monstresRampants.Add(new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 6));
+            monstresRampants.Add(new MonstreRampant(new Vector2(2430, 730), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
-            monstresVolants.Add(_eagle1);
+            monstresVolants.Add(new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12));
             monstresVolants.Add(new MonstreVolant(new Vector2(300, 850), "eagle", 1, 12));
 
             // Traps
@@ -435,6 +431,11 @@ namespace Projet
 
             //Affichage du nombre de parti de portaill recuperer
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
+
+            //Debug Position
+            _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _heartsPositions[0] + new Vector2(0, 100), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _heartsPositions[0] + new Vector2(0, 200), Color.White);
+
 
             //Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
