@@ -13,9 +13,13 @@ namespace Projet
         private Vector2 _position;
         private AnimatedSprite _sprite;
 
-        public Trap(Vector2 trapPosition)
+        private int largeur, hauteur;
+
+        public Trap(Vector2 trapPosition, int largeurTrap, int hauteurTrap)
         {
             this.Position = trapPosition;
+            this.Largeur = largeurTrap;
+            this.Hauteur = hauteurTrap;
         }
 
         public Vector2 Position
@@ -41,6 +45,32 @@ namespace Projet
             set
             {
                 this._sprite = value;
+            }
+        }
+
+        public int Largeur
+        {
+            get
+            {
+                return this.largeur;
+            }
+
+            set
+            {
+                this.largeur = value;
+            }
+        }
+
+        public int Hauteur
+        {
+            get
+            {
+                return this.hauteur;
+            }
+
+            set
+            {
+                this.hauteur = value;
             }
         }
 
