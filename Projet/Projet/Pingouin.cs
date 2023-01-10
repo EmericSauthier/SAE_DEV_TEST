@@ -26,7 +26,7 @@ namespace Projet
         private Vector2 positionSaut;
 
         private AnimatedSprite perso;
-        private RectangleF hitBox;
+        private Rectangle hitBox;
 
         private float scale;
         private float rotation;
@@ -88,7 +88,7 @@ namespace Projet
                 this.perso = value;
             }
         }
-        public RectangleF HitBox
+        public Rectangle HitBox
         {
             get
             {
@@ -299,14 +299,30 @@ namespace Projet
 
             // Application de la gravité
             this.Gravity(groundLayer);
-            this.hitBox = new RectangleF((int)this.Position.X - 25, (int)this.Position.Y - 15, 128 * this.scale, 128 * this.scale);
+            this.hitBox = new Rectangle((int)(this.Position.X - 25), (int)(this.Position.Y - 15), (int)(100 * scale), (int)(80 * scale));
             this.perso.Update(deltaTime);
         }
         public void Affiche(Game1 game)
         {
             // Affichage du pingouin
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
-            game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 5);
+            //game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 2);
+            
+            //game.SpriteBatch.DrawPoint(this.Position.X - 40 * scale, this.Position.Y + 60 * scale, Color.Green, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X, this.Position.Y + 60 * scale, Color.Green, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X + 40 * scale, this.Position.Y + 60 * scale, Color.Green, 5);
+
+            //game.SpriteBatch.DrawPoint(this.Position.X - 40 * scale, this.Position.Y - 40 * scale, Color.Orange, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X, this.Position.Y - 40 * scale, Color.Orange, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X + 40 * scale, this.Position.Y - 40 * scale, Color.Orange, 5);
+
+            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y + 50 * scale, Color.Red, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, Color.Red, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X + 50 * scale, this.Position.Y - 30 * scale, Color.Red, 5);
+
+            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y + 50 * scale, Color.Blue, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y + 10 * scale, Color.Blue, 5);
+            //game.SpriteBatch.DrawPoint(this.Position.X - 50 * scale, this.Position.Y - 30 * scale, Color.Blue, 5);
         }
         public void Animate(String animation)
         {
