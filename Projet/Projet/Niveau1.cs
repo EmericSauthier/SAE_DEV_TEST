@@ -66,9 +66,6 @@ namespace Projet
         private Texture2D _heartSprite;
         private Vector2[] _heartsPositions;
 
-        //Debug rectangle
-        private Rectangle rRecompense;
-
         //Portail
         private Vector2 _recoltePosition;
         private int _partiRecolleter;
@@ -366,7 +363,7 @@ namespace Projet
                     if (coins[i].etat == 0)
                     {
                         // Collision de la recompense avec le pingouin
-                        if (Collision.IsCollidingRecompense(coins[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(coins[i], _hitBoxPingouin))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
@@ -395,7 +392,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
@@ -504,7 +501,7 @@ namespace Projet
             {
                 if (coins[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
+                    _myGame.SpriteBatch.DrawRectangle(coins[i].RectangleSprite, Color.YellowGreen);
                 }
             }
 
