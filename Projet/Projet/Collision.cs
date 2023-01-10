@@ -45,7 +45,7 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(monstre.RectangleSprite))
             {
-                if((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
+                if((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && !pingouin.IsMovingRight && !pingouin.IsMovingLeft))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }

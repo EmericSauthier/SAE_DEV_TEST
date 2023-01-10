@@ -123,10 +123,8 @@ namespace Projet
 
         public void UpdateBoxes()
         {
-            if(this.TypeRecompense == "piece")
-            {
-                this.RectangleSprite = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
-            }
+            this.RectangleSprite = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
+            
         }
 
         public void UpdateDimensions()
