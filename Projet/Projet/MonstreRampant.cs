@@ -24,6 +24,7 @@ namespace Projet
         private bool isMovingRight;
         private bool isDied;
 
+        private double chronoDepFox;
         private int largeur, hauteur;
         private Rectangle rectangleSprite, rectangleKill;
 
@@ -34,6 +35,7 @@ namespace Projet
             this.Enemy = enemy;
             this.TempsArrivePosition = tempsArrivePosition;
             IsDied = false;
+            this.ChronoDepFox = 0;
 
             UpdateDimensions();
             UpdateBoxes();
@@ -173,22 +175,37 @@ namespace Projet
             }
         }
 
-        public void RightLeftMove(ref double time)
+        public double ChronoDepFox
         {
-            //System.Diagnostics.Debug.WriteLine(time);
-            if (time <= tempsArrivePosition)
+            get
+            {
+                return this.chronoDepFox;
+            }
+
+            set
+            {
+                this.chronoDepFox = value;
+            }
+        }
+
+        public void RightLeftMove(GameTime gameTime)
+        {
+            ChronoDepFox += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            System.Diagnostics.Debug.WriteLine(ChronoDepFox);
+
+            if (ChronoDepFox <= this.TempsArrivePosition)
             {
                 Position += new Vector2((float)Vitesse, 0);
                 Sprite.Play("rightWalking");
                 IsMovingRight = true;
             }
-            else if (time > tempsArrivePosition && time < tempsArrivePosition*2)
+            else if (ChronoDepFox <= (this.TempsArrivePosition*2))
             {
                 Position -= new Vector2((float)Vitesse, 0);
                 Sprite.Play("leftWalking");
                 IsMovingRight = false;
             }
-            else time = 0;
+            else ChronoDepFox = 0;
         }
 
         public void LoadContent(SpriteSheet sprite)

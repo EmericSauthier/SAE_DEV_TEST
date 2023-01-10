@@ -305,7 +305,7 @@ namespace Projet
                 // Rampants
                 for (int i = 0; i < monstresRampants.Count; i++)
                 {
-                    monstresRampants[i].RightLeftMove(ref Chrono.chronoDepFox);
+                    monstresRampants[i].RightLeftMove(gameTime);
                     monstresRampants[i].Sprite.Update(deltaSeconds);
                     monstresRampants[i].UpdateBoxes();
                 }
