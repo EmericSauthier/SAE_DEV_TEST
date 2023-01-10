@@ -14,6 +14,8 @@ namespace Projet
     internal class ChoixNiveau : GameScreen
     {
         private Game1 _myGame;
+        //deco
+        private Texture2D _textureBackground;
 
         //SOURIS POUR GERER CLIC
         private MouseState _mouseState;
@@ -47,6 +49,8 @@ namespace Projet
         }
         public override void LoadContent()
         {
+            _textureBackground= Content.Load<Texture2D>("Decors/bgChN");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -81,6 +85,10 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Gray);
             _myGame.SpriteBatch.Begin();
+            //DECO
+            _myGame.SpriteBatch.Draw(_textureBackground, new Vector2(0,0), Color.White);//LE FOND
+
+            //TEXTE
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv1}", _positionNiv1, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv2}", _positionNiv2, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_niv3}", _positionNiv3, Color.White);
