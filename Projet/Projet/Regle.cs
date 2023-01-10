@@ -62,14 +62,13 @@ namespace Projet
             _menuTXT = "Menu";
                 //DEPLACEMENT
             _texteControle = "Deplacement :";
-            _avancer = "Maintener la fleche droite pour avancer.";
-            _sauter = "Sauter avec la touche espace !";
-            _glisser = "Glisser grace a la fleche du bas.";
-            _relever = "Relever vous avec la fleche du haut.";
-            _attaquer = "Attaquer avec ...";
+            _avancer = "Avencer : fleche droite/gauche";
+            _sauter = "Sauter : espace";
+            _glisser = "Glisser : fleche du bas + direction";
+            _attaquer = "Boule de neige : entrer";
                 //ENNEMI
             _texteEnnemi = "Attention aux predateurs !";
-            _texteIntroEnnemi = "Durant votre parcours, faites attention aux ennemis sur votre \nchemin, il pourrait bien vous devorer ! Eviter les ou attaquer !";
+            _texteIntroEnnemi = "Durant votre parcours, faites attention aux ennemis sur votre \nchemin, ils pourraient bien vous devorer ! \nEviter les ou attaquer en sautant sur leur dos !";
             
 
             //POSITION
