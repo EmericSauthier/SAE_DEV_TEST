@@ -44,9 +44,6 @@ namespace Projet
 
         // Chrono
         private Vector2 _positionChrono;
-        private float _chrono;
-        private float _chronoDepFox1;
-        private float _chronoDepEagle1;
 
         // ENTITE
         List<MonstreRampant> monstresRampants;
@@ -55,9 +52,6 @@ namespace Projet
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
         private Rectangle _hitBoxPingouin;
-
-        // Piège
-        private float _chronoTrap1, _chronoInvincibility;
 
         //Recompense
         Recompenses []coins;
@@ -104,11 +98,7 @@ namespace Projet
             _camera = new Camera();
             _camera.Initialize(_myGame.Window, GraphicsDevice, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 
-            // Chrono
-            _chrono = 0;
-            _chronoDepFox1 = 0;
-            _chronoDepEagle1 = 0;
-            _chronoInvincibility = 0;
+            Chrono.InitializeChronos();
 
             // Initialisation du pingouin et de sa position
             _pingouin = new Pingouin(LARGEUR_FENETRE / 2, 500 + (HAUTEUR_FENETRE / 2), scale);
@@ -267,24 +257,22 @@ namespace Projet
                 _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
 
                 // Chrono
-                _chrono += deltaSeconds;
+                Chrono.UpdateChronos(deltaSeconds);
                 _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
 
                 // Ennemis
                 // Rampants
-                _chronoDepFox1 += deltaSeconds;
                 for (int i = 0; i < monstresRampants.Count; i++)
                 {
-                    monstresRampants[i].RightLeftMove(ref _chronoDepFox1);
+                    monstresRampants[i].RightLeftMove(ref Chrono.chronoDepFox);
                     monstresRampants[i].Sprite.Update(deltaSeconds);
                     monstresRampants[i].UpdateBoxes();
                 }
 
                 // Volants
-                _chronoDepEagle1 += deltaSeconds;
                 for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].IdleFlying(ref _chronoDepEagle1);
+                    monstresVolants[i].IdleFlying(ref Chrono.chronoDepEagle);
                     monstresVolants[i].Sprite.Update(deltaSeconds);
                     monstresVolants[i].UpdateBoxes();
                 }
@@ -292,7 +280,6 @@ namespace Projet
                 // Recompense
                 for (int i =0; i<4; i++)
                 {
-                    _chronoDepFox1 += deltaSeconds;
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
                 }
@@ -302,7 +289,7 @@ namespace Projet
 
                 // Portail
                 openingPortal.Sprite.Play("openingPortal");
-                openingPortal.Sprite.Play("closingPortal");
+                closingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
                 for(int i=0; i < _posiPartiPortail.Length; i++)
@@ -312,11 +299,9 @@ namespace Projet
                 }
 
                 // Traps
-                _chronoTrap1 += deltaSeconds;
-                _chronoInvincibility += deltaSeconds;
                 for (int i = 0; i < traps.Count; i++)
                 {
-                    traps[i].PressActivation(ref _chronoTrap1);
+                    traps[i].PressActivation(ref Chrono.chronoTrap);
                     traps[i].Sprite.Update(deltaSeconds);
                     traps[i].UpdateBoxes();
                 }
@@ -335,7 +320,7 @@ namespace Projet
                 {
                     if (Collision.IsCollidingTrap(traps[i], _hitBoxPingouin))
                     {
-                        _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         MediaPlayer.Play(trapTouchPingouin);
                     }
                 }
@@ -346,7 +331,7 @@ namespace Projet
                     {
                         if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
                         {
-                            _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                             MediaPlayer.Play(monsterTouchPingouin);
                         }
                     }
@@ -359,7 +344,7 @@ namespace Projet
                     {
                         if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _hitBoxPingouin))
                         {
-                            _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         }
                     }
                 }
@@ -444,9 +429,9 @@ namespace Projet
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
 
             // Affichage du chrono
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20,0), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20,0), Color.White);
             //_myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Trap : {Math.Round(_chronoTrap1, 2)}", _positionChrono + new Vector2(-100, 50), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(_chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono Invincibility : {Math.Round(Chrono.chronoInvincibility, 2)}", _positionChrono + new Vector2(-170, 100), Color.White);
 
             //Affichage du nombre de parti de portaill recuperer
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
@@ -496,7 +481,7 @@ namespace Projet
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (_chrono <2)
+            if (Chrono.chrono <2)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }

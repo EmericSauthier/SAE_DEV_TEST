@@ -499,7 +499,7 @@ namespace Projet
             return new Point[] { new Point(x, top), new Point(x, middle), new Point(x, bottom) };
         }
 
-        public void TakeDamage(int damage, ref float invincibilityChrono)
+        public void TakeDamage(int damage, ref double invincibilityChrono)
         {
 
             if (invincibilityChrono > 2)
