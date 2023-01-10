@@ -81,7 +81,6 @@ namespace Projet
         Song monsterTouchPingouin;
         Song trapTouchPingouin;
 
-
         // Tableau de boule de neige
         private Snowball[] _snowballs;
         private Texture2D _snowballTexture;
