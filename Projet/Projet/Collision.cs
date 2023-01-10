@@ -35,7 +35,6 @@ namespace Projet
                 else return false;
             }
             else return false;
-
         }
 
         // Nécessite changement fonctionnement des offsets
@@ -48,7 +47,7 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(monstre.DebugRectangleSprite))
             {
-                if((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
+                if((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }
@@ -76,7 +75,7 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(rectangleMonstreDebug))
             {
-                if ((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
+                if ((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }
@@ -103,12 +102,21 @@ namespace Projet
 
         }
 
-        public bool SpriteCollision(RectangleF rect1, RectangleF rect2)
+        public static bool SpriteCollision(RectangleF rect1, RectangleF rect2)
         {
             return rect1.Intersects(rect2);
         }
+        public bool SpriteCollision(RectangleF rect1, RectangleF[] tab)
+        {
+            bool collision = false;
+            for (int i = 0; i < tab.Length; i++)
+            {
+                collision = collision || rect1.Intersects(tab[i]);
+            }
+            return collision;
+        }
 
-        public bool MapCollision(Point[] pointTab, TiledMapTileLayer mapLayer)
+        public static bool MapCollision(Point[] pointTab, TiledMapTileLayer mapLayer)
         {
             TiledMapTile? tile;
 
@@ -118,6 +126,16 @@ namespace Projet
                 {
                     return true;
                 }
+            }
+            return false;
+        }
+        public static bool MapCollision(Point point, TiledMapTileLayer mapLayer)
+        {
+            TiledMapTile? tile;
+
+            if (mapLayer.TryGetTile((ushort)point.X, (ushort)point.Y, out tile) != false && !tile.Value.IsBlank)
+            {
+                return true;
             }
             return false;
         }

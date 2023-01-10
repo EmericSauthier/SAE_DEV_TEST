@@ -50,15 +50,8 @@ namespace Projet
         private int currentLife;
         private int maxLife;
 
-        // Tableau de boule de neige
-        private Snowball[] snowballs;
-        private Texture2D snowballTexture;
-
-        private float timer;
-
 
         // Propriétés
-
         public Vector2 Position
         {
             get
@@ -275,42 +268,6 @@ namespace Projet
                 this.maxLife = value;
             }
         }
-        internal Snowball[] Snowballs
-        {
-            get
-            {
-                return this.snowballs;
-            }
-
-            set
-            {
-                this.snowballs = value;
-            }
-        }
-        public Texture2D SnowballTexture
-        {
-            get
-            {
-                return this.snowballTexture;
-            }
-
-            set
-            {
-                this.snowballTexture = value;
-            }
-        }
-        public float Timer
-        {
-            get
-            {
-                return this.timer;
-            }
-
-            set
-            {
-                this.timer = value;
-            }
-        }
 
 
         // Constructeur
@@ -326,8 +283,6 @@ namespace Projet
 
             this.scale = scale;
 
-            this.snowballs = new Snowball[0];
-
             this.MaxLife = 3;
             this.CurrentLife = this.MaxLife;
 
@@ -336,7 +291,7 @@ namespace Projet
         }
 
 
-        public void Update(bool gameOver, float deltaTime, KeyboardState keyboardState, TiledMapTileLayer groundLayer, TiledMapTileLayer deadLayer)
+        public void Update(float deltaTime, TiledMapTileLayer groundLayer)
         {
             /*
             Fonction d'update du pingouin. Elle permet de centraliser toute les opérations à effectuer lors de chaque frame. 
@@ -344,92 +299,13 @@ namespace Projet
 
             // Application de la gravité
             this.Gravity(groundLayer);
-            gameOver = this.CheckBottom(deadLayer) || gameOver;
-            timer += deltaTime;
             
-            this.SnowballsUpdate(groundLayer);
-            // Application d'un mouvement si commander par l'utilisateur
-            this.InputsManager(gameOver, keyboardState, groundLayer);
             this.perso.Update(deltaTime);
-            this.SnowballsUpdate(groundLayer);
         }
         public void Affiche(Game1 game)
         {
             // Affichage du pingouin
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
-
-            // Affichage des boules de neige
-            for (int i = 0; i < this.snowballs.Length; i++)
-            {
-                this.snowballs[i].Affiche(game);
-            }
-        }
-
-        public void InputsManager(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
-        {
-            /*
-            Fonction permettant de lancer les animations et de faire bouger le pingouin si les entrées correspondent
-            */
-
-            Vector2 move = Vector2.Zero;
-
-            // Vérification de l'état de la flèche du bas
-            if (keyboardState.IsKeyUp(Keys.Down))
-            {
-                this.slideState = false;
-            }
-
-            // Vérification de l'état des flèches droite et gauche
-            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
-            {
-                this.isMovingLeft = true;
-                this.isMovingRight = false;
-                this.direction = "Left";
-            } 
-            else if (!keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-            {
-                this.isMovingRight = true;
-                this.isMovingLeft = false;
-                this.direction = "Right";
-            }
-            else
-            {
-                this.isMovingLeft = false;
-                this.isMovingRight = false;
-                this.direction = "Right";
-            }
-
-            // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5 && this.timer >= 1)
-            {
-                timer = 0;
-                this.Attack();
-            }
-
-            // Si le pingouin saute (touche espace) ou est dans les airs
-            if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
-            {
-                this.Jump(mapLayer);
-            }
-            // Si le pingouin glisse (flèche du bas)
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                this.Slide(mapLayer);
-
-            }
-            // Si le pingouin va à droite (flèche droite uniquement)
-            else if (isMovingRight || isMovingLeft)
-            {
-                this.Walk(mapLayer);
-            }
-            // Si aucun mouvement n'est demandé, il reste immobile et joue son animation idle
-            else
-            {
-                this.Animate("idle");
-            }
-
-            // Applique le mouvement à la position du pingouin
-            this.position += move;
         }
         public void Animate(String animation)
         {
@@ -479,45 +355,20 @@ namespace Projet
             }
         }
 
-        public void Attack()
-        {
-            int direction = 1;
-            // Joue l'animation d'attaque en fonction du sens du personnage
-            if (this.isMovingLeft)
-            {
-                direction = -1;
-            }
-            this.Animate("attack");
-
-            // Ajoute une boule de neige au tableau
-            Snowball[] newSnowballsArray = new Snowball[this.snowballs.Length + 1];
-            for (int i = 0; i < this.snowballs.Length; i++)
-            {
-                newSnowballsArray[i] = this.snowballs[i];
-            }
-            Snowball newSnowball = new Snowball(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, scale, this.snowballTexture);
-            newSnowball.Velocity *= direction;
-            newSnowballsArray[newSnowballsArray.Length - 1] = newSnowball;
-            this.snowballs = newSnowballsArray;
-        }
-        public void Walk(TiledMapTileLayer mapLayer)
+        public void Walk()
         {
             if (this.isMovingRight)
             {
                 this.perso.Play("walkForward");
-                // Vérifie qu'il n'y a pas d'obstacles à droite
-                if (!CheckRight(mapLayer))
-                    this.position += new Vector2((float)walkVelocity, 0);
+                this.position += new Vector2((float)walkVelocity, 0);
             }
             else
             {
                 this.perso.Play("walkBehind");
-                // Vérifie qu'il n'y a pas d'obstacles à gauche
-                if (!CheckLeft(mapLayer))
-                    this.position += new Vector2((float)-walkVelocity, 0);
+                this.position += new Vector2((float)-walkVelocity, 0);
             }
         }
-        public void Jump(TiledMapTileLayer mapLayer)
+        public void Jump(int direction=0)
         {
             /*
             Fonction gérant le saut du pingouin
@@ -543,7 +394,7 @@ namespace Projet
             // que la différence de hauteur entre sa position au moment du saut et sa position actuelle est inférieur à 80
             // et qu'il n'y a pas d'obstacles au-dessus de lui, on applique un mouvement vertical
             // (Cela permet de fluidifier le mouvement de saut et de ne pas téléporter le pingouin)
-            if (this.jumpState && this.positionSaut.Y - this.position.Y < 100 && !CheckTop(mapLayer))
+            if (this.jumpState && this.positionSaut.Y - this.position.Y < 100)
             {
                 this.position += new Vector2(0, (float)-this.jumpVelocity);
             }
@@ -554,20 +405,10 @@ namespace Projet
                 this.positionSaut = new Vector2();
             }
 
-            // Si l'utilisateur presse la flèche de droite et qu'il n'y a pas d'obstacles à droite,
-            // on applique un mouvement horizontal vers la droite
-            if (this.isMovingRight && !CheckRight(mapLayer))
-            {
-                this.position += new Vector2((float)walkVelocity, 0);
-            }
-            // Si l'utilisateur presse la flèche de gauche et qu'il n'y a pas d'obstacles à gauche,
-            // on applique un mouvement horizontal vers la gauche
-            else if (this.isMovingLeft && !CheckLeft(mapLayer))
-            {
-                this.position += new Vector2((float)-walkVelocity, 0);
-            }
+            // Si l'utilisateur presse la flèche de droite ou de gauche, la direction est appliquée, sinon multiplication par 0
+            this.position += new Vector2((float)walkVelocity, 0) * direction;
         }
-        public void Slide(TiledMapTileLayer mapLayer)
+        public void Slide(int direction=0)
         {
             this.Animate("slide");
             // S'il n'est pas encore en train de glisser, joue l'animation où il se jète
@@ -576,18 +417,7 @@ namespace Projet
                 this.slideState = true;
             }
 
-            if (isMovingRight)
-            {
-                // Vérifie qu'il n'y a pas d'obstacles à droite
-                if (!CheckRight(mapLayer))
-                    this.position += new Vector2((float)slideVelocity, 0);
-            }
-            else if (isMovingLeft)
-            {
-                // Vérifie qu'il n'y a pas d'obstacles à gauche
-                if (!CheckLeft(mapLayer))
-                    this.position += new Vector2((float)-slideVelocity, 0);
-            }
+            this.position += new Vector2((float)slideVelocity, 0) * direction;
         }
         public void Gravity(TiledMapTileLayer mapLayer)
         {
@@ -597,7 +427,7 @@ namespace Projet
 
             // S'il n'y a pas d'obstacle en-dessous du pingouin, le pingouin est en l'air
             // on applique un mouvement vertical vers le bas
-            if (!CheckBottom(mapLayer))
+            if (!Collision.MapCollision(this.CheckBottom(), mapLayer))
             {
                 this.fly = true;
                 this.position += new Vector2(0, (float)this.gravityVelocity);
@@ -608,125 +438,63 @@ namespace Projet
             }
         }
 
-        public bool CheckBottom(TiledMapTileLayer mapLayer)
+        public Point[] CheckBottom()
         {
             /*
             Fonction vérifiant la présence d'obsctale en-dessous du pingouin
             */
 
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
-            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
-            ushort middle = (ushort)(this.Position.X / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y + 60 * this.scale) / mapLayer.TileHeight);
+            int left = (int)(this.Position.X - 40 * this.scale);
+            int middle = (int)this.Position.X;
+            int right = (int)(this.Position.X + 40 * this.scale);
+            int y = (int)(this.Position.Y + 60 * this.scale);
 
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileMiddle;
-            TiledMapTile? tileRight;
-
-            // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
-            {
-                return true;
-            }
-
-            return false;
+            return new Point[] { new Point(left, y), new Point(middle, y), new Point(right, y) };
         }
-        public bool CheckTop(TiledMapTileLayer mapLayer)
+        public Point[] CheckTop()
         {
             /*
             Fonction vérifiant la présence d'obsctale au-dessus du pingouin
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en haut à droite
-            ushort left = (ushort)((this.Position.X - 40 * this.scale) / mapLayer.TileWidth);
-            ushort middle = (ushort)(this.Position.X / mapLayer.TileWidth);
-            ushort right = (ushort)((this.Position.X + 40 * this.scale) / mapLayer.TileWidth);
-            ushort y = (ushort)((this.Position.Y - 40 * this.scale) / mapLayer.TileHeight);
+            int left = (int)(this.Position.X - 40 * this.scale);
+            int middle = (int)this.Position.X;
+            int right = (int)(this.Position.X + 40 * this.scale);
+            int y = (int)(this.Position.Y - 40 * this.scale);
 
-            TiledMapTile? tileLeft;
-            TiledMapTile? tileMiddle;
-            TiledMapTile? tileRight;
-
-            // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(left, y, out tileLeft) != false && !tileLeft.Value.IsBlank) || (mapLayer.TryGetTile(middle, y, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(right, y, out tileRight) != false && !tileRight.Value.IsBlank))
-                return true;
-
-            return false;
+            return new Point[] { new Point(left, y), new Point(middle, y), new Point(right, y) };
         }
-        public bool CheckLeft(TiledMapTileLayer mapLayer)
+        public Point[] CheckLeft()
         {
             /*
             Fonction vérifiant la présence d'obsctale à gauche du pingouin
             */
 
             // Définition de deux points et de deux tiles, en haut à gauche et en bas à gauche
-            ushort x = (ushort)((this.Position.X - 50 * this.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
-            ushort middle = (ushort)((this.Position.Y + 10 * this.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileMiddle;
-            TiledMapTile? tileBottom;
+            int x = (int)(this.Position.X - 50 * this.scale);
+            int top = (int)(this.Position.Y + 50 * this.scale);
+            int middle = (int)(this.Position.Y + 10 * this.scale);
+            int bottom = (int)(this.Position.Y - 30 * this.scale);
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, middle, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
+            return new Point[] { new Point(x, top), new Point(x, middle), new Point(x, bottom) };
         }
-        public bool CheckRight(TiledMapTileLayer mapLayer)
+        public Point[] CheckRight()
         {
             /*
             Fonction vérifiant la présence d'obsctale à droite du pingouin
             */
 
             // Définition de deux points et de deux tiles, en haut à droite et en bas à droite
-            ushort x = (ushort)((this.Position.X + 50 * this.scale) / mapLayer.TileWidth);
-            ushort top = (ushort)((this.Position.Y + 50 * this.scale) / mapLayer.TileHeight);
-            ushort middle = (ushort)((this.Position.Y + 10 * this.scale) / mapLayer.TileHeight);
-            ushort bottom = (ushort)((this.Position.Y - 30 * this.scale) / mapLayer.TileHeight);
-
-            TiledMapTile? tileTop;
-            TiledMapTile? tileMiddle;
-            TiledMapTile? tileBottom;
+            int x = (int)(this.Position.X + 50 * this.scale);
+            int top = (int)(this.Position.Y + 50 * this.scale);
+            int middle = (int)(this.Position.Y + 10 * this.scale);
+            int bottom = (int)(this.Position.Y - 30 * this.scale);
 
             // Récupération des différentes tiles, si l'une a une valeur, il y a collision
-            if ((mapLayer.TryGetTile(x, top, out tileTop) != false && !tileTop.Value.IsBlank) || (mapLayer.TryGetTile(x, middle, out tileMiddle) != false && !tileMiddle.Value.IsBlank) || (mapLayer.TryGetTile(x, bottom, out tileBottom) != false && !tileBottom.Value.IsBlank))
-                return true;
-
-            return false;
-        }
-
-        public void SnowballsUpdate(TiledMapTileLayer mapLayer)
-        {
-            int countNull = 0;
-            for (int i = 0; i < this.snowballs.Length; i++)
-            {
-                // Vérification des collisions avec le décor
-                if (this.snowballs[i].Collide(mapLayer) || this.snowballs[i].Distance >= 500)
-                {
-                    this.snowballs[i] = null;
-                    countNull++;
-                }
-                else
-                {
-                    this.snowballs[i].Move();
-                }
-            }
-
-            Snowball[] temp = this.snowballs;
-            this.snowballs = new Snowball[this.snowballs.Length - countNull];
-            int index = 0;
-            for (int i = 0; i < temp.Length; i++)
-            {
-                if (temp[i] != null)
-                {
-                    this.snowballs[index] = temp[i];
-                    index++;
-                }
-            }
+            return new Point[] { new Point(x, top), new Point(x, middle), new Point(x, bottom) };
         }
 
         public void TakeDamage(int damage, ref float invincibilityChrono)
