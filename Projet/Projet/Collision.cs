@@ -39,18 +39,14 @@ namespace Projet
         }
 
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingMonstre(Pingouin pingouin, MonstreRampant monstre, ref Rectangle rectangleMonstreDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
+        public static bool IsCollidingMonstre(Pingouin pingouin, MonstreRampant monstre, Rectangle hitboxPingouin)
         {
-            rectangleMonstreDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y, (int)(monstre.Largeur), (int)(monstre.Hauteur));
-            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 10, (int)(monstre.Largeur)-16, 10);
-            
-
-            if (hitboxPingouin.Intersects(rectangleKillingMonster))
+            if (hitboxPingouin.Intersects(monstre.DebugRectangleKill))
             {
                 monstre.IsDied = true;
             }
 
-            if (hitboxPingouin.Intersects(rectangleMonstreDebug))
+            if (hitboxPingouin.Intersects(monstre.DebugRectangleSprite))
             {
                 if((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
                 {

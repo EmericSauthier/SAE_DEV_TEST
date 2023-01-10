@@ -83,6 +83,7 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+        Song recupAllPortalSound;
 
         public Niveau2(Game1 game) : base(game)
         {
@@ -194,6 +195,7 @@ namespace Projet
             }
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
+            recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
 
             base.LoadContent();
         }
@@ -204,11 +206,12 @@ namespace Projet
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //CONDITION POUR GAGNER
-            if (_partiRecolleter == _posiPartiPortail.Length)
+            
+            //CONDITION POUR AFFICHER LE PORTAIL DE SORTIE
+            if (_partiRecolleter == _posiPartiPortail.Length && openingPortal.etat==1)
             {
                 openingPortal.etat = 0;
+                MediaPlayer.Play(recupAllPortalSound);
             }
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
@@ -284,7 +287,7 @@ namespace Projet
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
-                    if (Collision.IsCollidingMonstre(_pingouin, _fox1, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (Collision.IsCollidingMonstre(_pingouin, _fox1, _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
                     }
@@ -325,12 +328,21 @@ namespace Projet
                 {
                     if (partiPortail[i].etat == 0)
                     {
-                        //Collision de la recompense avec le pingouin
+                        //Collision des moreau de portail avec le pingouin
                         if (Collision.IsCollidingRecompense(partiPortail[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
                         }
+                    }
+                }
+                //Collision avec le portail de changement de niveau
+                if (openingPortal.etat == 0)
+                {
+                    //Collision des moreau de portail avec le pingouin
+                    if (Collision.IsCollidingRecompense(openingPortal, largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                    {
+                        _myGame.clicWin = true;
                     }
                 }
 
@@ -411,11 +423,11 @@ namespace Projet
             {
                 if (partiPortail[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.15));
+                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.35));
                 }
             }
             
-            if (openingPortal.etat == 0)
+            if (openingPortal.etat == 1)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }

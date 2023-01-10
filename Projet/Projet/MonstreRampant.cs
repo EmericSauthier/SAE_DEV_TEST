@@ -25,6 +25,7 @@ namespace Projet
         private bool isDied;
 
         private int largeur, hauteur;
+        private Rectangle debugRectangleSprite, debugRectangleKill;
 
         public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition, int largeurMonstre, int hauteurMonstre)
         {
@@ -36,6 +37,7 @@ namespace Projet
 
             this.Largeur = largeurMonstre;
             this.Hauteur = hauteurMonstre;
+            Update();
         }
         
 
@@ -151,6 +153,32 @@ namespace Projet
             }
         }
 
+        public Rectangle DebugRectangleSprite
+        {
+            get
+            {
+                return this.debugRectangleSprite;
+            }
+
+            set
+            {
+                this.debugRectangleSprite = value;
+            }
+        }
+
+        public Rectangle DebugRectangleKill
+        {
+            get
+            {
+                return this.debugRectangleKill;
+            }
+
+            set
+            {
+                this.debugRectangleKill = value;
+            }
+        }
+
         public void RightLeftMove(ref float time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
@@ -174,14 +202,23 @@ namespace Projet
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void Affiche(Game1 game, Rectangle rSprite, Rectangle rKilling)
+        public void Affiche(Game1 game)
         {
             if (!IsDied)
             {
-                game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(2, 2));
+                game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(3, 3));
                 // DEBUG
-                game.SpriteBatch.DrawRectangle(rSprite, Color.Green);
-                game.SpriteBatch.DrawRectangle(rKilling, Color.DarkGreen);
+                game.SpriteBatch.DrawRectangle(this.DebugRectangleSprite, Color.Green);
+                game.SpriteBatch.DrawRectangle(this.DebugRectangleKill, Color.DarkGreen);
+            }
+        }
+
+        public void Update()
+        {
+            if(enemy == "fox")
+            {
+                this.DebugRectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
+                this.DebugRectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 10, (int)(this.Largeur) - 16, 10);
             }
         }
     }

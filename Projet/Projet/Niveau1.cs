@@ -72,9 +72,9 @@ namespace Projet
         private Vector2[] _heartsPositions;
 
         //Debug rectangle
-        private Rectangle rFox;
+        private Rectangle foxRectangle;
         private Rectangle rTrap;
-        private Rectangle rKillingFox;
+        private Rectangle killingFoxRectangle;
         private Rectangle rRecompense;
         private Rectangle rEagle;
         private Rectangle rKillingEagle;
@@ -86,6 +86,7 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+        Song recupAllPortalSound;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -131,6 +132,7 @@ namespace Projet
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(_fox1);
+            monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12, 19 * 3, 14 * 3));
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
@@ -176,7 +178,10 @@ namespace Projet
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
-            _fox1.LoadContent(foxSprite);
+            for (int i = 0; i < monstresRampants.Count; i++)
+            {
+                monstresRampants[i].LoadContent(foxSprite);
+            };
 
             // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
@@ -203,7 +208,8 @@ namespace Projet
             {
                 partiPortail[i].LoadContent(spritePortal);
             }
-            
+            recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
 
@@ -219,6 +225,7 @@ namespace Projet
             if (_partiRecolleter ==_posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
+                MediaPlayer.Play(recupAllPortalSound);
             }
 
             //CONDITION POUR ALLER SUR LE MENU DU JEU
@@ -249,6 +256,7 @@ namespace Projet
                 {
                     monstresRampants[i].RightLeftMove(ref _chronoDepFox1);
                     monstresRampants[i].Sprite.Update(deltaSeconds);
+                    monstresRampants[i].Update();
                 }
 
                 _chronoDepEagle1 += deltaSeconds;
@@ -302,7 +310,7 @@ namespace Projet
                 {
                     if (!monstresRampants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], ref rFox, ref rKillingFox, _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
                         {
                             _pingouin.TakeDamage(1, ref _chronoInvincibility);
                         }
@@ -402,7 +410,7 @@ namespace Projet
             //Fox
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].Affiche(_myGame, rFox, rKillingFox);
+                monstresRampants[i].Affiche(_myGame);
             }
 
             //Trap
@@ -425,14 +433,14 @@ namespace Projet
             {
                 if (partiPortail[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.5));
+                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.35));
                 }
             }
             if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (closingPortal.etat == 0)
+            if (_chrono <2)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }
