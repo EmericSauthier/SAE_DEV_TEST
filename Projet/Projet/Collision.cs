@@ -85,11 +85,10 @@ namespace Projet
 
         }
 
-        public static bool IsCollidingRecompense(Recompenses recompense, int largeurRecompense, int hauteurRecompense, ref Rectangle recompenseRectangle, Rectangle hitboxPingouin)
+        public static bool IsCollidingRecompense(Recompenses recompense, Rectangle hitboxPingouin)
         {
-            recompenseRectangle = new Rectangle((int)recompense.Position.X, (int)recompense.Position.Y, (int)(largeurRecompense), (int)(hauteurRecompense));
 
-            if (hitboxPingouin.Intersects(recompenseRectangle))
+            if (hitboxPingouin.Intersects(recompense.RectangleSprite))
             {
                 return true;
             }
