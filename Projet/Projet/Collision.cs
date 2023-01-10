@@ -48,7 +48,7 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(monstre.RectangleSprite))
             {
-                if((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
+                if((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }
@@ -72,7 +72,7 @@ namespace Projet
 
             if (hitboxPingouin.Intersects(monstre.RectangleSprite))
             {
-                if ((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
+                if ((monstre.IsMovingRight && pingouin.IsMovingRight) || (!monstre.IsMovingRight && pingouin.IsMovingRight))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }
