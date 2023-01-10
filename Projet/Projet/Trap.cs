@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,19 @@ namespace Projet
     {
         private Vector2 _position;
         private AnimatedSprite _sprite;
+        private string trapType;
 
         private int largeur, hauteur;
+        private Rectangle rectangleSprite;
+        private bool canCollidingTrap;
 
-        public Trap(Vector2 trapPosition, int largeurTrap, int hauteurTrap)
+        public Trap(Vector2 trapPosition, int largeurTrap, int hauteurTrap, string trapTypeString)
         {
             this.Position = trapPosition;
             this.Largeur = largeurTrap;
             this.Hauteur = hauteurTrap;
+            this.TrapType = trapTypeString;
+            this.CanCollidingTrap = true;
         }
 
         public Vector2 Position
@@ -74,31 +80,84 @@ namespace Projet
             }
         }
 
+        public Rectangle RectangleSprite
+        {
+            get
+            {
+                return this.rectangleSprite;
+            }
+
+            set
+            {
+                this.rectangleSprite = value;
+            }
+        }
+
+        public string TrapType
+        {
+            get
+            {
+                return this.trapType;
+            }
+
+            set
+            {
+                this.trapType = value;
+            }
+        }
+
+        public bool CanCollidingTrap
+        {
+            get
+            {
+                return this.canCollidingTrap;
+            }
+
+            set
+            {
+                this.canCollidingTrap = value;
+            }
+        }
+
         public void LoadContent(SpriteSheet sprite)
         {
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void PressActivation(ref float time, ref bool canCollidingTrap)
+        public void PressActivation(ref float time)
         {
             //System.Diagnostics.Debug.WriteLine(time);
-            canCollidingTrap = false;
+            this.CanCollidingTrap = false;
             if (time > 1 && time < 1.3)
             {
                 Sprite.Play("press");
             }
             else if(time >= 1.5&& time < 2)
             {
-                canCollidingTrap = true;
+                this.CanCollidingTrap = true;
             }
             else if(time >= 2 && time < 4)  
             {
-                canCollidingTrap = false;
+                this.CanCollidingTrap = false;
             }
             else if(time >= 4)
             {
                 time = 0;
             }
+        }
+
+        public void UpdateBoxes()
+        {
+            if(this.TrapType == "press")
+            {
+                this.RectangleSprite = new Rectangle((int)this.Position.X - 15, (int)this.Position.Y - 8, this.Largeur, this.Hauteur);
+            }
+        }
+
+        public void Affiche(Game1 game)
+        {
+            game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(1, 1));
+            game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Orange);
         }
     }
 }

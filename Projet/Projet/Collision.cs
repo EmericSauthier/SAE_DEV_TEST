@@ -22,13 +22,11 @@ namespace Projet
     internal class Collision
     {
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingTrap(Trap trap, bool canCollidingtrap, ref Rectangle rectangleTrapDebug, Rectangle hitboxPingouin)
+        public static bool IsCollidingTrap(Trap trap, Rectangle hitboxPingouin)
         {
-            if (canCollidingtrap)
+            if (trap.CanCollidingTrap)
             {
-                rectangleTrapDebug = new Rectangle((int)trap.Position.X - 15, (int)trap.Position.Y - 8, trap.Largeur , trap.Hauteur);
-
-                if (hitboxPingouin.Intersects(rectangleTrapDebug))
+                if (hitboxPingouin.Intersects(trap.RectangleSprite))
                 {
                     return true;
                 }

@@ -126,7 +126,7 @@ namespace Projet
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20, "press");
 
             //Recompenses_posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
             coins = new Recompenses[_posiCoins.Length];
@@ -266,7 +266,7 @@ namespace Projet
                 // Traps
                 _chronoTrap1 += deltaSeconds;
                 _chronoInvincibility += deltaSeconds;
-                _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
+                _ceilingTrap1.PressActivation(ref _chronoTrap1);
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
                 // Lifes
@@ -279,7 +279,7 @@ namespace Projet
                 // Collisions
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
 
-                if (Collision.IsCollidingTrap(_ceilingTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
+                if (Collision.IsCollidingTrap(_ceilingTrap1, _hitBoxPingouin))
                 {
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
                 }
