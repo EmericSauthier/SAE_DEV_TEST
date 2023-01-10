@@ -299,7 +299,7 @@ namespace Projet
                 //Portail
                 _chronoDep += deltaSeconds;
                 openingPortal.Sprite.Play("openingPortal");
-                openingPortal.Sprite.Play("closingPortal");
+                closingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
