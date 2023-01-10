@@ -25,6 +25,7 @@ namespace Projet
         public static string messagePerdu;
         public static Vector2 positionMessagePerdu;
         public static string messageRejouer;
+        public static string messageMenu;
         public static Vector2 positionMessageRejouer;
         public static Vector2 positionMessageMenu;
 
@@ -41,9 +42,10 @@ namespace Projet
             //INITIALISATION TEXTE AFFICHER
             messagePerdu = "Game Over";
             messageRejouer = "Reessayer";
+            messageMenu = "Menu";
             positionMessagePerdu = new Vector2(Game1.LARGEUR_FENETRE/2-messagePerdu.Length*25, Game1.HAUTEUR_FENETRE/2-24);
             positionMessageRejouer = new Vector2(Game1.LARGEUR_FENETRE/4, positionMessagePerdu.Y+150);
-            positionMessageMenu = new Vector2(Game1.LARGEUR_FENETRE/4+ messagePerdu.Length * 24, positionMessagePerdu.Y+150);
+            positionMessageMenu = new Vector2(Game1.LARGEUR_FENETRE/2+ messagePerdu.Length * 24, positionMessagePerdu.Y+150);
 
             //MISE EN PLACE DE PINGOUIN DECO
             _pingouinTab = new Pingouin[6];
@@ -87,7 +89,7 @@ namespace Projet
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 //CONDITION RETOUR MENU
-                if (_mouseState.X >= positionMessageMenu.X && _mouseState.Y >= positionMessageMenu.Y && _mouseState.X <= positionMessageMenu.X + Win.messageMenu.Length * 24 && _mouseState.Y <= Win.positionMessageMenu.Y + 24)
+                if (_mouseState.X >= positionMessageMenu.X && _mouseState.Y >= positionMessageMenu.Y && _mouseState.X <= positionMessageMenu.X + 4 * 24 && _mouseState.Y <= positionMessageMenu.Y + 24)
                 {
                     _myGame.clicMenu = true;
                 }
@@ -106,7 +108,7 @@ namespace Projet
             //TEXTE
             _myGame.SpriteBatch.DrawString(_policeGO, $"{messagePerdu}", positionMessagePerdu, Color.Red);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", positionMessageMenu, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{messageMenu}", positionMessageMenu, Color.White);
 
             //PINGOUIN
             //for (int i=0; i<6; i++)
