@@ -237,7 +237,7 @@ namespace Projet
             // Affichage des boules de neige
             for (int i = 0; i < this.snowballs.Length; i++)
             {
-                
+                this.snowballs[i].Affiche(game);
             }
         }
 
