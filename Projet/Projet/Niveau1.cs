@@ -26,6 +26,7 @@ namespace Projet
 
         // GameManager
         private bool _gameOver;
+        private GameManager _manager;
 
         // Gestion des entrées
         private MouseState _mouseState;
@@ -74,6 +75,9 @@ namespace Projet
         Song monsterTouchPingouin;
         Song trapTouchPingouin;
 
+        // Tableau de boule de neige
+        private Snowball[] _snowballs;
+        private Texture2D _snowballTexture;
 
         public Niveau1(Game1 game) : base(game)
         {
@@ -87,6 +91,7 @@ namespace Projet
 
             // Etat de la partie
             _gameOver = false;
+            _manager = new GameManager(Keys.Left, Keys.Right, Keys.Space, Keys.Down, _snowballTexture);
 
             // Camera
             scale = (float)0.5;
@@ -152,6 +157,8 @@ namespace Projet
             openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
             closingPortal = new Recompenses(new Vector2(LARGEUR_FENETRE / 2-250, 500 + HAUTEUR_FENETRE / 2-50), "portal", 0);
 
+            _snowballs = new Snowball[0];
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -166,7 +173,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _pingouin.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+            _snowballTexture = Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -246,8 +253,8 @@ namespace Projet
 
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
-                
-                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _groundLayer, _deadLayer);
+
+                _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -282,7 +289,7 @@ namespace Projet
 
                 // Portail
                 openingPortal.Sprite.Play("openingPortal");
-                openingPortal.Sprite.Play("closingPortal");
+                closingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
                 for(int i=0; i < _posiPartiPortail.Length; i++)

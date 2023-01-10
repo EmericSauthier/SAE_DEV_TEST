@@ -26,6 +26,7 @@ namespace Projet
 
         // GameManager
         private bool _gameOver;
+        private GameManager _manager;
 
         // Gestion des entrées
         private MouseState _mouseState;
@@ -34,7 +35,7 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _mapLayer;
+        private TiledMapTileLayer _groundLayer;
         private TiledMapTileLayer _deadLayer;
 
         //JEU
@@ -86,6 +87,10 @@ namespace Projet
         Song monsterTouchPingouin;
         Song trapTouchPingouin;
 
+        // Tableau de boule de neige
+        private Snowball[] _snowballs;
+        private Texture2D _snowballTexture;
+
         public Niveau2(Game1 game) : base(game)
         {
             _myGame = game;
@@ -98,6 +103,7 @@ namespace Projet
 
             // Etat de la partie
             _gameOver = false;
+            _manager = new GameManager(Keys.Left, Keys.Right, Keys.Space, Keys.Down, _snowballTexture);
 
             // Camera
             scale = (float)0.5;
@@ -126,7 +132,7 @@ namespace Projet
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
+            _ceilingTrap1 = new Trap(new Vector2(1386, 1027), "press");
 
             //Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
@@ -155,6 +161,8 @@ namespace Projet
             openingPortal = new Recompenses(new Vector2(3054, 322), "portal", 1);
             closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
+            _snowballs = new Snowball[0];
+
             base.Initialize();
         }
         public override void LoadContent()
@@ -162,14 +170,14 @@ namespace Projet
             // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _groundLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
             _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _pingouin.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -260,7 +268,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _pingouin.Update(_gameOver, deltaSeconds, _keyboardState, _mapLayer, _deadLayer);
+                _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -282,7 +290,7 @@ namespace Projet
 
                 //Portail
                 openingPortal.Sprite.Play("openingPortal");
-                openingPortal.Sprite.Play("closingPortal");
+                closingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);
                 closingPortal.Sprite.Update(deltaSeconds);
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
@@ -409,12 +417,6 @@ namespace Projet
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
-
-            // Affichage des boules de neige
-            for (int i = 0; i < _pingouin.Snowballs.Length; i++)
-            {
-                _myGame.SpriteBatch.Draw(_pingouin.SnowballTexture, _pingouin.Snowballs[i].Position, Color.White);
-            }
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20, 0), Color.White);
