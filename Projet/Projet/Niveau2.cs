@@ -35,7 +35,7 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _mapLayer;
+        private TiledMapTileLayer _groundLayer;
         private TiledMapTileLayer _deadLayer;
 
         //JEU
@@ -176,7 +176,7 @@ namespace Projet
             // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _mapLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
+            _groundLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
             _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
 
             // Chargement du sprite du pingouin
