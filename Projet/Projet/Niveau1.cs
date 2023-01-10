@@ -43,7 +43,8 @@ namespace Projet
         // Chrono
         private Vector2 _positionChrono;
         private float _chrono;
-        private float _chronoDep;
+        private float _chronoDepFox1;
+        private float _chronoDepEagle1;
 
         // ENTITE
         private Pingouin _pingouin;
@@ -53,7 +54,8 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         public int _largeurFox1 = 19*3, _hauteurFox1 = 14*3; // à déplacer 
-        public bool isFox1Died;
+        // Eagle
+        MonstreVolant _eagle1;
 
         // Piège
         Trap _ceilingTrap1;
@@ -101,7 +103,8 @@ namespace Projet
 
             // Chrono
             _chrono = 0;
-            _chronoDep = 0;
+            _chronoDepFox1 = 0;
+            _chronoDepEagle1 = 0;
             _chronoInvincibility = 0;
 
             // Initialisation du pingouin et de sa position
@@ -119,7 +122,9 @@ namespace Projet
 
             // Ennemis
             _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
-            isFox1Died = false;
+            _fox1.IsDied = false;
+
+            _eagle1 = new MonstreVolant(new Vector2(1170, 850), "eagle", 1, 12);
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800));
@@ -175,6 +180,10 @@ namespace Projet
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
+            // Chargement texture eagle
+            SpriteSheet eagleSprite = Content.Load<SpriteSheet>("Ennemis_pieges/eagle.sf", new JsonContentLoader());
+            _eagle1.LoadContent(eagleSprite);
+
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             partiPortail.LoadContent(spritePortal);
@@ -217,20 +226,24 @@ namespace Projet
                 _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
 
                 // Ennemis
-                _chronoDep += deltaSeconds;
-                _fox1.RightLeftMove(ref _chronoDep);
+                _chronoDepFox1 += deltaSeconds;
+                _fox1.RightLeftMove(ref _chronoDepFox1);
                 _fox1.Sprite.Update(deltaSeconds);
+
+                _chronoDepEagle1 += deltaSeconds;
+                _eagle1.IdleFlying(ref _chronoDepEagle1);
+                _eagle1.Sprite.Update(deltaSeconds);
 
                 // Recompense
                 for (int i =0; i<4; i++)
                 {
-                    _chronoDep += deltaSeconds;
+                    _chronoDepFox1 += deltaSeconds;
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
                 }
 
                 //Portail
-                _chronoDep += deltaSeconds;
+                _chronoDepFox1 += deltaSeconds;
                 partiPortail.Sprite.Play("portal");
                 openingPortal.Sprite.Play("openingPortal");
                 partiPortail.Sprite.Update(deltaSeconds);
@@ -257,9 +270,9 @@ namespace Projet
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
-                if (!isFox1Died)
+                if (!_fox1.IsDied)
                 {
-                    if (Collision.IsCollidingMonstreRampant(_pingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (Collision.IsCollidingMonstreRampant(_pingouin, _fox1, _largeurFox1, _hauteurFox1, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
                     }
@@ -350,11 +363,15 @@ namespace Projet
             }
 
             // Affichage des ennemis et des pièges
-            if (!isFox1Died)
+            if (!_fox1.IsDied)
             {
                 _myGame.SpriteBatch.Draw(_fox1.Sprite, _fox1.Position, 0, new Vector2(3, 3));
             }
+            //Trap
             _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+
+            // Eagle
+            _myGame.SpriteBatch.Draw(_eagle1.Sprite, _eagle1.Position, 0, new Vector2(2, 2));
 
             //Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i<4; i++)
@@ -386,7 +403,7 @@ namespace Projet
                 }
             }
             
-            if (!isFox1Died)
+            if (!_fox1.IsDied)
             {
                 _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
                 _myGame.SpriteBatch.DrawRectangle(rKillingFox, Color.DarkOrange);
