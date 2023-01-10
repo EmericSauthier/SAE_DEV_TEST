@@ -24,11 +24,41 @@
 /processorParam:Quality=Best
 /build:Audio/coinSound.mp3
 
+#begin Audio/monsterTouchPingouin.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/monsterTouchPingouin.mp3
+
 #begin Audio/recupAllPortal.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/recupAllPortal.mp3
+
+#begin Audio/recupAllPortal.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/recupAllPortal.mp3
+
+#begin Audio/snowballTouch.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/snowballTouch.mp3
+
+#begin Audio/trapTouchPingouin.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/trapTouchPingouin.mp3
+
+#begin Audio/zapTeleport.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/zapTeleport.mp3
 
 #begin Decors/flocon.png
 /importer:TextureImporter
