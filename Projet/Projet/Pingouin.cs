@@ -299,13 +299,14 @@ namespace Projet
 
             // Application de la gravité
             this.Gravity(groundLayer);
-            
+            this.hitBox = new RectangleF((int)this.Position.X - 25, (int)this.Position.Y - 15, 128 * this.scale, 128 * this.scale);
             this.perso.Update(deltaTime);
         }
         public void Affiche(Game1 game)
         {
             // Affichage du pingouin
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
+            game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 5);
         }
         public void Animate(String animation)
         {
