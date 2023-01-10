@@ -16,7 +16,7 @@ namespace Projet
         private string enemy;
         private double vitesse;
         private double vitessePoursuite;
-        private bool isMovingRight;
+        private bool isMovingRight; //ajout isMovingUp pour collision verticale ?
         private double tempsArrivePosition;
         private bool isDied;
 
