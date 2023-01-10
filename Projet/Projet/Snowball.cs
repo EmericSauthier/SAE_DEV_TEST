@@ -41,7 +41,7 @@ namespace Projet
             this.Texture = texture;
             this.hitBox = new RectangleF(this.position.X, this.position.Y, texture.Height / 2, texture.Height / 2);
 
-            this.velocity = new Vector2(2, 0);
+            this.velocity = new Vector2(5, 0);
             this.Distance = 0;
 
             this.width = (int)(texture.Width * scale);

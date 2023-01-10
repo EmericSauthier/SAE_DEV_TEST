@@ -103,7 +103,7 @@ namespace Projet
 
             // Etat de la partie
             _gameOver = false;
-            _manager = new GameManager(_snowballTexture);
+            _manager = new GameManager();
 
             // Camera
             scale = (float)0.5;
@@ -177,7 +177,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _snowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
+            _manager.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -272,7 +272,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
+                _manager.Update(_keyboardState, _pingouin, ref _snowballs, _groundLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);

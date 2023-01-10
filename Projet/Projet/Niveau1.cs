@@ -91,7 +91,7 @@ namespace Projet
 
             // Etat de la partie
             _gameOver = false;
-            _manager = new GameManager(_snowballTexture);
+            _manager = new GameManager();
 
             // Camera
             scale = (float)0.5;
@@ -173,7 +173,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _snowballTexture = Content.Load<Texture2D>("Perso/snowball");
+            _manager.SnowballTexture = Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
@@ -254,7 +254,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_keyboardState, _pingouin, _snowballs, _groundLayer, deltaSeconds);
+                _manager.Update(_keyboardState, _pingouin, ref _snowballs, _groundLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -412,21 +412,11 @@ namespace Projet
             // Affichage du pingouin
             _pingouin.Affiche(_myGame);
 
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 40 * scale, _pingouin.Position.Y - 40 * scale, Color.Orange, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Red, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X + 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Red, 5);
-
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Blue, 5);
-            _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
+            // Affichage des boules de neiges
+            for (int i = 0; i < _snowballs.Length; i++)
+            {
+                _snowballs[i].Affiche(_myGame);
+            }
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20,0), Color.White);
