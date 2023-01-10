@@ -20,8 +20,6 @@ namespace Projet
         //DECORATION PNGOUIN
         private Pingouin _pingouin;
         private Pingouin[] _pingouinTab;
-        private Texture2D _textureFond;
-        private Vector2 _positionFond;
 
         //CHAMPS CONCERNANT LES TEXTES
         public static string messagePerdu;
@@ -41,9 +39,9 @@ namespace Projet
         public override void Initialize()
         {
             //INITIALISATION TEXTE AFFICHER
-            messagePerdu = "C'est mort...";
+            messagePerdu = "Game Over";
             messageRejouer = "Reessayer";
-            positionMessagePerdu = new Vector2(Game1.LARGEUR_FENETRE/2-messagePerdu.Length*12, Game1.HAUTEUR_FENETRE/2-24);
+            positionMessagePerdu = new Vector2(Game1.LARGEUR_FENETRE/2-messagePerdu.Length*25, Game1.HAUTEUR_FENETRE/2-24);
             positionMessageRejouer = new Vector2(Game1.LARGEUR_FENETRE/4, positionMessagePerdu.Y+150);
             positionMessageMenu = new Vector2(Game1.LARGEUR_FENETRE/4+ messagePerdu.Length * 24, positionMessagePerdu.Y+150);
 
@@ -55,7 +53,6 @@ namespace Projet
             }
             
             _pingouin = new Pingouin(70, 90);
-            _positionFond = new Vector2(0, 0);
 
             //GESTION CLIC
             _myGame.clicMenu = false;
@@ -69,8 +66,6 @@ namespace Projet
                 _pingouinTab[i].Perso = new AnimatedSprite(spriteSheet);
             }
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
-
-            _textureFond = Content.Load<Texture2D>("Decors/fondGameOver");
 
             //POLICE
             _policeGO = Content.Load<SpriteFont>("Font/FontGameOver");
@@ -108,9 +103,8 @@ namespace Projet
         {
             _myGame.GraphicsDevice.Clear(Color.Black);
             _myGame.SpriteBatch.Begin();
-            _myGame.SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
             //TEXTE
-            _myGame.SpriteBatch.DrawString(_policeGO, $"{messagePerdu}", positionMessagePerdu, Color.White);
+            _myGame.SpriteBatch.DrawString(_policeGO, $"{messagePerdu}", positionMessagePerdu, Color.Red);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageRejouer}", positionMessageRejouer, Color.White);
             _myGame.SpriteBatch.DrawString(Game1.police, $"{Win.messageMenu}", positionMessageMenu, Color.White);
 
