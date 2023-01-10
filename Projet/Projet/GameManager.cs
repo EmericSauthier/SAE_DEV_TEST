@@ -64,13 +64,13 @@ namespace Projet
             }
 
             // Vérification de l'état des flèches droite et gauche
-            if (keyboardState.IsKeyDown(Game1.gauche) && !keyboardState.IsKeyDown(Game1.droite))
+            if (keyboardState.IsKeyDown(Game1.gauche) && !keyboardState.IsKeyDown(Game1.droite) && !Collision.MapCollision(pingouin.CheckLeft(), ground))
             {
+                pingouin.Direction = "Left";
                 pingouin.IsMovingLeft = true;
                 pingouin.IsMovingRight = false;
-                pingouin.Direction = "Left";
             }
-            else if (!keyboardState.IsKeyDown(Game1.gauche) && keyboardState.IsKeyDown(Game1.droite))
+            else if (!keyboardState.IsKeyDown(Game1.gauche) && keyboardState.IsKeyDown(Game1.droite) && !Collision.MapCollision(pingouin.CheckRight(), ground))
             {
                 pingouin.IsMovingRight = true;
                 pingouin.IsMovingLeft = false;
@@ -121,6 +121,10 @@ namespace Projet
                     else if (pingouin.IsMovingLeft && !Collision.MapCollision(pingouin.CheckRight(), ground))
                     {
                         direction = -1;
+                    }
+                    else
+                    {
+                        direction = 0;
                     }
                     pingouin.Jump(direction);
                 }
