@@ -46,6 +46,13 @@ namespace Projet
         public bool clicParametres;
         public bool pause;
         public bool reprendre;
+
+        // Touche de déplacement et d'attaque
+        public static Keys gauche;
+        public static Keys droite;
+        public static Keys sauter;
+        public static Keys glisser;
+        public static Keys attaquer;
         
         //SAUVEGARDE
         public Vector2 dernierePosiPingouin;
@@ -66,13 +73,21 @@ namespace Projet
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             Window.Title = "Jeu du pingouin";
 
-
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
-           
+
+            // Paramétrage des touches automatique
+
+            gauche = Keys.Left;
+            droite = Keys.Right;
+            sauter = Keys.Space;
+            glisser = Keys.Down;
+            attaquer = Keys.Enter;
+
             clicMenu = true;
+
             base.Initialize();
         }
 

@@ -91,7 +91,7 @@ namespace Projet
 
             // Etat de la partie
             _gameOver = false;
-            _manager = new GameManager(Keys.Left, Keys.Right, Keys.Space, Keys.Down, _snowballTexture);
+            _manager = new GameManager(_snowballTexture);
 
             // Camera
             scale = (float)0.5;
