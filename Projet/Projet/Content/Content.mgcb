@@ -90,18 +90,6 @@
 /processorParam:TextureFormat=Color
 /build:Decors/fondGame12.webp
 
-#begin Decors/fondGameOver.jfif
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Decors/fondGameOver.jfif
-
 #begin Decors/fondMenu.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -198,19 +186,19 @@
 /processorParam:TextureFormat=Color
 /build:Ennemis_pieges/fox.png
 
+#begin Font/File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/File.spritefont;Font/FontGameOver.spritefont
+
 #begin Font/Font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font/Font.spritefont
-
-#begin Font/FontGameOver.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Font/FontGameOver.spritefont
 
 #begin Life/heart.png
 /importer:TextureImporter
