@@ -26,19 +26,14 @@ namespace Projet
         public Keys _droite;
         public Keys _sauter;
         public Keys _glisser;
+        public Keys _attaquer;
 
         private float _timer;
         private Texture2D _snowballTexture;
 
-        public GameManager(Keys gauche, Keys droite, Keys sauter, Keys glisser, Texture2D texture)
+        public GameManager(Texture2D texture)
         {
-            _gauche = gauche;
-            _droite = droite;
-            _sauter = sauter;
-            _glisser = glisser;
-
             _snowballTexture = texture;
-
             _timer = 0;
         }
 
@@ -57,13 +52,13 @@ namespace Projet
             }
 
             // Vérification de l'état des flèches droite et gauche
-            if (keyboardState.IsKeyDown(_gauche) && !keyboardState.IsKeyDown(_droite))
+            if (keyboardState.IsKeyDown(Game1.gauche) && !keyboardState.IsKeyDown(Game1.droite))
             {
                 pingouin.IsMovingLeft = true;
                 pingouin.IsMovingRight = false;
                 pingouin.Direction = "Left";
             }
-            else if (!keyboardState.IsKeyDown(_gauche) && keyboardState.IsKeyDown(_droite))
+            else if (!keyboardState.IsKeyDown(Game1.gauche) && keyboardState.IsKeyDown(Game1.droite))
             {
                 pingouin.IsMovingRight = true;
                 pingouin.IsMovingLeft = false;
@@ -77,7 +72,7 @@ namespace Projet
             }
 
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyDown(Keys.Enter) && snowballs.Length < 5 && _timer >= 1)
+            if (keyboardState.IsKeyDown(Game1.attaquer) && snowballs.Length < 5 && _timer >= 1)
             {
                 _timer = 0;
                 int direction = 1;
@@ -102,7 +97,7 @@ namespace Projet
             }
 
             // Si le pingouin saute (touche espace) ou est dans les airs
-            if ((keyboardState.IsKeyDown(Keys.Space) || pingouin.Fly))
+            if (keyboardState.IsKeyDown(Game1.sauter) || pingouin.Fly)
             {
                 if (!Collision.MapCollision(pingouin.CheckTop(), ground))
                 {
@@ -117,9 +112,13 @@ namespace Projet
                     }
                     pingouin.Jump(direction);
                 }
+                else
+                {
+                    pingouin.JumpState = false;
+                }
             }
             // Si le pingouin glisse (flèche du bas)
-            else if (keyboardState.IsKeyDown(Keys.Down))
+            else if (keyboardState.IsKeyDown(Game1.glisser))
             {
                 int direction = 0;
                 if (pingouin.IsMovingRight && !Collision.MapCollision(pingouin.CheckRight(), ground))

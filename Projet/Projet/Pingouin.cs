@@ -394,7 +394,7 @@ namespace Projet
             // que la différence de hauteur entre sa position au moment du saut et sa position actuelle est inférieur à 80
             // et qu'il n'y a pas d'obstacles au-dessus de lui, on applique un mouvement vertical
             // (Cela permet de fluidifier le mouvement de saut et de ne pas téléporter le pingouin)
-            if (this.jumpState && this.positionSaut.Y - this.position.Y < 100)
+            if (this.jumpState && (this.positionSaut.Y - this.position.Y) < 100)
             {
                 this.position += new Vector2(0, (float)-this.jumpVelocity);
             }
@@ -429,13 +429,11 @@ namespace Projet
             // on applique un mouvement vertical vers le bas
             if (!Collision.MapCollision(this.CheckBottom(), mapLayer))
             {
-                System.Diagnostics.Debug.WriteLine(!Collision.MapCollision(this.CheckBottom(), mapLayer));
                 this.fly = true;
                 this.position += new Vector2(0, (float)this.gravityVelocity);
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Not flying");
                 this.fly = false;
             }
         }
