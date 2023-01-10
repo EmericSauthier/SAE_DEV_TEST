@@ -72,9 +72,9 @@ namespace Projet
         private Vector2[] _heartsPositions;
 
         //Debug rectangle
-        private Rectangle rFox;
+        private Rectangle foxRectangle;
         private Rectangle rTrap;
-        private Rectangle rKillingFox;
+        private Rectangle killingFoxRectangle;
         private Rectangle rRecompense;
         private Rectangle rEagle;
         private Rectangle rKillingEagle;
@@ -131,6 +131,7 @@ namespace Projet
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(_fox1);
+            monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12, 19 * 3, 14 * 3));
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
@@ -176,7 +177,10 @@ namespace Projet
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
-            _fox1.LoadContent(foxSprite);
+            for (int i = 0; i < monstresRampants.Count; i++)
+            {
+                monstresRampants[i].LoadContent(foxSprite);
+            };
 
             // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
@@ -249,6 +253,7 @@ namespace Projet
                 {
                     monstresRampants[i].RightLeftMove(ref _chronoDepFox1);
                     monstresRampants[i].Sprite.Update(deltaSeconds);
+                    monstresRampants[i].Update();
                 }
 
                 _chronoDepEagle1 += deltaSeconds;
@@ -302,7 +307,7 @@ namespace Projet
                 {
                     if (!monstresRampants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], ref rFox, ref rKillingFox, _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
                         {
                             _pingouin.TakeDamage(1, ref _chronoInvincibility);
                         }
@@ -402,7 +407,7 @@ namespace Projet
             //Fox
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].Affiche(_myGame, rFox, rKillingFox);
+                monstresRampants[i].Affiche(_myGame);
             }
 
             //Trap
