@@ -27,7 +27,7 @@ namespace Projet
         private int largeur, hauteur;
         private Rectangle rectangleSprite, rectangleKill;
 
-        public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition, int largeurMonstre, int hauteurMonstre)
+        public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
             this.Position = position;
             this.Vitesse = vitesse;
@@ -35,8 +35,7 @@ namespace Projet
             this.TempsArrivePosition = tempsArrivePosition;
             IsDied = false;
 
-            this.Largeur = largeurMonstre;
-            this.Hauteur = hauteurMonstre;
+            UpdateDimensions();
             UpdateBoxes();
         }
         
@@ -219,6 +218,15 @@ namespace Projet
             {
                 this.RectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
                 this.RectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 10, (int)(this.Largeur) - 16, 10);
+            }
+        }
+
+        public void UpdateDimensions()
+        { 
+            if(enemy == "fox")
+            {
+                this.Largeur = 19 * 3;
+                this.Hauteur = 14 * 3;
             }
         }
     }

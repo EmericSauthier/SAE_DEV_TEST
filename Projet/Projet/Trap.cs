@@ -19,13 +19,14 @@ namespace Projet
         private Rectangle rectangleSprite;
         private bool canCollidingTrap;
 
-        public Trap(Vector2 trapPosition, int largeurTrap, int hauteurTrap, string trapTypeString)
+        public Trap(Vector2 trapPosition, string trapTypeString)
         {
             this.Position = trapPosition;
-            this.Largeur = largeurTrap;
-            this.Hauteur = hauteurTrap;
             this.TrapType = trapTypeString;
             this.CanCollidingTrap = true;
+
+            UpdateDimensions();
+            UpdateBoxes();
         }
 
         public Vector2 Position
@@ -151,6 +152,15 @@ namespace Projet
             if(this.TrapType == "press")
             {
                 this.RectangleSprite = new Rectangle((int)this.Position.X - 15, (int)this.Position.Y - 8, this.Largeur, this.Hauteur);
+            }
+        }
+
+        public void UpdateDimensions()
+        {
+            if(this.TrapType == "press")
+            {
+                this.Largeur = 64 / 2;
+                this.Hauteur = 64 - 20;
             }
         }
 

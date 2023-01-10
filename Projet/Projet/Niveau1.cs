@@ -113,25 +113,25 @@ namespace Projet
             }
 
             // Ennemis
-            MonstreRampant _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 19*3, 14*3);
-            MonstreVolant _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12, 50, 30);
+            MonstreRampant _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
+            MonstreVolant _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12);
 
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(_fox1);
-            monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12, 19 * 3, 14 * 3));
+            monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(_eagle1);
-            monstresVolants.Add(new MonstreVolant(new Vector2(300, 850), "eagle", 1, 12, 50, 30));
+            monstresVolants.Add(new MonstreVolant(new Vector2(300, 850), "eagle", 1, 12));
 
             // Traps
-            Trap _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20, "press");
+            Trap _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
 
             // Tableau Traps
             traps = new List<Trap>();
             traps.Add(_ceilingTrap1);
-            traps.Add(new Trap(new Vector2(480, 800), 64 / 2, 64 - 20, "press"));
+            traps.Add(new Trap(new Vector2(480, 800), "press"));
 
             //Recompenses
             coins = new Recompenses[4];

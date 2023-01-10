@@ -124,11 +124,11 @@ namespace Projet
 
             // Ennemis
             _posiMonstreRampant = new Vector2[] { new Vector2(1578, 354) };
-            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 14*3, 19*3);
+            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20, "press");
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
 
             //Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
