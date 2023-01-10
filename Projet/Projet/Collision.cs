@@ -130,7 +130,7 @@ namespace Projet
         {
             TiledMapTile? tile;
 
-            if (mapLayer.TryGetTile((ushort)point.X, (ushort)point.Y, out tile) != false && !tile.Value.IsBlank)
+            if (mapLayer.TryGetTile((ushort)(point.X / mapLayer.TileWidth), (ushort)(point.Y / mapLayer.TileHeight), out tile) != false && !tile.Value.IsBlank)
             {
                 return true;
             }

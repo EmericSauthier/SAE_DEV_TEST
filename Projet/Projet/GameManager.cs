@@ -31,20 +31,32 @@ namespace Projet
         private float _timer;
         private Texture2D _snowballTexture;
 
-        public GameManager(Texture2D texture)
+        public Texture2D SnowballTexture
         {
-            _snowballTexture = texture;
+            get
+            {
+                return this._snowballTexture;
+            }
+
+            set
+            {
+                this._snowballTexture = value;
+            }
+        }
+
+        public GameManager()
+        {
             _timer = 0;
         }
 
-        public void Update(KeyboardState keyboardState, Pingouin pingouin, Snowball[] snowballs, TiledMapTileLayer ground, float deltaTime)
+        public void Update(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground, float deltaTime)
         {
             _timer += deltaTime;
             pingouin.Update(deltaTime, ground);
-            InputsManager(keyboardState, pingouin, snowballs, ground);
-            SnowballsUpdate(snowballs, ground);
+            InputsManager(keyboardState, pingouin, ref snowballs, ground);
+            SnowballsUpdate(ref snowballs, ground);
         }
-        public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, Snowball[] snowballs, TiledMapTileLayer ground)
+        public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground)
         {
             if (keyboardState.IsKeyUp(_glisser))
             {
@@ -142,7 +154,7 @@ namespace Projet
                 pingouin.Animate("idle");
             }
         }
-        public void SnowballsUpdate(Snowball[] snowballs, TiledMapTileLayer mapLayer)
+        public void SnowballsUpdate(ref Snowball[] snowballs, TiledMapTileLayer mapLayer)
         {
             int countNull = 0;
             for (int i = 0; i < snowballs.Length; i++)
