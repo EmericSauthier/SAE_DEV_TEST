@@ -337,23 +337,23 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                // Collisions 
-                _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
+                
                 // Collisions des traps avec le pingouin
                 for (int i = 0; i < traps.Count; i++)
                 {
-                    if (Collision.IsCollidingTrap(traps[i], _hitBoxPingouin))
+                    if (Collision.IsCollidingTrap(traps[i], _pingouin.HitBox))
                     {
                         _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         MediaPlayer.Play(trapTouchPingouin);
                     }
                 }
+
                 // Collision des rampants avec le pingouin
                 for (int i = 0; i < monstresRampants.Count; i++)
                 {
                     if (!monstresRampants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _pingouin.HitBox))
                         {
                             _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                             MediaPlayer.Play(monsterTouchPingouin);
@@ -366,20 +366,19 @@ namespace Projet
                 {
                     if (!monstresVolants[i].IsDied)
                     {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
                         {
                             _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
                         }
                     }
                 }
 
-
                 for (int i =0; i<4; i++)
                 {
                     if (coins[i].etat == 0)
                     {
                         // Collision de la recompense avec le pingouin
-                        if (Collision.IsCollidingRecompense(coins[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(coins[i], _pingouin.HitBox))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
@@ -408,7 +407,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
