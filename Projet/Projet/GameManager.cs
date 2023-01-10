@@ -45,6 +45,7 @@ namespace Projet
         public void Update(KeyboardState keyboardState, Pingouin pingouin, Snowball[] snowballs, TiledMapTileLayer ground, float deltaTime)
         {
             _timer += deltaTime;
+            pingouin.Update(deltaTime, ground);
             InputsManager(keyboardState, pingouin, snowballs, ground);
             SnowballsUpdate(snowballs, ground);
         }
