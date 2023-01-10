@@ -111,11 +111,10 @@ namespace Projet
 
         public static bool MapCollision(Point[] pointTab, TiledMapTileLayer mapLayer)
         {
-            TiledMapTile? tile;
-
             for (int i = 0; i < pointTab.Length; i++)
             {
-                if (mapLayer.TryGetTile((ushort)pointTab[i].X, (ushort)pointTab[i].Y, out tile) != false && !tile.Value.IsBlank)
+                TiledMapTile? tile;
+                if (mapLayer.TryGetTile((ushort)(pointTab[i].X / mapLayer.TileWidth), (ushort)(pointTab[i].Y / mapLayer.TileHeight), out tile) != false && !tile.Value.IsBlank)
                 {
                     return true;
                 }

@@ -51,19 +51,19 @@ namespace Projet
         }
         public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, Snowball[] snowballs, TiledMapTileLayer ground)
         {
-            if (keyboardState.IsKeyUp(Keys.Down))
+            if (keyboardState.IsKeyUp(_glisser))
             {
                 pingouin.SlideState = false;
             }
 
             // Vérification de l'état des flèches droite et gauche
-            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            if (keyboardState.IsKeyDown(_gauche) && !keyboardState.IsKeyDown(_droite))
             {
                 pingouin.IsMovingLeft = true;
                 pingouin.IsMovingRight = false;
                 pingouin.Direction = "Left";
             }
-            else if (!keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+            else if (!keyboardState.IsKeyDown(_gauche) && keyboardState.IsKeyDown(_droite))
             {
                 pingouin.IsMovingRight = true;
                 pingouin.IsMovingLeft = false;

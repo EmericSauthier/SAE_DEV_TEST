@@ -429,11 +429,13 @@ namespace Projet
             // on applique un mouvement vertical vers le bas
             if (!Collision.MapCollision(this.CheckBottom(), mapLayer))
             {
+                System.Diagnostics.Debug.WriteLine(!Collision.MapCollision(this.CheckBottom(), mapLayer));
                 this.fly = true;
                 this.position += new Vector2(0, (float)this.gravityVelocity);
             }
             else
             {
+                System.Diagnostics.Debug.WriteLine("Not flying");
                 this.fly = false;
             }
         }

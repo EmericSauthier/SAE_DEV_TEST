@@ -263,6 +263,10 @@ namespace Projet
                 {
                     _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
                 }
+                if (_keyboardState.IsKeyDown(Keys.Up))
+                {
+                    _pingouin.Position += new Vector2(0, -5);
+                }
                 
                 
                 // Map
@@ -410,7 +414,7 @@ namespace Projet
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Affichage du pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, 0, new Vector2(scale));
+            _pingouin.Affiche(_myGame);
 
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
