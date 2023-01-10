@@ -30,6 +30,7 @@ namespace Projet
             this.Position = position;
             this.Sprite = sprite;
             this.TypeRecompense = typeRecompense;
+            this.etat = etat;
         }
 
         public Vector2 Position

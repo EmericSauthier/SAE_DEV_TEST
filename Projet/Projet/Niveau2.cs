@@ -54,6 +54,7 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         public bool isFox1Died;
+        private Vector2[] _posiMonstreRampant;
 
         // Piège
         Trap _ceilingTrap1;
@@ -122,13 +123,18 @@ namespace Projet
             }
 
             // Ennemis
+            _posiMonstreRampant = new Vector2[] { new Vector2(1578, 354) };
             _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 14*3, 19*3);
             isFox1Died = false;
 
             // Traps
             _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
 
-            //Recompenses_posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
+            //Recompenses
+            _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
+                new Vector2(1086 + 50, 1122), new Vector2(2440, 642), new Vector2(2390, 642), new Vector2(1646, 642),
+                new Vector2(1696, 642), new Vector2(212, 92), new Vector2(262, 92), new Vector2(172, 92), new Vector2(312, 92),
+                new Vector2(721, 250), new Vector2(771, 250), new Vector2(821, 250) };
             coins = new Recompenses[_posiCoins.Length];
             int x = 986;
             int y = 1122;
@@ -148,7 +154,7 @@ namespace Projet
             {
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
-            openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
+            openingPortal = new Recompenses(new Vector2(3054, 322), "portal", 1);
             closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
             base.Initialize();
@@ -220,6 +226,29 @@ namespace Projet
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
+                //Code cheat
+                if (_keyboardState.IsKeyDown(Keys.C))
+                {
+                    _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                    for (int i=0; i<_posiPartiPortail.Length; i++)
+                    {
+                        partiPortail[i].etat = 0;
+                    }
+                }
+                if (_keyboardState.IsKeyDown(Keys.Insert))
+                {
+                    _pingouin.Position = new Vector2(500, 802); //Le pingouin est tp a son point de départ
+                }
+                if (_keyboardState.IsKeyDown(Keys.V))
+                {
+                    _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
+                }
+                if (_keyboardState.IsKeyDown(Keys.End))
+                {
+                    _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
+                }
+                
+                
                 // Map
                 _tiledMapRenderer.Update(gameTime);
 
@@ -426,11 +455,11 @@ namespace Projet
                 }
             }
             
-            if (openingPortal.etat == 1)
+            if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (closingPortal.etat == 0)
+            if (_chrono<2)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }
