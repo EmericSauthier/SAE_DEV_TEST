@@ -115,7 +115,7 @@ namespace Projet
 
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
-            monstresRampants.Add(new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 6));
+            monstresRampants.Add(new MonstreRampant(new Vector2(1100, 850), "fox", 0.5, 6));
             monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
