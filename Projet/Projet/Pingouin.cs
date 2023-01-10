@@ -237,8 +237,7 @@ namespace Projet
             // Affichage des boules de neige
             for (int i = 0; i < this.snowballs.Length; i++)
             {
-                Rectangle destination = new Rectangle((int)(this.snowballs[i].Position.X), (int)(this.snowballs[i].Position.Y), (int)(this.snowballs[i].Texture.Width * scale), (int)(this.snowballs[i].Texture.Height * scale));
-                game.SpriteBatch.Draw(this.snowballTexture, destination, Color.White);
+                
             }
         }
 

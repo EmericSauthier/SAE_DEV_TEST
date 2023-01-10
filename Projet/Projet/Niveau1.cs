@@ -169,7 +169,7 @@ namespace Projet
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
-            _pingouin.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball2");
+            _pingouin.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
