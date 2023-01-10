@@ -200,7 +200,6 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -339,7 +338,7 @@ namespace Projet
             _myGame.SpriteBatch.Begin(transformMatrix: _camera.OrthographicCamera.GetViewMatrix());
 
             // Affichage du pingouin
-            _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position, _pingouin.Rotation, new Vector2(scale));
+            _pingouin.Affiche(_myGame);
 
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 40 * scale, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X, _pingouin.Position.Y + 60 * scale, Color.Green, 5);
@@ -356,12 +355,6 @@ namespace Projet
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 50 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y + 10 * scale, Color.Blue, 5);
             _myGame.SpriteBatch.DrawPoint(_pingouin.Position.X - 50 * scale, _pingouin.Position.Y - 30 * scale, Color.Blue, 5);
-
-            // Affichage des boules de neige
-            for (int i = 0; i < _pingouin.Snowballs.Length; i++)
-            {
-                _myGame.SpriteBatch.Draw(_pingouin.SnowballTexture, _pingouin.Snowballs[i].Position, Color.White);
-            }
 
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(_chrono)}", _positionChrono - new Vector2(20,0), Color.White);

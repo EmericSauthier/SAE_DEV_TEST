@@ -229,6 +229,18 @@ namespace Projet
             this.perso.Update(deltaTime);
             this.SnowballsUpdate(groundLayer);
         }
+        public void Affiche(Game game)
+        {
+            // Affichage du pingouin
+            game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
+
+            // Affichage des boules de neige
+            for (int i = 0; i < this.snowballs.Length; i++)
+            {
+                game.SpriteBatch.Draw(this.snowballTexture, this.snowballs[i].Position, Color.White);
+                game.SpriteBatch.DrawPoint(this.snowballs[i].Position, Color.Red, 5);
+            }
+        }
 
         public void InputsManager(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
         {
