@@ -53,14 +53,12 @@ namespace Projet
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
-        public int _largeurFox1 = 19 * 3, _hauteurFox1 = 14 * 3; // à déplacer 
         public bool isFox1Died;
 
         // Piège
         Trap _ceilingTrap1;
         private float _chronoTrap1, _chronoInvincibility;
         public static bool _canCollidingTrap;
-        public int _largeurTrap1 = (64 / 2), _hauteurTrap1 = 64 - 20; // à déplacer 
 
         //Recompense
         Vector2[] _posiCoins;
@@ -124,11 +122,11 @@ namespace Projet
             }
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1256, 432), "fox", 0.8, 12);
+            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 14*3, 19*3);
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800));
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
 
             //Recompenses
             _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780,99), new Vector2(2430,292) };
@@ -282,14 +280,14 @@ namespace Projet
                 // Collisions
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
 
-                if (Collision.IsCollidingTrap(_ceilingTrap1, _largeurTrap1, _hauteurTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
+                if (Collision.IsCollidingTrap(_ceilingTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
                 {
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
                 {
-                    if (Collision.IsCollidingMonstreRampant(_pingouin, _fox1, _largeurFox1, _hauteurFox1, ref isFox1Died, ref rFox, ref rKillingFox, _hitBoxPingouin))
+                    if (Collision.IsCollidingMonstre(_pingouin, _fox1, ref rFox, ref rKillingFox, _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
                     }

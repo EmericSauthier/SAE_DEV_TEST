@@ -54,6 +54,8 @@ namespace Projet
         private Snowball[] snowballs;
         private Texture2D snowballTexture;
 
+        private float timer;
+
         // Constructeur
         public Pingouin(float x, float y, float scale=1)
         {
@@ -219,12 +221,24 @@ namespace Projet
             // Application de la gravité
             this.Gravity(groundLayer);
             gameOver = this.CheckBottom(deadLayer) || gameOver;
+            timer += deltaTime;
             
             this.SnowballsUpdate(groundLayer);
             // Application d'un mouvement si commander par l'utilisateur
             this.InputsManager(gameOver, keyboardState, groundLayer);
             this.perso.Update(deltaTime);
             this.SnowballsUpdate(groundLayer);
+        }
+        public void Affiche(Game1 game)
+        {
+            // Affichage du pingouin
+            game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
+
+            // Affichage des boules de neige
+            for (int i = 0; i < this.snowballs.Length; i++)
+            {
+                this.snowballs[i].Affiche(game);
+            }
         }
 
         public void InputsManager(bool gameOver, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
@@ -262,18 +276,14 @@ namespace Projet
             }
 
             // Vérification de l'état de la touche entrée
-            if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5)
+            if (keyboardState.IsKeyDown(Keys.Enter) && this.snowballs.Length < 5 && this.timer >= 1)
             {
+                timer = 0;
                 this.Attack();
             }
 
-            // Si le jeu est fini
-            if (gameOver)
-            {
-                this.Animate("celebrate");
-            }
             // Si le pingouin saute (touche espace) ou est dans les airs
-            else if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
+            if ((keyboardState.IsKeyDown(Keys.Space) || this.fly))
             {
                 Jump(ref move, keyboardState, mapLayer);
             }
@@ -392,8 +402,9 @@ namespace Projet
             {
                 newSnowballsArray[i] = this.snowballs[i];
             }
-            newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X, this.Position.Y, this.snowballTexture);
-            newSnowballsArray[newSnowballsArray.Length - 1].Velocity *= direction;
+            Snowball newSnowball = new Snowball(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, scale, this.snowballTexture);
+            newSnowball.Velocity *= direction;
+            newSnowballsArray[newSnowballsArray.Length - 1] = newSnowball;
             this.snowballs = newSnowballsArray;
         }
         public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
@@ -582,13 +593,18 @@ namespace Projet
 
             return false;
         }
+        public bool isCollidingSprite(RectangleF spriteHitBox)
+        {
+            return this.hitBox.Intersects(spriteHitBox);
+        }
 
         public void SnowballsUpdate(TiledMapTileLayer mapLayer)
         {
             int countNull = 0;
             for (int i = 0; i < this.snowballs.Length; i++)
             {
-                if (this.snowballs[i].Collide(mapLayer)) // Vérification des collisions avec le décor
+                // Vérification des collisions avec le décor
+                if (this.snowballs[i].Collide(mapLayer) || this.snowballs[i].Distance >= 500)
                 {
                     this.snowballs[i] = null;
                     countNull++;

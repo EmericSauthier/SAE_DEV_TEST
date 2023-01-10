@@ -12,11 +12,11 @@ namespace Projet
     {
 
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingTrap(Trap trap, int largeurTrap, int hauteurTrap, bool canCollidingtrap, ref Rectangle rectangleTrapDebug, Rectangle hitboxPingouin)
+        public static bool IsCollidingTrap(Trap trap, bool canCollidingtrap, ref Rectangle rectangleTrapDebug, Rectangle hitboxPingouin)
         {
             if (canCollidingtrap)
             {
-                rectangleTrapDebug = new Rectangle((int)trap.Position.X - 15, (int)trap.Position.Y - 8, largeurTrap , hauteurTrap);
+                rectangleTrapDebug = new Rectangle((int)trap.Position.X - 15, (int)trap.Position.Y - 8, trap.Largeur , trap.Hauteur);
 
                 if (hitboxPingouin.Intersects(rectangleTrapDebug))
                 {
@@ -29,20 +29,48 @@ namespace Projet
         }
 
         // Nécessite changement fonctionnement des offsets
-        public static bool IsCollidingMonstreRampant(Pingouin pingouin, MonstreRampant monstre, int largeurMonstre, int hauteurMonstre, ref bool isMonsterDied, ref Rectangle rectangleFoxDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
+        public static bool IsCollidingMonstre(Pingouin pingouin, MonstreRampant monstre, ref Rectangle rectangleMonstreDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
         {
-            rectangleFoxDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y, (int)(largeurMonstre), (int)(hauteurMonstre));
-            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 10, (int)(largeurMonstre)-16, 10);
+            rectangleMonstreDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y, (int)(monstre.Largeur), (int)(monstre.Hauteur));
+            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 10, (int)(monstre.Largeur)-16, 10);
             
 
             if (hitboxPingouin.Intersects(rectangleKillingMonster))
             {
-                isMonsterDied = true;
+                monstre.IsDied = true;
             }
 
-            if (hitboxPingouin.Intersects(rectangleFoxDebug))
+            if (hitboxPingouin.Intersects(rectangleMonstreDebug))
             {
-                if((monstre.IsMonsterRight && pingouin.isMovingRight) || (!monstre.IsMonsterRight && pingouin.isMovingRight))
+                if((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
+                {
+                    pingouin.Position -= new Vector2(10, 0);
+                }
+                else
+                {
+                    pingouin.Position += new Vector2(10, 0);
+                }
+
+                return true;
+            }
+            else return false;
+
+        }
+
+        public static bool IsCollidingMonstre(Pingouin pingouin, MonstreVolant monstre, ref Rectangle rectangleMonstreDebug, ref Rectangle rectangleKillingMonster, Rectangle hitboxPingouin)
+        {
+            rectangleMonstreDebug = new Rectangle((int)monstre.Position.X - 30, (int)monstre.Position.Y - 12, (int)(monstre.Largeur), (int)(monstre.Hauteur));
+            rectangleKillingMonster = new Rectangle((int)monstre.Position.X - 22, (int)monstre.Position.Y - 20, (int)(monstre.Largeur) - 16, 10);
+
+
+            if (hitboxPingouin.Intersects(rectangleKillingMonster))
+            {
+                monstre.IsDied = true;
+            }
+
+            if (hitboxPingouin.Intersects(rectangleMonstreDebug))
+            {
+                if ((monstre.IsMovingRight && pingouin.isMovingRight) || (!monstre.IsMovingRight && pingouin.isMovingRight))
                 {
                     pingouin.Position -= new Vector2(10, 0);
                 }
