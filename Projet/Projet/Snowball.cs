@@ -23,13 +23,19 @@ namespace Projet
     {
         private Texture2D texture;
         private Vector2 position;
+        private Vector2 middle;
         private Vector2 velocity;
+        private RectangleF hitBox;
+        private float distance;
 
-        public Snowball(float x, float y, Texture2D texture)
+        public Snowball(float x, float y, float scale, Texture2D texture)
         {
-            this.Position = new Vector2(x, y);
+            this.Middle = new Vector2(x, y);
+            this.Position = this.middle - new Vector2((float)texture.Width / 2, (float)texture.Height / 2) * scale;
             this.Texture = texture;
             this.velocity = new Vector2(2, 0);
+            this.hitBox = new RectangleF(this.position.X, this.position.Y, texture.Height / 2, texture.Height / 2);
+            this.Distance = 0;
         }
 
         public Texture2D Texture
@@ -68,6 +74,42 @@ namespace Projet
                 this.velocity = value;
             }
         }
+        public Vector2 Middle
+        {
+            get
+            {
+                return this.middle;
+            }
+
+            set
+            {
+                this.middle = value;
+            }
+        }
+        public RectangleF HitBox
+        {
+            get
+            {
+                return this.hitBox;
+            }
+
+            set
+            {
+                this.hitBox = value;
+            }
+        }
+        public float Distance
+        {
+            get
+            {
+                return this.distance;
+            }
+
+            set
+            {
+                this.distance = value;
+            }
+        }
 
         public bool Collide(TiledMapTileLayer mapLayer)
         {
@@ -76,8 +118,8 @@ namespace Projet
             */
 
             // Définition de deux points et de deux tiles, en bas à gauche et en bas à droite
-            ushort x = (ushort)(this.Position.X / mapLayer.TileWidth);
-            ushort y = (ushort)(this.Position.Y / mapLayer.TileHeight);
+            ushort x = (ushort)(this.middle.X / mapLayer.TileWidth);
+            ushort y = (ushort)(this.middle.Y / mapLayer.TileHeight);
 
             TiledMapTile? tile;
 
@@ -90,6 +132,9 @@ namespace Projet
         public void Move()
         {
             this.position += this.velocity;
+            this.middle += this.velocity;
+            this.hitBox.Position += this.velocity;
+            distance += this.velocity.X;
         }
     }
 }

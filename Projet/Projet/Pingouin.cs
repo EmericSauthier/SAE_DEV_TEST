@@ -232,14 +232,13 @@ namespace Projet
         public void Affiche(Game1 game)
         {
             // Affichage du pingouin
-            System.Diagnostics.Debug.WriteLine("Affichge");
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
 
             // Affichage des boules de neige
             for (int i = 0; i < this.snowballs.Length; i++)
             {
-                game.SpriteBatch.Draw(this.snowballTexture, this.snowballs[i].Position, Color.White);
-                game.SpriteBatch.DrawPoint(this.snowballs[i].Position, Color.Red, 5);
+                Rectangle destination = new Rectangle((int)(this.snowballs[i].Position.X), (int)(this.snowballs[i].Position.Y), (int)(this.snowballs[i].Texture.Width * scale), (int)(this.snowballs[i].Texture.Height * scale));
+                game.SpriteBatch.Draw(this.snowballTexture, destination, Color.White);
             }
         }
 
@@ -404,8 +403,9 @@ namespace Projet
             {
                 newSnowballsArray[i] = this.snowballs[i];
             }
-            newSnowballsArray[newSnowballsArray.Length - 1] = new Snowball(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, this.snowballTexture);
-            newSnowballsArray[newSnowballsArray.Length - 1].Velocity *= direction;
+            Snowball newSnowball = new Snowball(this.Position.X + 50 * scale, this.Position.Y + 10 * scale, scale, this.snowballTexture);
+            newSnowball.Velocity *= direction;
+            newSnowballsArray[newSnowballsArray.Length - 1] = newSnowball;
             this.snowballs = newSnowballsArray;
         }
         public void Jump(ref Vector2 move, KeyboardState keyboardState, TiledMapTileLayer mapLayer)
@@ -604,7 +604,8 @@ namespace Projet
             int countNull = 0;
             for (int i = 0; i < this.snowballs.Length; i++)
             {
-                if (this.snowballs[i].Collide(mapLayer)) // Vérification des collisions avec le décor
+                // Vérification des collisions avec le décor
+                if (this.snowballs[i].Collide(mapLayer) || this.snowballs[i].Distance >= 500)
                 {
                     this.snowballs[i] = null;
                     countNull++;
