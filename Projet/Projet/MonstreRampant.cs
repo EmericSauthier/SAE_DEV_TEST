@@ -25,9 +25,9 @@ namespace Projet
         private bool isDied;
 
         private int largeur, hauteur;
-        private Rectangle debugRectangleSprite, debugRectangleKill;
+        private Rectangle rectangleSprite, rectangleKill;
 
-        public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition, int largeurMonstre, int hauteurMonstre)
+        public MonstreRampant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
             this.Position = position;
             this.Vitesse = vitesse;
@@ -35,9 +35,8 @@ namespace Projet
             this.TempsArrivePosition = tempsArrivePosition;
             IsDied = false;
 
-            this.Largeur = largeurMonstre;
-            this.Hauteur = hauteurMonstre;
-            Update();
+            UpdateDimensions();
+            UpdateBoxes();
         }
         
 
@@ -153,29 +152,29 @@ namespace Projet
             }
         }
 
-        public Rectangle DebugRectangleSprite
+        public Rectangle RectangleSprite
         {
             get
             {
-                return this.debugRectangleSprite;
+                return this.rectangleSprite;
             }
 
             set
             {
-                this.debugRectangleSprite = value;
+                this.rectangleSprite = value;
             }
         }
 
-        public Rectangle DebugRectangleKill
+        public Rectangle RectangleKill
         {
             get
             {
-                return this.debugRectangleKill;
+                return this.rectangleKill;
             }
 
             set
             {
-                this.debugRectangleKill = value;
+                this.rectangleKill = value;
             }
         }
 
@@ -208,17 +207,26 @@ namespace Projet
             {
                 game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(3, 3));
                 // DEBUG
-                game.SpriteBatch.DrawRectangle(this.DebugRectangleSprite, Color.Green);
-                game.SpriteBatch.DrawRectangle(this.DebugRectangleKill, Color.DarkGreen);
+                game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
+                game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
             }
         }
 
-        public void Update()
+        public void UpdateBoxes()
         {
             if(enemy == "fox")
             {
-                this.DebugRectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
-                this.DebugRectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 10, (int)(this.Largeur) - 16, 10);
+                this.RectangleSprite = new Rectangle((int)this.Position.X - 30, (int)this.Position.Y, (int)(this.Largeur), (int)(this.Hauteur));
+                this.RectangleKill = new Rectangle((int)this.Position.X - 22, (int)this.Position.Y - 10, (int)(this.Largeur) - 16, 10);
+            }
+        }
+
+        public void UpdateDimensions()
+        { 
+            if(enemy == "fox")
+            {
+                this.Largeur = 19 * 3;
+                this.Hauteur = 14 * 3;
             }
         }
     }

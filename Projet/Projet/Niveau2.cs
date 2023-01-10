@@ -54,6 +54,7 @@ namespace Projet
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
         public bool isFox1Died;
+        private Vector2[] _posiMonstreRampant;
 
         // Piège
         Trap _ceilingTrap1;
@@ -64,7 +65,6 @@ namespace Projet
         Vector2[] _posiCoins;
         Recompenses[] coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
-        Song coinSound;
 
         // Life
         private Texture2D _heartSprite;
@@ -83,7 +83,12 @@ namespace Projet
         Recompenses openingPortal;
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
+
+        //Son
         Song recupAllPortalSound;
+        Song coinSound;
+        Song monsterTouchPingouin;
+        Song trapTouchPingouin;
 
         public Niveau2(Game1 game) : base(game)
         {
@@ -122,13 +127,18 @@ namespace Projet
             }
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 14*3, 19*3);
+            _posiMonstreRampant = new Vector2[] { new Vector2(1578, 354) };
+            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12);
             isFox1Died = false;
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
+            _ceilingTrap1 = new Trap(new Vector2(1480, 800), "press");
 
-            //Recompenses_posiCoins = new Vector2[] {new Vector2(986,1122), new Vector2(986+50,1122),new Vector2(1086,1122), new Vector2(1086+50,1122), new Vector2(2440,642), new Vector2(2390,642), new Vector2(1646,642), new Vector2(1696,642)};
+            //Recompenses
+            _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
+                new Vector2(1086 + 50, 1122), new Vector2(2440, 642), new Vector2(2390, 642), new Vector2(1646, 642),
+                new Vector2(1696, 642), new Vector2(212, 92), new Vector2(262, 92), new Vector2(172, 92), new Vector2(312, 92),
+                new Vector2(721, 250), new Vector2(771, 250), new Vector2(821, 250) };
             coins = new Recompenses[_posiCoins.Length];
             int x = 986;
             int y = 1122;
@@ -148,7 +158,7 @@ namespace Projet
             {
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
-            openingPortal = new Recompenses(new Vector2(x, y), "portal", 1);
+            openingPortal = new Recompenses(new Vector2(3054, 322), "portal", 1);
             closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
             base.Initialize();
@@ -181,7 +191,6 @@ namespace Projet
             {
                 coins[i].LoadContent(spriteCoin);
             }
-            coinSound = Content.Load<Song>("Audio/coinSound");
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
@@ -194,7 +203,12 @@ namespace Projet
             }
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
+
+            //Audio
+            coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+            monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
+            trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
             base.LoadContent();
         }
@@ -220,6 +234,29 @@ namespace Projet
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
+                //Code cheat
+                if (_keyboardState.IsKeyDown(Keys.C))
+                {
+                    _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                    for (int i=0; i<_posiPartiPortail.Length; i++)
+                    {
+                        partiPortail[i].etat = 0;
+                    }
+                }
+                if (_keyboardState.IsKeyDown(Keys.Insert))
+                {
+                    _pingouin.Position = new Vector2(500, 802); //Le pingouin est tp a son point de départ
+                }
+                if (_keyboardState.IsKeyDown(Keys.V))
+                {
+                    _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
+                }
+                if (_keyboardState.IsKeyDown(Keys.End))
+                {
+                    _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
+                }
+                
+                
                 // Map
                 _tiledMapRenderer.Update(gameTime);
 
@@ -266,7 +303,7 @@ namespace Projet
                 // Traps
                 _chronoTrap1 += deltaSeconds;
                 _chronoInvincibility += deltaSeconds;
-                _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
+                _ceilingTrap1.PressActivation(ref _chronoTrap1);
                 _ceilingTrap1.Sprite.Update(deltaSeconds);
 
                 // Lifes
@@ -279,9 +316,10 @@ namespace Projet
                 // Collisions
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
 
-                if (Collision.IsCollidingTrap(_ceilingTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
+                if (Collision.IsCollidingTrap(_ceilingTrap1, _hitBoxPingouin))
                 {
                     _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                    MediaPlayer.Play(trapTouchPingouin);
                 }
                 // Collision du monstre avec le pingouin
                 if (!isFox1Died)
@@ -289,6 +327,7 @@ namespace Projet
                     if (Collision.IsCollidingMonstre(_pingouin, _fox1, _hitBoxPingouin))
                     {
                         _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        MediaPlayer.Play(monsterTouchPingouin);
                     }
                 }
 
@@ -298,7 +337,7 @@ namespace Projet
                     if (coins[i].etat == 0)
                     {
                         //Collision de la recompense avec le pingouin
-                        if (Collision.IsCollidingRecompense(coins[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(coins[i], _hitBoxPingouin))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
@@ -328,7 +367,7 @@ namespace Projet
                     if (partiPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                        if (Collision.IsCollidingRecompense(partiPortail[i], _hitBoxPingouin))
                         {
                             _partiRecolleter += 1;
                             partiPortail[i].etat = 1;
@@ -339,7 +378,7 @@ namespace Projet
                 if (openingPortal.etat == 0)
                 {
                     //Collision des moreau de portail avec le pingouin
-                    if (Collision.IsCollidingRecompense(openingPortal, largeurRecompense1, hauteurRecompense1, ref rRecompense, _hitBoxPingouin))
+                    if (Collision.IsCollidingRecompense(openingPortal, _hitBoxPingouin))
                     {
                         _myGame.clicWin = true;
                     }
@@ -426,11 +465,11 @@ namespace Projet
                 }
             }
             
-            if (openingPortal.etat == 1)
+            if (openingPortal.etat == 0)
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (closingPortal.etat == 0)
+            if (_chrono<2)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }
