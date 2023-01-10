@@ -29,6 +29,7 @@ namespace Projet
         {
             this.Position = new Vector2(x, y);
             this.Texture = texture;
+            this.velocity = new Vector2(2, 0);
         }
 
         public Texture2D Texture
@@ -88,7 +89,7 @@ namespace Projet
         }
         public void Move()
         {
-            this.position += new Vector2(2, 0);
+            this.position += this.velocity;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Projet
         private ChoixNiveau _choixNiveau;
         private Regle _regle;
         private Niveau1 _niveau1;
+        private Niveau2 _niveau2;
         private Parametres _parametres;
         public static SpriteFont police; //police pour le texte
         
@@ -40,28 +41,13 @@ namespace Projet
         public bool clicArret;
         public bool clicRegle;
         public bool clicNiveau1;
+        public bool clicNiveau2;
         public bool clicParametres;
         public bool pause;
         public bool reprendre;
-        /*
-        //TEXTE
-        private string _buttonPlay;
-        private string _buttonMenu;
-        private Vector2 _posiButtonPlay;
-        private Vector2 _posiButtonMenu;
-
-        //GESTION SOURIS
-        private MouseState _mouseState;
-        */
-
+        
         //SAUVEGARDE
         public Vector2 dernierePosiPingouin;
-
-        /*
-        //DECO
-        private Texture2D _textureFond;
-        private Vector2 _positionFond;
-        */
 
         public Game1()
         {
@@ -84,16 +70,7 @@ namespace Projet
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
             _graphics.PreferredBackBufferHeight = HAUTEUR_FENETRE;
             _graphics.ApplyChanges();
-            /*
-            //BOUTON
-            _buttonMenu = "Menu";
-            _buttonPlay = "Jouer";
-            _posiButtonMenu = new Vector2(300 - _buttonMenu.Length * 12, HAUTEUR_FENETRE / 2-24);
-            _posiButtonPlay = new Vector2(650 - _buttonMenu.Length * 12, _posiButtonMenu.Y);
-
-            //DECO
-            _positionFond = new Vector2(0, 0);
-            */
+           
             clicMenu = true;
             base.Initialize();
         }
@@ -109,6 +86,7 @@ namespace Projet
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
             _niveau1 = new Niveau1(this);
+            _niveau2 = new Niveau2(this);
             _parametres = new Parametres(this);
 
             //POLICE
@@ -122,22 +100,7 @@ namespace Projet
 
             // Récupération des entrées
             KeyboardState keyboardState = Keyboard.GetState();
-            /*
-            _mouseState = Mouse.GetState();
-
-            // Gestion de la souris
-            if (_mouseState.LeftButton == ButtonState.Pressed)
-            {
-                if (_mouseState.X >= _posiButtonMenu.X && _mouseState.Y >= _posiButtonMenu.Y && _mouseState.X <= _posiButtonMenu.X + _buttonMenu.Length * 24 && _mouseState.Y <= _posiButtonMenu.Y + 24)
-                {
-                    clicMenu = true;
-                }
-                else if (_mouseState.X >= _posiButtonPlay.X && _mouseState.Y >= _posiButtonPlay.Y && _mouseState.X <= _posiButtonPlay.X + _buttonPlay.Length * 24 && _mouseState.Y <= _posiButtonPlay.Y + 24)
-                {
-                    clicNiveau1 = true;
-                }
-            }*/
-
+            
             // CONDITION POUR ALLER SUR LE MENU DU JEU
             if (keyboardState.IsKeyDown(Keys.Tab) || clicMenu)
             {
@@ -185,6 +148,13 @@ namespace Projet
                 pause = false;
                 _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
             }
+            // CONDITION POUR LANCER LE NIVEAU 2
+            else if (clicNiveau2)
+            {
+                clicNiveau2 = false;
+                pause = false;
+                _screenManager.LoadScreen(_niveau2, new FadeTransition(GraphicsDevice, Color.Black));
+            }
             // CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
             else if (reprendre)
             {
@@ -198,18 +168,7 @@ namespace Projet
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            SpriteBatch.Begin();
-            /*
-            //DECO
-            //SpriteBatch.Draw(_textureFond, _positionFond, Color.White);//LE FOND
-
-            //TEXTE
-            SpriteBatch.DrawString(police, $"{_buttonMenu}", _posiButtonMenu, Color.Black);
-            SpriteBatch.DrawString(police, $"{_buttonPlay}", _posiButtonPlay, Color.Black);
-            */
-            SpriteBatch.End();
-            
+                       
             base.Draw(gameTime);
         }
     }
