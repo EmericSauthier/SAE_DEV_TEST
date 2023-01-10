@@ -49,18 +49,14 @@ namespace Projet
 
         // ENTITE
         List<MonstreRampant> monstresRampants;
+        List<MonstreVolant> monstresVolants;
+        List<Trap> traps;
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
         private Rectangle _hitBoxPingouin;
-        // Fox
-        MonstreRampant _fox1;
-        // Eagle
-        MonstreVolant _eagle1;
 
         // Piège
-        Trap _ceilingTrap1;
         private float _chronoTrap1, _chronoInvincibility;
-        public static bool _canCollidingTrap;
 
         //Recompense
         Recompenses []coins;
@@ -72,12 +68,7 @@ namespace Projet
         private Vector2[] _heartsPositions;
 
         //Debug rectangle
-        private Rectangle foxRectangle;
-        private Rectangle rTrap;
-        private Rectangle killingFoxRectangle;
         private Rectangle rRecompense;
-        private Rectangle rEagle;
-        private Rectangle rKillingEagle;
 
         //Portail
         private Vector2 _recoltePosition;
@@ -126,16 +117,25 @@ namespace Projet
             }
 
             // Ennemis
-            _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 19*3, 14*3);
-            _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12, 50, 30);
+            MonstreRampant _fox1 = new MonstreRampant(new Vector2(1170, 850), "fox", 0.8, 12, 19*3, 14*3);
+            MonstreVolant _eagle1 = new MonstreVolant(new Vector2(200, 900), "eagle", 1, 12, 50, 30);
 
             // Tableau monstre rampant
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(_fox1);
             monstresRampants.Add(new MonstreRampant(new Vector2(300, 900), "fox", 0.8, 12, 19 * 3, 14 * 3));
+            // Tableau monstre volant
+            monstresVolants = new List<MonstreVolant>();
+            monstresVolants.Add(_eagle1);
+            monstresVolants.Add(new MonstreVolant(new Vector2(300, 850), "eagle", 1, 12, 50, 30));
 
             // Traps
-            _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20);
+            Trap _ceilingTrap1 = new Trap(new Vector2(1480, 800), 64/2, 64-20, "press");
+
+            // Tableau Traps
+            traps = new List<Trap>();
+            traps.Add(_ceilingTrap1);
+            traps.Add(new Trap(new Vector2(480, 800), 64 / 2, 64 - 20, "press"));
 
             //Recompenses
             coins = new Recompenses[4];
@@ -183,9 +183,19 @@ namespace Projet
                 monstresRampants[i].LoadContent(foxSprite);
             };
 
+            // Chargement texture eagle
+            SpriteSheet eagleSprite = Content.Load<SpriteSheet>("Ennemis_pieges/eagle.sf", new JsonContentLoader());
+            for (int i = 0; i < monstresVolants.Count; i++)
+            {
+                monstresVolants[i].LoadContent(eagleSprite);
+            }
+
             // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
-            _ceilingTrap1.LoadContent(ceilingTrapSprite);
+            for (int i = 0; i < traps.Count; i++)
+            {
+                traps[i].LoadContent(ceilingTrapSprite);
+            }
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
@@ -197,10 +207,6 @@ namespace Projet
 
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
-
-            // Chargement texture eagle
-            SpriteSheet eagleSprite = Content.Load<SpriteSheet>("Ennemis_pieges/eagle.sf", new JsonContentLoader());
-            _eagle1.LoadContent(eagleSprite);
 
             //Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
@@ -251,17 +257,23 @@ namespace Projet
                 _positionChrono = new Vector2(_camera.CameraPosition.X + LARGEUR_FENETRE / 2 - 190, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
 
                 // Ennemis
+                // Rampants
                 _chronoDepFox1 += deltaSeconds;
                 for (int i = 0; i < monstresRampants.Count; i++)
                 {
                     monstresRampants[i].RightLeftMove(ref _chronoDepFox1);
                     monstresRampants[i].Sprite.Update(deltaSeconds);
-                    monstresRampants[i].Update();
+                    monstresRampants[i].UpdateBoxes();
                 }
 
+                // Volants
                 _chronoDepEagle1 += deltaSeconds;
-                _eagle1.IdleFlying(ref _chronoDepEagle1);
-                _eagle1.Sprite.Update(deltaSeconds);
+                for (int i = 0; i < monstresVolants.Count; i++)
+                {
+                    monstresVolants[i].IdleFlying(ref _chronoDepEagle1);
+                    monstresVolants[i].Sprite.Update(deltaSeconds);
+                    monstresVolants[i].UpdateBoxes();
+                }
 
                 // Recompense
                 for (int i =0; i<4; i++)
@@ -288,8 +300,12 @@ namespace Projet
                 // Traps
                 _chronoTrap1 += deltaSeconds;
                 _chronoInvincibility += deltaSeconds;
-                _ceilingTrap1.PressActivation(ref _chronoTrap1, ref _canCollidingTrap);
-                _ceilingTrap1.Sprite.Update(deltaSeconds);
+                for (int i = 0; i < traps.Count; i++)
+                {
+                    traps[i].PressActivation(ref _chronoTrap1);
+                    traps[i].Sprite.Update(deltaSeconds);
+                    traps[i].UpdateBoxes();
+                }
 
                 // Lifes
                 for (int i = 0; i < _pingouin.MaxLife; i++)
@@ -298,14 +314,17 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                // Collisions
+                // Collisions 
                 _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
-
-                if (Collision.IsCollidingTrap(_ceilingTrap1, _canCollidingTrap, ref rTrap, _hitBoxPingouin))
+                // Collisions des traps avec le pingouin
+                for (int i = 0; i < traps.Count; i++)
                 {
-                    _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                    if (Collision.IsCollidingTrap(traps[i], _hitBoxPingouin))
+                    {
+                        _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                    }
                 }
-                // Collision du monstre avec le pingouin
+                // Collision des rampants avec le pingouin
                 for (int i = 0; i < monstresRampants.Count; i++)
                 {
                     if (!monstresRampants[i].IsDied)
@@ -317,12 +336,15 @@ namespace Projet
                     }
                 }
 
-                // Collision du monstre avec le pingouin
-                if (!_eagle1.IsDied)
+                // Collision des volants avec le pingouin
+                for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    if (Collision.IsCollidingMonstre(_pingouin, _eagle1, ref rEagle, ref rKillingEagle, _hitBoxPingouin))
+                    if (!monstresVolants[i].IsDied)
                     {
-                        _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _hitBoxPingouin))
+                        {
+                            _pingouin.TakeDamage(1, ref _chronoInvincibility);
+                        }
                     }
                 }
 
@@ -426,10 +448,16 @@ namespace Projet
             }
 
             //Trap
-            _myGame.SpriteBatch.Draw(_ceilingTrap1.Sprite, _ceilingTrap1.Position, 0, new Vector2(1, 1));
+            for (int i = 0; i < traps.Count; i++)
+            {
+                traps[i].Affiche(_myGame);
+            }
 
             //Eagle
-            _eagle1.Affiche(_myGame, rEagle, rKillingEagle);
+            for (int i = 0; i < monstresVolants.Count; i++)
+            {
+                monstresVolants[i].Affiche(_myGame);
+            }
 
             //Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i<4; i++)
@@ -459,7 +487,7 @@ namespace Projet
 
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
-            _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
+
             for (int i=0; i<4; i++)
             {
                 if (coins[i].etat == 0)
