@@ -117,14 +117,18 @@ namespace Projet
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(new MonstreRampant(new Vector2(1170, 850), "fox", 0.5, 5));
             monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(3660, 500), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(3690, 245), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
-            monstresVolants.Add(new MonstreVolant(new Vector2(2000, 500), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(2500, 100), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
             traps.Add(new Trap(new Vector2(2728, 897), "press"));
             traps.Add(new Trap(new Vector2(1618, 767), "press"));
+            traps.Add(new Trap(new Vector2(3200, 897), "press"));
+            traps.Add(new Trap(new Vector2(4300, 735), "press"));
 
             //Recompenses
             coins = new Recompenses[4];
@@ -510,6 +514,11 @@ namespace Projet
                     _myGame.SpriteBatch.DrawRectangle(coins[i].RectangleSprite, Color.YellowGreen);
                 }
             }
+
+            // Debug Position
+            _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _recoltePosition + new Vector2(0, 100), Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _recoltePosition + new Vector2(0, 170), Color.White);
+
 
             _myGame.SpriteBatch.End();
         }
