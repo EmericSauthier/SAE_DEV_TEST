@@ -493,14 +493,6 @@ namespace Projet
                 _myGame.SpriteBatch.Draw(_closingPortal.Sprite, _closingPortal.Position, 0, new Vector2(2));
             }
 
-            for (int i=0; i<_posiCoins.Length; i++)
-            {
-                if (_coins[i].etat == 0)
-                {
-                    _myGame.SpriteBatch.DrawRectangle(_coins[i].RectangleSprite, Color.YellowGreen);
-                }
-            }
-
             _myGame.SpriteBatch.End();
         }
     }

@@ -496,22 +496,6 @@ namespace Projet
                 _myGame.SpriteBatch.Draw(_closingPortal.Sprite, _closingPortal.Position, 0, new Vector2(2));
             }
 
-            // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(_rTrap, Color.Orange);
-            for (int i = 0; i < _posiCoins.Length; i++)
-            {
-                if (_coins[i].etat == 0)
-                {
-                    _myGame.SpriteBatch.DrawRectangle(_rRecompense, Color.YellowGreen);
-                }
-            }
-
-            if (!isFox1Died)
-            {
-                _myGame.SpriteBatch.DrawRectangle(_rFox, Color.Red);
-                _myGame.SpriteBatch.DrawRectangle(_rKillingFox, Color.DarkOrange);
-            }
-
             _myGame.SpriteBatch.End();
         }
     }

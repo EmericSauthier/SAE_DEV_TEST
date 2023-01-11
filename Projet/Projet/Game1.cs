@@ -62,7 +62,7 @@ namespace Projet
         {
             // TODO: Add your initialization logic here
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            Window.Title = "Jeu du pingouin";
+            Window.Title = "Man-chaud";
 
             // Fenetre
             _graphics.PreferredBackBufferWidth = LARGEUR_FENETRE;
