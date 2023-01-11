@@ -206,7 +206,6 @@ namespace Projet
         public void RightLeftMove(GameTime gameTime)
         {
             ChronoDep += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //System.Diagnostics.Debug.WriteLine(ChronoDep);
 
             if (ChronoDep <= this.TempsArrivePosition)
             {

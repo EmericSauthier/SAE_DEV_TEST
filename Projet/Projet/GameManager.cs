@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
@@ -32,6 +34,11 @@ namespace Projet
         private float _timerSpike;
         private Texture2D _snowballTexture;
 
+        private Song _trapSong;
+        private Song _monstreSong;
+        private Song _coinSong;
+        private Song _portalSong;
+
         public Texture2D SnowballTexture
         {
             get
@@ -44,6 +51,54 @@ namespace Projet
                 this._snowballTexture = value;
             }
         }
+        public Song TrapSong
+        {
+            get
+            {
+                return this._trapSong;
+            }
+
+            set
+            {
+                this._trapSong = value;
+            }
+        }
+        public Song MonstreSong
+        {
+            get
+            {
+                return this._monstreSong;
+            }
+
+            set
+            {
+                this._monstreSong = value;
+            }
+        }
+        public Song CoinSong
+        {
+            get
+            {
+                return this._coinSong;
+            }
+
+            set
+            {
+                this._coinSong = value;
+            }
+        }
+        public Song PortalSong
+        {
+            get
+            {
+                return this._portalSong;
+            }
+
+            set
+            {
+                this._portalSong = value;
+            }
+        }
 
         public GameManager()
         {
@@ -51,7 +106,7 @@ namespace Projet
             _timerSpike = 0;
         }
 
-        public void Update(Game1 game, KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMap map, float deltaTime, TiledMapTileLayer spikes = null)
+        public void Update(Game1 game, KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants, TiledMap map, float deltaTime, TiledMapTileLayer spikes = null, List<Trap> traps=null)
         {
             TiledMapTileLayer ground = map.GetLayer<TiledMapTileLayer>("Ground");
             TiledMapTileLayer dead = map.GetLayer<TiledMapTileLayer>("DeadZone");
@@ -62,16 +117,27 @@ namespace Projet
             }
             else
             {
+                // Mise à jour des timer
                 _timer += deltaTime;
                 _timerSpike += deltaTime;
+
+                // Vérifie les entrées et agit en fonction
                 InputsManager(keyboardState, pingouin, ref snowballs, ground);
+
+                // Vérifie les collisions des monstres avec les boules de neige et le pingouin
+                CollisionWithMonstre(pingouin, ref rampants);
+                CollisionWithMonstre(pingouin, ref volants);
+                // Vérifie les collisions des boules de neige (avec le décor)
                 SnowballsUpdate(ref snowballs, ground);
+                // Met à jour le pingouin
                 pingouin.Update(deltaTime, ground);
-                if (spikes != null && Collision.MapCollision(new Point((int)pingouin.Position.X, (int)(pingouin.Position.Y + 50 * pingouin.Scale)), spikes) && _timerSpike >= 2)
-                {
-                    pingouin.CurrentLife -= 1;
-                    _timerSpike = 0;
-                }
+
+                // Vérifie les collisions entre le pingouin et les pièges
+                if (traps != null)
+                    CollisionWithTrap(pingouin, traps);
+                // Vérifie les collisions entre le pingouin et les spikes de la map
+                if (spikes != null)
+                    CollisionWithTrap(pingouin, spikes);
             }
         }
         public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground)
@@ -128,7 +194,6 @@ namespace Projet
             // Si le pingouin saute (touche espace) ou est dans les airs
             if (keyboardState.IsKeyDown(Game1.sauter) || pingouin.Fly)
             {
-                System.Diagnostics.Debug.WriteLine("Right : " + pingouin.IsMovingRight + "\nLeft : " + pingouin.IsMovingLeft);
                 if (!Collision.MapCollision(pingouin.CheckTop(), ground))
                 {
                     pingouin.Jump(ground);
@@ -163,34 +228,168 @@ namespace Projet
                 pingouin.Animate("idle");
             }
         }
+        public void CollisionWithMonstre(Pingouin pingouin, ref List<MonstreRampant> rampants)
+        {
+            List<MonstreRampant> newRampants = new List<MonstreRampant>();
+            for (int i = 0; i < rampants.Count; i++)
+            {
+                if (!Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleKill))
+                {
+                    newRampants.Add(rampants[i]);
+                }
+                
+                if (Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleSprite))
+                {
+                    if ((rampants[i].IsMovingRight && pingouin.IsMovingRight) || (!rampants[i].IsMovingRight && pingouin.IsMovingRight) || (!rampants[i].IsMovingRight && !pingouin.IsMovingRight && !pingouin.IsMovingLeft))
+                    {
+                        pingouin.Position -= new Vector2(10, 0);
+                    }
+                    else
+                    {
+                        pingouin.Position += new Vector2(10, 0);
+                    }
+                    pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                }
+            }
+            rampants = newRampants;
+        }
+        public void CollisionWithMonstre(Pingouin pingouin, ref List<MonstreVolant> volants)
+        {
+            List<MonstreVolant> newVolants = new List<MonstreVolant>();
+            for (int i = 0; i < volants.Count; i++)
+            {
+                if (!Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleKill))
+                {
+                    if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleSprite))
+                    {
+                        if ((volants[i].IsMovingRight && pingouin.IsMovingRight) || (!volants[i].IsMovingRight && pingouin.IsMovingRight))
+                        {
+                            pingouin.Position -= new Vector2(10, 0);
+                        }
+                        else
+                        {
+                            pingouin.Position += new Vector2(10, 0);
+                        }
+
+                        if (pingouin.Position.Y > volants[i].Position.Y)
+                        {
+                            pingouin.Position += new Vector2(0, 10);
+                        }
+                        pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                    }
+                    else if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleDetection))
+                    {
+                        volants[i].HasSawPlayer = true;
+                    }
+                    else
+                    {
+                        volants[i].HasSawPlayer = false;
+                    }
+                    newVolants.Add(volants[i]);
+                }
+            }
+            volants = newVolants;
+        }
+        public void CollisionWithTrap(Pingouin pingouin, List<Trap> traps)
+        {
+            for (int i = 0; i < traps.Count; i++)
+            {
+                if (traps[i].CanCollidingTrap && Collision.SpriteCollision(pingouin.HitBox, traps[i].RectangleSprite))
+                {
+                    pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                    MediaPlayer.Play(_trapSong);
+                }
+            }
+        }
+        public void CollisionWithTrap(Pingouin pingouin, TiledMapTileLayer spikes)
+        {
+            if (spikes != null && Collision.MapCollision(new Point((int)pingouin.Position.X, (int)(pingouin.Position.Y + 50 * pingouin.Scale)), spikes) && _timerSpike >= 2)
+            {
+                pingouin.CurrentLife -= 1;
+                _timerSpike = 0;
+                MediaPlayer.Play(_trapSong);
+            }
+        }
+        public void MonstreUpdate(Pingouin pingouin, ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants)
+        {
+            int snowballNull = 0;
+            int rampantNull = 0;
+            int volantNull = 0;
+            for (int i = 0; i < snowballs.Length; i++)
+            {
+                for (int j = 0; j < rampants.Count; j++)
+                {
+                    if (snowballs[i] != null && (Collision.SpriteCollision(snowballs[i].HitBox, rampants[j].RectangleSprite) || Collision.SpriteCollision(snowballs[i].HitBox, rampants[j].RectangleKill)))
+                    {
+                        System.Diagnostics.Debug.WriteLine("RAMPANT SUPPRIMER");
+                        System.Diagnostics.Debug.WriteLine(rampants);
+                        snowballs[i] = null;
+                        rampants.Remove(rampants[i]);
+                        snowballNull++;
+                        rampantNull++;
+                        System.Diagnostics.Debug.WriteLine(rampants);
+                    }
+                    else if (Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleKill))
+                    {
+                        
+                        System.Diagnostics.Debug.WriteLine("RAMPANT SUPPRIMER");
+                        System.Diagnostics.Debug.WriteLine(rampants);
+                        snowballs[i] = null;
+                        rampants.Remove(rampants[i]);
+                        snowballNull++;
+                        rampantNull++;
+                        System.Diagnostics.Debug.WriteLine(rampants);
+                    }
+                }
+
+                for (int j = 0; j < volants.Count; j++)
+                {
+                    if (snowballs[i] != null && (Collision.SpriteCollision(snowballs[i].HitBox, volants[j].RectangleSprite) || Collision.SpriteCollision(snowballs[i].HitBox, volants[j].RectangleKill) || Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleKill)))
+                    {
+                        System.Diagnostics.Debug.WriteLine("VOLANT SUPPRIMER");
+                        snowballs[i] = null;
+                        volants.Remove(volants[i]);
+                        snowballNull++;
+                        volantNull++;
+                    }
+                }
+            }
+
+            snowballs = UpdateTab(snowballs, snowballNull);
+        }
         public void SnowballsUpdate(ref Snowball[] snowballs, TiledMapTileLayer mapLayer)
         {
-            int countNull = 0;
+            int snowballNull = 0;
             for (int i = 0; i < snowballs.Length; i++)
             {
                 // Vérification des collisions avec le décor et la distance
-                if (snowballs[i].Collide(mapLayer) || snowballs[i].Distance >= 500)
+                if (snowballs[i] != null && Collision.MapCollision(new Point((int)snowballs[i].Middle.X, (int)snowballs[i].Middle.Y), mapLayer) || snowballs[i].Distance >= 500)
                 {
                     snowballs[i] = null;
-                    countNull++;
-                }
-                else
+                    snowballNull++;
+                } else if (snowballs != null)
                 {
                     snowballs[i].Move();
                 }
             }
 
-            Snowball[] temp = snowballs;
-            snowballs = new Snowball[snowballs.Length - countNull];
+            snowballs = UpdateTab(snowballs, snowballNull);
+        }
+
+        public Snowball[] UpdateTab(Snowball[] tab, int count)
+        {
+            Snowball[] newTab = new Snowball[tab.Length - count];
             int index = 0;
-            for (int i = 0; i < temp.Length; i++)
+            for (int i = 0; i < tab.Length; i++)
             {
-                if (temp[i] != null)
+                if (tab[i] != null)
                 {
-                    snowballs[index] = temp[i];
+                    newTab[index] = tab[i];
                     index++;
                 }
             }
+
+            return newTab;
         }
     }
 }

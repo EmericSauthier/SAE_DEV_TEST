@@ -227,7 +227,6 @@ namespace Projet
 
             if (!HasSawPlayer)
             {
-                //System.Diagnostics.Debug.WriteLine(time);
                 if (ChronoDep <= tempsArrivePosition)
                 {
                     Position += new Vector2((float)Vitesse, 0);

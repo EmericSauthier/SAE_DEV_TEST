@@ -31,9 +31,8 @@ namespace Projet
                 {
                     return true;
                 }
-                else return false;
             }
-            else return false;
+            return false;
         }
 
         // Nécessite changement fonctionnement des offsets
