@@ -21,6 +21,8 @@ namespace Projet
         private bool isDied;
         private bool hasSawPlayer;
         private double chronoDep;
+        private Vector2 positionDeBase;
+        private bool hasTouchPlayer;
 
         private int largeur, hauteur;
         private Rectangle rectangleSprite, rectangleKill, rectangleDetection;
@@ -28,6 +30,7 @@ namespace Projet
         public MonstreVolant(Vector2 position, string enemy, double vitesse, double tempsArrivePosition)
         {
             this.Position = position;
+            this.PositionDeBase = position;
             this.Enemy = enemy;
             this.Vitesse = vitesse;
             this.TempsArrivePosition = tempsArrivePosition;
@@ -221,53 +224,133 @@ namespace Projet
             }
         }
 
+        public Vector2 PositionDeBase
+        {
+            get
+            {
+                return this.positionDeBase;
+            }
+
+            set
+            {
+                this.positionDeBase = value;
+            }
+        }
+
+        public bool HasTouchPlayer
+        {
+            get
+            {
+                return this.hasTouchPlayer;
+            }
+
+            set
+            {
+                this.hasTouchPlayer = value;
+            }
+        }
+
         public void Move(GameTime gameTime, Pingouin pingouin)
         {
             ChronoDep += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (!HasSawPlayer)
+            if (HasTouchPlayer)
             {
-                if (ChronoDep <= tempsArrivePosition)
+                if (HasSawPlayer)
                 {
-                    Position += new Vector2((float)Vitesse, 0);
-                    Sprite.Play("flyRight");
-                    IsMovingRight = true;
-                }
-                else if (ChronoDep > tempsArrivePosition && ChronoDep < tempsArrivePosition * 2)
-                {
-                    Position -= new Vector2((float)Vitesse, 0);
-                    Sprite.Play("flyLeft");
-                    IsMovingRight = false;
-                }
-                else ChronoDep = 0;
-            }
-            else
-            {
-                //System.Diagnostics.Debug.WriteLine("position x pingouin : " + (int)pingouin.Position.X);
-                //System.Diagnostics.Debug.WriteLine("position x monstre : " + (int)this.Position.X);
-
-                if (this.position.X > pingouin.Position.X)
-                {
-                    Sprite.Play("flyLeft");
-                    this.position.X -= (float)vitessePoursuite;
-                }
-                else if((int)pingouin.Position.X < (int)this.Position.X + 20 && (int)pingouin.Position.X > (int)this.Position.X - 20)
-                {
-                    this.Sprite.Play("flyBottom");
+                    ReturnToBasePos();
                 }
                 else
                 {
-                    Sprite.Play("flyRight");
-                    this.position.X += (float)vitessePoursuite;
+                    ReturnToBasePos();
                 }
+            }
+            else
+            {
+                if (HasSawPlayer)
+                {
+                    ChaseEnemy(pingouin);
+                }
+                else
+                {
+                    IdleFlying();
+                }
+            }
 
-                if (this.position.Y > pingouin.Position.Y)
+        }
+
+        public void IdleFlying()
+        {
+            if (ChronoDep <= tempsArrivePosition)
+            {
+                Position += new Vector2((float)Vitesse, 0);
+                Sprite.Play("flyRight");
+                IsMovingRight = true;
+            }
+            else if (ChronoDep > tempsArrivePosition && ChronoDep < tempsArrivePosition * 2)
+            {
+                Position -= new Vector2((float)Vitesse, 0);
+                Sprite.Play("flyLeft");
+                IsMovingRight = false;
+            }
+            else ChronoDep = 0;
+        }
+
+        public void ReturnToBasePos()
+        {
+            if (this.position.X > PositionDeBase.X)
+            {
+                Sprite.Play("flyLeft");
+                this.position.X -= (float)vitessePoursuite;
+            }
+            else
+            {
+                Sprite.Play("flyRight");
+                this.position.X += (float)vitessePoursuite;
+            }
+
+            if (this.position.Y > PositionDeBase.Y)
+            {
+                this.position.Y -= (float)vitessePoursuite;
+            }
+            else
+            {
+                this.position.Y += (float)vitessePoursuite;
+            }
+
+            if ((int)PositionDeBase.X < (int)this.Position.X + 20 && (int)PositionDeBase.X > (int)this.Position.X - 20)
+            {
+                if ((int)PositionDeBase.Y < (int)this.Position.X + 20 && (int)PositionDeBase.Y > (int)this.Position.X - 20)
                 {
-                    this.position.Y -= (float)Vitesse;
-                }else
-                {
-                    this.position.Y += (float)Vitesse;
+                    this.HasTouchPlayer = false;
                 }
+            }
+        }
+
+        public void ChaseEnemy(Pingouin pingouin)
+        {
+            if (this.position.X > pingouin.Position.X)
+            {
+                Sprite.Play("flyLeft");
+                this.position.X -= (float)vitessePoursuite;
+            }
+            else if ((int)pingouin.Position.X < (int)this.Position.X + 20 && (int)pingouin.Position.X > (int)this.Position.X - 20)
+            {
+                this.Sprite.Play("flyBottom");
+            }
+            else
+            {
+                Sprite.Play("flyRight");
+                this.position.X += (float)vitessePoursuite;
+            }
+
+            if (this.position.Y > pingouin.Position.Y)
+            {
+                this.position.Y -= (float)Vitesse;
+            }
+            else
+            {
+                this.position.Y += (float)Vitesse;
             }
 
         }
