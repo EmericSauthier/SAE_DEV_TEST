@@ -83,11 +83,6 @@ namespace Projet
                     pingouin.Position += new Vector2(10, 0);
                 }
 
-                if (pingouin.Position.Y > monstre.Position.Y)
-                {
-                    pingouin.Position += new Vector2(0, 10);
-                }
-
                 return true;
             }
             else return false;
