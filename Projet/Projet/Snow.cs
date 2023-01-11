@@ -122,10 +122,13 @@ namespace Projet
             monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
             monstresRampants.Add(new MonstreRampant(new Vector2(3660, 500), "fox", 0.4, 5));
             monstresRampants.Add(new MonstreRampant(new Vector2(3690, 245), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(4580, 785), "fox", 0.5, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(5480, 595), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
             monstresVolants.Add(new MonstreVolant(new Vector2(2500, 100), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(5000, 500), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
             traps.Add(new Trap(new Vector2(2728, 897), "press"));
@@ -134,7 +137,8 @@ namespace Projet
             traps.Add(new Trap(new Vector2(4300, 735), "press"));
 
             // Recompenses
-            _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(1000, 1122)};
+            _posiCoins = new Vector2[] { new Vector2(850, 900), new Vector2(1000, 850), new Vector2(1870, 650), new Vector2(3310, 400)
+                , new Vector2(3050, 200), new Vector2(4020, 190), new Vector2(3750, 850), new Vector2(3010, 930), new Vector2(5900, 650)};
             coins = new Recompenses[_posiCoins.Length];
             for (int i=0; i <_posiCoins.Length; i++)
             {
@@ -393,7 +397,7 @@ namespace Projet
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
                                 double randomNb = new Random().NextDouble();
-                                if (randomNb > 0.5)
+                                if (randomNb > 0.6)
                                 {
                                     _pingouin.WalkVelocity *= 0.80;
                                 }
