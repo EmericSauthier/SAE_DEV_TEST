@@ -18,12 +18,14 @@ namespace Projet
         private int largeur, hauteur;
         private Rectangle rectangleSprite;
         private bool canCollidingTrap;
+        private double chronoActivation;
 
         public Trap(Vector2 trapPosition, string trapTypeString)
         {
             this.Position = trapPosition;
             this.TrapType = trapTypeString;
             this.CanCollidingTrap = true;
+            this.ChronoActivation = 0;
 
             UpdateDimensions();
             UpdateBoxes();
@@ -120,30 +122,44 @@ namespace Projet
             }
         }
 
+        public double ChronoActivation
+        {
+            get
+            {
+                return this.chronoActivation;
+            }
+
+            set
+            {
+                this.chronoActivation = value;
+            }
+        }
+
         public void LoadContent(SpriteSheet sprite)
         {
             Sprite = new AnimatedSprite(sprite);
         }
 
-        public void PressActivation(ref double time)
+        public void PressActivation(GameTime gameTime)
         {
-            //System.Diagnostics.Debug.WriteLine(time);
+            ChronoActivation += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             this.CanCollidingTrap = false;
-            if (time > 1 && time < 1.3)
+            if (ChronoActivation > 1 && ChronoActivation < 1.3)
             {
                 Sprite.Play("press");
             }
-            else if(time >= 1.5&& time < 2)
+            else if(ChronoActivation >= 1.5&& ChronoActivation < 2)
             {
                 this.CanCollidingTrap = true;
             }
-            else if(time >= 2 && time < 4)  
+            else if(ChronoActivation >= 2 && ChronoActivation < 4)  
             {
                 this.CanCollidingTrap = false;
             }
-            else if(time >= 4)
+            else if(ChronoActivation >= 4)
             {
-                time = 0;
+                ChronoActivation = 0;
             }
         }
 

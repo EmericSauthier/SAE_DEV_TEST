@@ -49,12 +49,19 @@ namespace Projet
             _timer = 0;
         }
 
-        public void Update(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground, float deltaTime)
+        public void Update(Game1 game, KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground, TiledMapTileLayer dead, float deltaTime)
         {
-            _timer += deltaTime;
-            pingouin.Update(deltaTime, ground);
-            InputsManager(keyboardState, pingouin, ref snowballs, ground);
-            SnowballsUpdate(ref snowballs, ground);
+            if (pingouin.CurrentLife <= 0 || Collision.MapCollision(pingouin.CheckBottom(), dead))
+            {
+                game.clicDead = true;
+            }
+            else
+            {
+                _timer += deltaTime;
+                InputsManager(keyboardState, pingouin, ref snowballs, ground);
+                SnowballsUpdate(ref snowballs, ground);
+                pingouin.Update(deltaTime, ground);
+            }
         }
         public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground)
         {

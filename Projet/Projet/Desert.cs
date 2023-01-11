@@ -310,7 +310,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_keyboardState, _pingouin, ref _snowballs, _groundLayer, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _groundLayer, _deadLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -328,7 +328,7 @@ namespace Projet
                 // Volants
                 for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].Move(ref Chrono.chronoDepEagle, _pingouin);
+                    monstresVolants[i].Move(gameTime, _pingouin);
                     monstresVolants[i].Sprite.Update(deltaSeconds);
                     monstresVolants[i].UpdateBoxes();
                 }
@@ -336,7 +336,7 @@ namespace Projet
                 // Traps
                 for (int i = 0; i < traps.Count; i++)
                 {
-                    traps[i].PressActivation(ref Chrono.chronoTrap);
+                    traps[i].PressActivation(gameTime);
                     traps[i].Sprite.Update(deltaSeconds);
                     traps[i].UpdateBoxes();
                 }
@@ -457,12 +457,6 @@ namespace Projet
                         _myGame.clicWin = true;
                     }
                 }
-
-                // Mort
-                if (_pingouin.CurrentLife <= 0)
-                {
-                    _myGame.goDead = true;
-                }
             }
         }
 
@@ -536,7 +530,6 @@ namespace Projet
             }
 
             // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
             _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
             for (int i = 0; i < _posiCoins.Length; i++)
             {
