@@ -86,6 +86,30 @@ namespace Projet
                 this._portalSong = value;
             }
         }
+        public Song ThrowSnowball
+        {
+            get
+            {
+                return this._throwSnowball;
+            }
+
+            set
+            {
+                this._throwSnowball = value;
+            }
+        }
+        public Song HitSnowball
+        {
+            get
+            {
+                return this._hitSnowball;
+            }
+
+            set
+            {
+                this._hitSnowball = value;
+            }
+        }
 
         public GameManager()
         {
@@ -165,6 +189,7 @@ namespace Projet
                     direction = -1;
                 }
                 pingouin.Animate("attack");
+                MediaPlayer.Play(_throwSnowball);
 
                 // Ajoute une boule de neige au tableau
                 Snowball[] newSnowballsArray = new Snowball[snowballs.Length + 1];
@@ -349,6 +374,7 @@ namespace Projet
                         snowballs[j] = null;
                         snowballNull++;
                         collide = true;
+                        MediaPlayer.Play(_hitSnowball);
                         break;
                     }
                 }
@@ -374,6 +400,7 @@ namespace Projet
                         snowballs[j] = null;
                         snowballNull++;
                         collide = true;
+                        MediaPlayer.Play(_hitSnowball);
                         break;
                     }
                 }

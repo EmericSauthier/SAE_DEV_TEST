@@ -29,7 +29,6 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
 
         // GameManager
-        private bool _gameOver;
         private GameManager _manager;
 
         // Gestion des entrées
@@ -74,15 +73,11 @@ namespace Projet
         Vector2[] _posiPartiPortail;
 
         // Audio
-        SoundEffect recupAllPortalSound;
-        SoundEffect coinSound;
-        SoundEffect jeterSnowball;
-        SoundEffect snowballTouch;
-        Song soudtrack;
+        Song recupAllPortalSound;
+        Song coinSound;
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
-        private Texture2D _snowballTexture;
 
         public Snow(Game1 game) : base(game)
         {
@@ -95,7 +90,6 @@ namespace Projet
             _myGame.Window.Title = "Jeu du pingouin";
 
             // Etat de la partie
-            _gameOver = false;
             _manager = new GameManager();
             _myGame.nivActu = 2;
 
