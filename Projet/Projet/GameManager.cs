@@ -25,6 +25,8 @@ namespace Projet
         private SoundEffect _monstreSong;
         private SoundEffect _coinSong;
         private SoundEffect _portalSong;
+        private SoundEffect _throwSnowball;
+        private SoundEffect _hitSnowball;
 
         public Texture2D SnowballTexture
         {
@@ -86,7 +88,7 @@ namespace Projet
                 this._portalSong = value;
             }
         }
-        public Song ThrowSnowball
+        public SoundEffect ThrowSnowball
         {
             get
             {
@@ -98,7 +100,7 @@ namespace Projet
                 this._throwSnowball = value;
             }
         }
-        public Song HitSnowball
+        public SoundEffect HitSnowball
         {
             get
             {
@@ -189,7 +191,7 @@ namespace Projet
                     direction = -1;
                 }
                 pingouin.Animate("attack");
-                MediaPlayer.Play(_throwSnowball);
+                _throwSnowball.Play();
 
                 // Ajoute une boule de neige au tableau
                 Snowball[] newSnowballsArray = new Snowball[snowballs.Length + 1];
@@ -374,7 +376,7 @@ namespace Projet
                         snowballs[j] = null;
                         snowballNull++;
                         collide = true;
-                        MediaPlayer.Play(_hitSnowball);
+                        _hitSnowball.Play();
                         break;
                     }
                 }
@@ -400,7 +402,7 @@ namespace Projet
                         snowballs[j] = null;
                         snowballNull++;
                         collide = true;
-                        MediaPlayer.Play(_hitSnowball);
+                        _hitSnowball.Play();
                         break;
                     }
                 }

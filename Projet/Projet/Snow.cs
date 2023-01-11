@@ -73,8 +73,10 @@ namespace Projet
         Vector2[] _posiPartiPortail;
 
         // Audio
-        Song recupAllPortalSound;
-        Song coinSound;
+        private SoundEffect recupAllPortalSound;
+        private SoundEffect coinSound;
+        private Song soundtrack;
+
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
@@ -220,17 +222,17 @@ namespace Projet
             // Chargement des audio
             coinSound = Content.Load<SoundEffect>("Audio/coinSound");
             recupAllPortalSound = Content.Load<SoundEffect>("Audio/recupAllPortal");
-            snowballTouch = Content.Load<SoundEffect>("Audio/snowballTouch");
-            jeterSnowball = Content.Load<SoundEffect>("Audio/snowballLancer");
-            soudtrack = Content.Load<Song>("Audio/soundtrack2");
+            soundtrack = Content.Load<Song>("Audio/soundtrack2");
 
             // Chargement des audio
             _manager.CoinSong = Content.Load<SoundEffect>("Audio/coinSound");
             _manager.PortalSong = Content.Load<SoundEffect>("Audio/recupAllPortal");
             _manager.MonstreSong = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
             _manager.TrapSong = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
+            _manager.ThrowSnowball = Content.Load<SoundEffect>("Audio/snowballLancer");
+            _manager.HitSnowball = Content.Load<SoundEffect>("Audio/snowballTouch");
 
-            MediaPlayer.Play(soudtrack);
+            MediaPlayer.Play(soundtrack);
             base.LoadContent();
         }
 
