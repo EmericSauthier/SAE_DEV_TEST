@@ -124,7 +124,7 @@ namespace Projet
             // Tableau Traps
             traps = new List<Trap>();
             traps.Add(new Trap(new Vector2(2728, 897), "press"));
-            traps.Add(new Trap(new Vector2(480, 800), "press"));
+            traps.Add(new Trap(new Vector2(1618, 767), "press"));
 
             //Recompenses
             coins = new Recompenses[4];
@@ -147,7 +147,7 @@ namespace Projet
                 partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
             openingPortal = new Recompenses(new Vector2(6246, 740), "portal", 1);
-            closingPortal = new Recompenses(new Vector2(6246,740), "portal", 0);
+            closingPortal = new Recompenses(new Vector2(364,900), "portal", 0);
 
             _snowballs = new Snowball[0];
 
@@ -250,7 +250,7 @@ namespace Projet
                 }
                 if (_keyboardState.IsKeyDown(Keys.Insert))
                 {
-                    _pingouin.Position = new Vector2(6246, 740); //Le pingouin est tp a son point de départ
+                    _pingouin.Position = new Vector2(500, 900); //Le pingouin est tp a son point de départ
                 }
                 if (_keyboardState.IsKeyDown(Keys.V))
                 {
@@ -260,7 +260,7 @@ namespace Projet
                 {
                     _pingouin.Position = new Vector2(1150, 780); //Le pingouin est tp a la zone de fin
                 }
-                if (_keyboardState.IsKeyDown(Keys.Up))
+                if (_keyboardState.IsKeyDown(Keys.F))
                 {
                     _pingouin.Position += new Vector2(0, -5);
                 }

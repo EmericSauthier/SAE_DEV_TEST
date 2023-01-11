@@ -280,7 +280,7 @@ namespace Projet
                 {
                     _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
                 }
-                if (_keyboardState.IsKeyDown(Keys.Up))
+                if (_keyboardState.IsKeyDown(Keys.F))
                 {
                     _pingouin.Position += new Vector2(0, -5);
                 }
