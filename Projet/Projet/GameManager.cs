@@ -301,7 +301,6 @@ namespace Projet
 
         public void SnowballsUpdate(ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants, TiledMapTileLayer ground)
         {
-            System.Diagnostics.Debug.WriteLine("snowballs : " + snowballs.Length + "\nrampants : " + rampants.Count + "\nvolants : " + volants.Count);
             if (snowballs.Length > 0)
             {
                 SnowballWithMap(ref snowballs, ground);
