@@ -44,6 +44,7 @@ namespace Projet
         public bool goDesert;
         public bool pause;
         public bool reprendre;
+        public int nivActu;
 
         // Touche de déplacement et d'attaque
         public static Keys gauche;
@@ -168,7 +169,10 @@ namespace Projet
             else if (reprendre)
             {
                 pause = false;
-                _screenManager.LoadScreen(_desert, new FadeTransition(GraphicsDevice, Color.Black));
+                if (nivActu==2)
+                    _screenManager.LoadScreen(_snow, new FadeTransition(GraphicsDevice, Color.Black));
+                else
+                    _screenManager.LoadScreen(_desert, new FadeTransition(GraphicsDevice, Color.Black));
             }
             
             base.Update(gameTime);
