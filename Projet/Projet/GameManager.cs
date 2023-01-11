@@ -276,6 +276,8 @@ namespace Projet
                 {
                     if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleSprite))
                     {
+                        volants[i].HasTouchPlayer = true;
+
                         if ((volants[i].IsMovingRight && pingouin.IsMovingRight) || (!volants[i].IsMovingRight && pingouin.IsMovingRight))
                         {
                             pingouin.Position -= new Vector2(10, 0);

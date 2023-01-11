@@ -20,6 +20,7 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isDied;
         private bool hasSawPlayer;
+        private bool hasLostPlayer;
         private double chronoDep;
         private Vector2 positionDeBase;
         private bool hasTouchPlayer;
@@ -37,6 +38,8 @@ namespace Projet
             vitessePoursuite = this.Vitesse * 1.3;
             IsDied = false;
             this.ChronoDep = 0;
+            this.HasSawPlayer = false;
+            this.HasTouchPlayer = false;
 
             UpdateDimensions();
             UpdateBoxes();
@@ -256,14 +259,7 @@ namespace Projet
 
             if (HasTouchPlayer)
             {
-                if (HasSawPlayer)
-                {
-                    ReturnToBasePos();
-                }
-                else
-                {
-                    ReturnToBasePos();
-                }
+                ReturnToBasePos();
             }
             else
             {
@@ -276,7 +272,6 @@ namespace Projet
                     IdleFlying();
                 }
             }
-
         }
 
         public void IdleFlying()
@@ -320,9 +315,10 @@ namespace Projet
 
             if ((int)PositionDeBase.X < (int)this.Position.X + 20 && (int)PositionDeBase.X > (int)this.Position.X - 20)
             {
-                if ((int)PositionDeBase.Y < (int)this.Position.X + 20 && (int)PositionDeBase.Y > (int)this.Position.X - 20)
+                if ((int)PositionDeBase.Y < (int)this.Position.Y + 20 && (int)PositionDeBase.Y > (int)this.Position.Y - 20)
                 {
                     this.HasTouchPlayer = false;
+                    this.hasLostPlayer = false;
                 }
             }
         }
@@ -338,7 +334,7 @@ namespace Projet
             {
                 this.Sprite.Play("flyBottom");
             }
-            else
+            else 
             {
                 Sprite.Play("flyRight");
                 this.position.X += (float)vitessePoursuite;
