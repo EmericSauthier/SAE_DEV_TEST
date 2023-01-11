@@ -212,6 +212,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Font.spritefont
 
+#begin Font/FontRulesDesc.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/FontRulesDesc.spritefont
+
 #begin Life/heart.png
 /importer:TextureImporter
 /processor:TextureProcessor
