@@ -506,11 +506,6 @@ namespace Projet
                 }
             }
 
-            // Debug Position
-            _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _recoltePosition + new Vector2(0, 100), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _recoltePosition + new Vector2(0, 170), Color.White);
-
-
             _myGame.SpriteBatch.End();
         }
     }
