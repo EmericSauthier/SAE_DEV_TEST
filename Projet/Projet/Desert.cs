@@ -89,8 +89,6 @@ namespace Projet
         // Son
         SoundEffect recupAllPortalSound;
         SoundEffect coinSound;
-        SoundEffect monsterTouchPingouin;
-        SoundEffect trapTouchPingouin;
         Song soudtrack;
 
         // Tableau de boule de neige
@@ -240,8 +238,6 @@ namespace Projet
             // Audio
             coinSound = Content.Load<SoundEffect>("Audio/coinSound");
             recupAllPortalSound = Content.Load<SoundEffect>("Audio/recupAllPortal");
-            monsterTouchPingouin = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
-            trapTouchPingouin = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
             soudtrack = Content.Load<Song>("Audio/soundtrack3");
 
             // Chargement des audio
@@ -249,6 +245,8 @@ namespace Projet
             _manager.PortalSong = Content.Load<SoundEffect>("Audio/recupAllPortal");
             _manager.MonstreSong = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
             _manager.TrapSong = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
+            _manager.ThrowSnowball = Content.Load<SoundEffect>("Audio/snowballLancer");
+            _manager.HitSnowball = Content.Load<SoundEffect>("Audio/snowballTouch");
 
 
             MediaPlayer.Play(soudtrack);
@@ -508,7 +506,7 @@ namespace Projet
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (Chrono.chrono<2)
+            if (Chrono.chrono<1)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }
