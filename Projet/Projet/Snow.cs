@@ -56,6 +56,7 @@ namespace Projet
 
         // Recompense
         Recompenses []coins;
+        Vector2[] _posiCoins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
 
         // Life
@@ -132,12 +133,11 @@ namespace Projet
             traps.Add(new Trap(new Vector2(4300, 735), "press"));
 
             // Recompenses
-            coins = new Recompenses[4];
-            int x = 1150;
-            int y = 780;
-            for (int i=0; i <4; i++)
+            _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(1000, 1122)};
+            coins = new Recompenses[_posiCoins.Length];
+            for (int i=0; i <_posiCoins.Length; i++)
             {
-                coins[i] = new Recompenses(new Vector2(x+50*i, y), "piece", 0);
+                coins[i] = new Recompenses(_posiCoins[i], "piece", 0);
             }
 
             // Life
@@ -194,7 +194,7 @@ namespace Projet
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            for (int i =0; i<4; i++)
+            for (int i =0; i< _posiCoins.Length; i++)
             {
                 coins[i].LoadContent(spriteCoin);
             }
@@ -311,7 +311,7 @@ namespace Projet
                 }
 
                 // Recompense
-                for (int i =0; i<4; i++)
+                for (int i =0; i< _posiCoins.Length; i++)
                 {
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
@@ -382,20 +382,21 @@ namespace Projet
                     }
                 }
 
-                for (int i =0; i<4; i++)
+                for (int i = 0; i < _posiCoins.Length; i++)
                 {
                     if (coins[i].etat == 0)
                     {
-                        // Collision de la recompense avec le pingouin
+                        //Collision de la recompense avec le pingouin
                         if (Collision.IsCollidingRecompense(coins[i], _pingouin.HitBox))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
                                 double randomNb = new Random().NextDouble();
-                                if(randomNb > 0.5)
+                                if (randomNb > 0.5)
                                 {
                                     _pingouin.WalkVelocity *= 0.80;
-                                }else
+                                }
+                                else
                                 {
                                     _pingouin.WalkVelocity *= 1.20;
                                 }
@@ -411,6 +412,7 @@ namespace Projet
                         }
                     }
                 }
+
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
                 {
                     if (partiPortail[i].etat == 0)
@@ -484,7 +486,7 @@ namespace Projet
             }
 
             //Affichage des recompenses si elle n'as pas ete prise
-            for (int i = 0; i<4; i++)
+            for (int i = 0; i< _posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
@@ -512,7 +514,7 @@ namespace Projet
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
 
-            for (int i=0; i<4; i++)
+            for (int i=0; i<_posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
