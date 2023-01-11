@@ -15,6 +15,11 @@
       "isLooping": false,
       "frameDuration": 0.2
     },
+    "flyTop": {
+      "frames": [21,22],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
     "flyBottom": {
       "frames": [14,15],
       "isLooping": false,
