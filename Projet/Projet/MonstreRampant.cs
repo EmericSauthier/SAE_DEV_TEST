@@ -1,17 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled.Renderers;
+
 using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended;
-using MonoGame.Extended.ViewportAdapters;
-using MonoGame.Extended.TextureAtlases;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
 namespace Projet
@@ -235,8 +224,8 @@ namespace Projet
             {
                 game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(3, 3));
                 // DEBUG
-                game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
-                game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
+                //game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
+                //game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
             }
         }
 

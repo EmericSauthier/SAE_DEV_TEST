@@ -1,19 +1,19 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+
 using MonoGame.Extended;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
-using System;
-using System.Collections.Generic;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Screens;
 
 namespace Projet
 {
@@ -26,13 +26,11 @@ namespace Projet
         
         // Fenêtre
         public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
-        private GraphicsDeviceManager _graphics;
 
         // GameManager
         private GameManager _manager;
 
         // Gestion des entrées
-        private MouseState _mouseState;
         private KeyboardState _keyboardState;
 
         // Variables de map
@@ -89,7 +87,7 @@ namespace Projet
         public override void Initialize()
         {
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            _myGame.Window.Title = "Jeu du pingouin";
+            _myGame.Window.Title = "Man-chaud";
 
             // Etat de la partie
             _manager = new GameManager();
