@@ -28,7 +28,6 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
 
         // GameManager
-        private bool _gameOver;
         private GameManager _manager;
 
         // Gestion des entrées
@@ -75,12 +74,9 @@ namespace Projet
         // Audio
         Song recupAllPortalSound;
         Song coinSound;
-        Song jeterSnowball;
-        Song snowballTouch;
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
-        private Texture2D _snowballTexture;
 
         public Snow(Game1 game) : base(game)
         {
@@ -93,7 +89,6 @@ namespace Projet
             _myGame.Window.Title = "Jeu du pingouin";
 
             // Etat de la partie
-            _gameOver = false;
             _manager = new GameManager();
             _myGame.nivActu = 2;
 
@@ -224,8 +219,6 @@ namespace Projet
             // Chargement des audio
             coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
-            snowballTouch = Content.Load<Song>("Audio/snowballTouch");
-            jeterSnowball = Content.Load<Song>("Audio/snowballLancer");
 
             // Chargement des audio
             _manager.CoinSong = Content.Load<Song>("Audio/coinSound");

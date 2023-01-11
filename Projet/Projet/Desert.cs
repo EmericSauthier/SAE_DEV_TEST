@@ -246,6 +246,8 @@ namespace Projet
             _manager.PortalSong = Content.Load<Song>("Audio/recupAllPortal");
             _manager.MonstreSong = Content.Load<Song>("Audio/monsterTouchPingouin");
             _manager.TrapSong = Content.Load<Song>("Audio/trapTouchPingouin");
+            _manager.HitSnowball = Content.Load<Song>("Audio/snowballTouch");
+            _manager.ThrowSnowball = Content.Load<Song>("Audio/snowballLancer");
 
             base.LoadContent();
         }
