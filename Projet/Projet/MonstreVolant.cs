@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended;
+
 using MonoGame.Extended.Sprites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projet
 {
@@ -370,9 +365,9 @@ namespace Projet
             {
                 game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(2, 2));
                 // DEBUG
-                game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
-                game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
-                game.SpriteBatch.DrawRectangle(this.RectangleDetection, Color.DarkGreen);
+                //game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Green);
+                //game.SpriteBatch.DrawRectangle(this.RectangleKill, Color.DarkGreen);
+                //game.SpriteBatch.DrawRectangle(this.RectangleDetection, Color.DarkGreen);
             }
         }
         public void UpdateBoxes()

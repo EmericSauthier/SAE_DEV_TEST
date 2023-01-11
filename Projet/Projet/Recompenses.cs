@@ -1,18 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended;
-using MonoGame.Extended.ViewportAdapters;
-using MonoGame.Extended.TextureAtlases;
 
 namespace Projet
 {

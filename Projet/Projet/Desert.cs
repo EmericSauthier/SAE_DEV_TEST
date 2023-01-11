@@ -1,19 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+
 using MonoGame.Extended;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
-using System;
-using System.Collections.Generic;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Screens;
+
 
 namespace Projet
 {
@@ -89,8 +90,6 @@ namespace Projet
         // Son
         SoundEffect recupAllPortalSound;
         SoundEffect coinSound;
-        SoundEffect monsterTouchPingouin;
-        SoundEffect trapTouchPingouin;
         Song soudtrack;
 
         // Tableau de boule de neige
@@ -109,7 +108,7 @@ namespace Projet
         public override void Initialize()
         {
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            _myGame.Window.Title = "Jeu du pingouin";
+            _myGame.Window.Title = "Man-chaud";
 
             // Etat de la partie
             _gameOver = false;
@@ -240,8 +239,6 @@ namespace Projet
             // Audio
             coinSound = Content.Load<SoundEffect>("Audio/coinSound");
             recupAllPortalSound = Content.Load<SoundEffect>("Audio/recupAllPortal");
-            monsterTouchPingouin = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
-            trapTouchPingouin = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
             soudtrack = Content.Load<Song>("Audio/soundtrack3");
 
             // Chargement des audio
@@ -249,6 +246,8 @@ namespace Projet
             _manager.PortalSong = Content.Load<SoundEffect>("Audio/recupAllPortal");
             _manager.MonstreSong = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
             _manager.TrapSong = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
+            _manager.ThrowSnowball = Content.Load<SoundEffect>("Audio/snowballLancer");
+            _manager.HitSnowball = Content.Load<SoundEffect>("Audio/snowballTouch");
 
 
             MediaPlayer.Play(soudtrack);
@@ -508,7 +507,7 @@ namespace Projet
             {
                 _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
             }
-            if (Chrono.chrono<2)
+            if (Chrono.chrono<1)
             {
                 _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
             }

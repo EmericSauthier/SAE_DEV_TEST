@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended;
+
 using MonoGame.Extended.Sprites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projet
 {
@@ -183,7 +178,7 @@ namespace Projet
         public void Affiche(Game1 game)
         {
             game.SpriteBatch.Draw(this.Sprite, this.Position, 0, new Vector2(1, 1));
-            game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Orange);
+            //game.SpriteBatch.DrawRectangle(this.RectangleSprite, Color.Orange);
         }
     }
 }
