@@ -96,7 +96,10 @@ namespace Projet
                 //CONDITION RETOURNE PARTIE
                 else if (_mouseState.X >= positionMessageRejouer.X && _mouseState.Y >= positionMessageRejouer.Y && _mouseState.X <= positionMessageRejouer.X + messageRejouer.Length * 24 && _mouseState.Y <= positionMessageRejouer.Y + 24)
                 {
-                    _myGame.goSnow = true;
+                    if (_myGame.nivActu == 1)
+                        _myGame.goDesert = true;
+                    else if (_myGame.nivActu == 2)
+                        _myGame.goSnow = true;
                 }
             }
         }

@@ -64,7 +64,8 @@ namespace Projet
                 }
                 if (_mouseState.X >= positionMessageNivSuiv.X && _mouseState.Y >= positionMessageNivSuiv.Y && _mouseState.X <= positionMessageNivSuiv.X + messageNivSuiv.Length * 24 && _mouseState.Y <= positionMessageNivSuiv.Y + 24)
                 {
-                    _myGame.goDesert = true;
+                    if(_myGame.nivActu==1)
+                        _myGame.goDesert = true;
                 }
             }
             }

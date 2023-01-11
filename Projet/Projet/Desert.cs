@@ -112,6 +112,7 @@ namespace Projet
             // Etat de la partie
             _gameOver = false;
             _manager = new GameManager();
+            _myGame.nivActu = 1;
 
             // Camera
             scale = (float)0.5;
