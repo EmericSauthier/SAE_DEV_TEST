@@ -38,8 +38,6 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _groundLayer;
-        private TiledMapTileLayer _deadLayer;
 
         // JEU
         private Camera _camera;
@@ -51,7 +49,7 @@ namespace Projet
         // ENTITE
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
-        private Rectangle _hitBoxPingouin;
+
         // Fox
         MonstreRampant[] _monstresRampants;
         MonstreRampant _fox1;
@@ -92,7 +90,6 @@ namespace Projet
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
-        private Texture2D _snowballTexture;
 
         //
         List<MonstreRampant> monstresRampants;
@@ -241,9 +238,6 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-
-
-            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -308,7 +302,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _tiledMap, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, ref monstresRampants, ref monstresVolants, _tiledMap, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -366,43 +360,6 @@ namespace Projet
                     _heartsPositions[i] = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2);
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
-
-                // Collisions
-                _hitBoxPingouin = new Rectangle((int)_pingouin.Position.X - 25, (int)_pingouin.Position.Y - 15, (int)(_largeurPingouin), (int)(_hauteurPingouin));
-                // Collisions des traps avec le pingouin
-                for (int i = 0; i < traps.Count; i++)
-                {
-                    if (Collision.IsCollidingTrap(traps[i], _pingouin.HitBox))
-                    {
-                        _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                        MediaPlayer.Play(trapTouchPingouin);
-                    }
-                }
-                // Collision des rampants avec le pingouin
-                for (int i = 0; i < monstresRampants.Count; i++)
-                {
-                    if (!monstresRampants[i].IsDied)
-                    {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _pingouin.HitBox))
-                        {
-                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                            MediaPlayer.Play(monsterTouchPingouin);
-                        }
-                    }
-                }
-
-                // Collision des volants avec le pingouin
-                for (int i = 0; i < monstresVolants.Count; i++)
-                {
-                    if (!monstresVolants[i].IsDied)
-                    {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
-                        {
-                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                        }
-                    }
-                }
-
 
                 for (int i = 0; i < _posiCoins.Length; i++)
                 {
@@ -470,37 +427,43 @@ namespace Projet
             // Affichage du pingouin
             _pingouin.Affiche(_myGame);
 
+            // Affichage des boules de neiges
+            for (int i = 0; i < _snowballs.Length; i++)
+            {
+                _snowballs[i].Affiche(_myGame);
+            }
+
             // Affichage du chrono
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20, 0), Color.White);
 
-            //Affichage du nombre de parti de portaill recuperer
+            // Affichage du nombre de parti de portaill recuperer
             _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
 
-            //Life
+            // Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
             {
                 _myGame.SpriteBatch.Draw(_heartSprite, _heartsPositions[i], Color.White);
             }
 
-            //Fox
+            // Fox
             for (int i = 0; i < monstresRampants.Count; i++)
             {
                 monstresRampants[i].Affiche(_myGame);
             }
 
-            //Trap
+            // Trap
             for (int i = 0; i < traps.Count; i++)
             {
                 traps[i].Affiche(_myGame);
             }
 
-            //Eagle
+            // Eagle
             for (int i = 0; i < monstresVolants.Count; i++)
             {
                 monstresVolants[i].Affiche(_myGame);
             }
 
-            //Affichage des recompenses si elle n'as pas ete prise
+            // Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i < _posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
@@ -509,7 +472,7 @@ namespace Projet
                 }
             }
 
-            //Affichage des parti du portail
+            // Affichage des parti du portail
             for (int i=0; i < _posiPartiPortail.Length; i++)
             {
                 if (partiPortail[i].etat == 0)
