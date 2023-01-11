@@ -305,6 +305,7 @@ namespace Projet
             }
             else
             {
+                Sprite.Play("flyRight");
                 this.position.Y += (float)vitessePoursuite;
             }
 
@@ -327,7 +328,14 @@ namespace Projet
             }
             else if ((int)pingouin.Position.X < (int)this.Position.X + 20 && (int)pingouin.Position.X > (int)this.Position.X - 20)
             {
-                this.Sprite.Play("flyBottom");
+                if((int)pingouin.Position.Y < (int)this.Position.Y)
+                {
+                    this.Sprite.Play("flyTop");
+                }else
+                {
+                    this.Sprite.Play("flyBottom");
+                }
+
             }
             else 
             {
