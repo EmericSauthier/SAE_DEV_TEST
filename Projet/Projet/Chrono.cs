@@ -9,8 +9,6 @@ namespace Projet
     internal class Chrono
     {
         public static double chrono;
-        public static double chronoTrap;
-        public static double chronoDepEagle;
         public static double chronoInvincibility;
 
         public static String AffichageChrono(double chrono)

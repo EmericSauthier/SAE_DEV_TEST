@@ -11,6 +11,7 @@ using MonoGame.Extended.Screens.Transitions;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using MonoGame.Extended.TextureAtlases;
+using Microsoft.Xna.Framework.Media;
 
 namespace Projet
 {
@@ -23,6 +24,7 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isMovingRight;
         private bool isDied;
+        private Song deathSong;
 
         private double chronoDep;
         private int largeur, hauteur;
@@ -188,6 +190,19 @@ namespace Projet
             }
         }
 
+        public Song DeathSong
+        {
+            get
+            {
+                return this.deathSong;
+            }
+
+            set
+            {
+                this.deathSong = value;
+            }
+        }
+
         public void RightLeftMove(GameTime gameTime)
         {
             ChronoDep += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -207,9 +222,10 @@ namespace Projet
             else ChronoDep = 0;
         }
 
-        public void LoadContent(SpriteSheet sprite)
+        public void LoadContent(SpriteSheet sprite, Song song)
         {           
-            Sprite = new AnimatedSprite(sprite);
+            this.Sprite = new AnimatedSprite(sprite);
+            this.DeathSong = song;
         }
 
         public void Affiche(Game1 game)

@@ -38,6 +38,9 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
+        private TiledMapTileLayer _groundLayer;
+        private TiledMapTileLayer _deadLayer;
+        private Texture2D _fondDesert;
 
         // JEU
         private Camera _camera;
@@ -109,6 +112,7 @@ namespace Projet
             // Etat de la partie
             _gameOver = false;
             _manager = new GameManager();
+            _myGame.nivActu = 1;
 
             // Camera
             scale = (float)0.5;
@@ -182,17 +186,20 @@ namespace Projet
             _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 
+            _fondDesert = Content.Load<Texture2D>("Decors/fondGameDesert");
+
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
             // Chargement de la texture de la boule de neige
             _manager.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
-            // Chargement du sprite du renard
+            // Chargement du sprite/son du renard
+            Song foxDeath = Content.Load<Song>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].LoadContent(foxSprite);
+                monstresRampants[i].LoadContent(foxSprite, foxDeath);
             };
 
             // Chargement texture eagle
@@ -418,6 +425,11 @@ namespace Projet
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // Fond de map
+            _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.Draw(_fondDesert, new Vector2(0, 0), Color.White);
+            _myGame.SpriteBatch.End();
 
             // Application du zoom de la caméra
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());

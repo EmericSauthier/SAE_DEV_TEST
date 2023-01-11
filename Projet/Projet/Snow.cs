@@ -39,6 +39,7 @@ namespace Projet
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
         private TiledMapTileLayer _spikesLayer;
+        private Texture2D _fondSnow;
 
         // JEU
         private Camera _camera;
@@ -56,6 +57,7 @@ namespace Projet
 
         // Recompense
         Recompenses []coins;
+        Vector2[] _posiCoins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
 
         // Life
@@ -93,6 +95,7 @@ namespace Projet
             // Etat de la partie
             _gameOver = false;
             _manager = new GameManager();
+            _myGame.nivActu = 2;
 
             // Camera
             scale = (float)0.5;
@@ -120,10 +123,13 @@ namespace Projet
             monstresRampants.Add(new MonstreRampant(new Vector2(2430, 725), "fox", 0.4, 5));
             monstresRampants.Add(new MonstreRampant(new Vector2(3660, 500), "fox", 0.4, 5));
             monstresRampants.Add(new MonstreRampant(new Vector2(3690, 245), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(4580, 785), "fox", 0.5, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(5480, 595), "fox", 0.4, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(1000, 500), "eagle", 1, 12));
             monstresVolants.Add(new MonstreVolant(new Vector2(2500, 100), "eagle", 1, 12));
+            monstresVolants.Add(new MonstreVolant(new Vector2(5000, 500), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
             traps.Add(new Trap(new Vector2(2728, 897), "press"));
@@ -132,12 +138,12 @@ namespace Projet
             traps.Add(new Trap(new Vector2(4300, 735), "press"));
 
             // Recompenses
-            coins = new Recompenses[4];
-            int x = 1150;
-            int y = 780;
-            for (int i=0; i <4; i++)
+            _posiCoins = new Vector2[] { new Vector2(850, 900), new Vector2(1000, 850), new Vector2(1870, 650), new Vector2(3310, 400)
+                , new Vector2(3050, 200), new Vector2(4020, 190), new Vector2(3750, 850), new Vector2(3010, 930), new Vector2(5900, 650)};
+            coins = new Recompenses[_posiCoins.Length];
+            for (int i=0; i <_posiCoins.Length; i++)
             {
-                coins[i] = new Recompenses(new Vector2(x+50*i, y), "piece", 0);
+                coins[i] = new Recompenses(_posiCoins[i], "piece", 0);
             }
 
             // Life
@@ -165,6 +171,8 @@ namespace Projet
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _spikesLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Spikes");
 
+            _fondSnow = Content.Load<Texture2D>("Decors/fondGame1");
+
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
 
@@ -172,10 +180,11 @@ namespace Projet
             _manager.SnowballTexture = Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
+            Song foxDeath = Content.Load<Song>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].LoadContent(foxSprite);
+                monstresRampants[i].LoadContent(foxSprite, foxDeath);
             };
 
             // Chargement texture eagle
@@ -194,7 +203,7 @@ namespace Projet
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
-            for (int i =0; i<4; i++)
+            for (int i =0; i< _posiCoins.Length; i++)
             {
                 coins[i].LoadContent(spriteCoin);
             }
@@ -317,7 +326,7 @@ namespace Projet
                 }
 
                 // Recompense
-                for (int i =0; i<4; i++)
+                for (int i =0; i< _posiCoins.Length; i++)
                 {
                     coins[i].Sprite.Play("coin");
                     coins[i].Sprite.Update(deltaSeconds);
@@ -352,20 +361,58 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                for (int i =0; i<4; i++)
+                
+                // Collisions des traps avec le pingouin
+                for (int i = 0; i < traps.Count; i++)
+                {
+                    if (Collision.IsCollidingTrap(traps[i], _pingouin.HitBox))
+                    {
+                        _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                        MediaPlayer.Play(trapTouchPingouin);
+                    }
+                }
+
+                // Collision des rampants avec le pingouin
+                for (int i = 0; i < monstresRampants.Count; i++)
+                {
+                    if (!monstresRampants[i].IsDied)
+                    {
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _pingouin.HitBox))
+                        {
+                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                            MediaPlayer.Play(monsterTouchPingouin);
+                        }
+                    }
+                }
+
+                // Collision des volants avec le pingouin
+                for (int i = 0; i < monstresVolants.Count; i++)
+                {
+                    if (!monstresVolants[i].IsDied)
+                    {
+                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
+                        {
+                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                            MediaPlayer.Play(monsterTouchPingouin);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < _posiCoins.Length; i++)
                 {
                     if (coins[i].etat == 0)
                     {
-                        // Collision de la recompense avec le pingouin
+                        //Collision de la recompense avec le pingouin
                         if (Collision.IsCollidingRecompense(coins[i], _pingouin.HitBox))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
                                 double randomNb = new Random().NextDouble();
-                                if(randomNb > 0.5)
+                                if (randomNb > 0.6)
                                 {
                                     _pingouin.WalkVelocity *= 0.80;
-                                }else
+                                }
+                                else
                                 {
                                     _pingouin.WalkVelocity *= 1.20;
                                 }
@@ -381,6 +428,7 @@ namespace Projet
                         }
                     }
                 }
+
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
                 {
                     if (partiPortail[i].etat == 0)
@@ -408,6 +456,11 @@ namespace Projet
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // Fond de map
+            _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.Draw(_fondSnow, new Vector2(0,0), Color.White);
+            _myGame.SpriteBatch.End();
 
             // Application du zoom de la caméra
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
@@ -453,8 +506,8 @@ namespace Projet
                 monstresVolants[i].Affiche(_myGame);
             }
 
-            // Affichage des recompenses si elle n'as pas ete prise
-            for (int i = 0; i<4; i++)
+            //Affichage des recompenses si elle n'as pas ete prise
+            for (int i = 0; i< _posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
@@ -482,7 +535,7 @@ namespace Projet
             // Debug collision
             _myGame.SpriteBatch.DrawRectangle(_hitBoxPingouin, Color.Blue);
 
-            for (int i=0; i<4; i++)
+            for (int i=0; i<_posiCoins.Length; i++)
             {
                 if (coins[i].etat == 0)
                 {
