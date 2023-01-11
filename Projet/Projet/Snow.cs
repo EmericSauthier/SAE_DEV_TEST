@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Screens;
@@ -72,8 +73,10 @@ namespace Projet
         Vector2[] _posiPartiPortail;
 
         // Audio
-        Song recupAllPortalSound;
-        Song coinSound;
+        private SoundEffect recupAllPortalSound;
+        private SoundEffect coinSound;
+        private Song soundtrack;
+
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
@@ -175,7 +178,7 @@ namespace Projet
             _manager.SnowballTexture = Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
-            Song foxDeath = Content.Load<Song>("Audio/foxDeath");
+            SoundEffect foxDeath = Content.Load<SoundEffect>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             for (int i = 0; i < monstresRampants.Count; i++)
             {
@@ -217,23 +220,26 @@ namespace Projet
 
 
             // Chargement des audio
-            coinSound = Content.Load<Song>("Audio/coinSound");
-            recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
+            coinSound = Content.Load<SoundEffect>("Audio/coinSound");
+            recupAllPortalSound = Content.Load<SoundEffect>("Audio/recupAllPortal");
+            soundtrack = Content.Load<Song>("Audio/soundtrack2");
 
             // Chargement des audio
-            _manager.CoinSong = Content.Load<Song>("Audio/coinSound");
-            _manager.PortalSong = Content.Load<Song>("Audio/recupAllPortal");
-            _manager.MonstreSong = Content.Load<Song>("Audio/monsterTouchPingouin");
-            _manager.TrapSong = Content.Load<Song>("Audio/trapTouchPingouin");
-            _manager.HitSnowball = Content.Load<Song>("Audio/snowballTouch");
-            _manager.ThrowSnowball = Content.Load<Song>("Audio/snowballLancer");
+            _manager.CoinSong = Content.Load<SoundEffect>("Audio/coinSound");
+            _manager.PortalSong = Content.Load<SoundEffect>("Audio/recupAllPortal");
+            _manager.MonstreSong = Content.Load<SoundEffect>("Audio/monsterTouchPingouin");
+            _manager.TrapSong = Content.Load<SoundEffect>("Audio/trapTouchPingouin");
+            _manager.ThrowSnowball = Content.Load<SoundEffect>("Audio/snowballLancer");
+            _manager.HitSnowball = Content.Load<SoundEffect>("Audio/snowballTouch");
 
-
+            MediaPlayer.Play(soundtrack);
             base.LoadContent();
         }
+
         public override void Update(GameTime gameTime)
         {
 
+            
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -242,7 +248,7 @@ namespace Projet
             if (_partiRecolleter ==_posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
-                MediaPlayer.Play(recupAllPortalSound);
+                recupAllPortalSound.Play();
             }
 
             // CONDITION POUR ALLER SUR LE MENU DU JEU
@@ -375,13 +381,13 @@ namespace Projet
                                     _pingouin.WalkVelocity *= 1.20;
                                 }
                                 coins[i].etat = 1;
-                                MediaPlayer.Play(coinSound);
+                                coinSound.Play();
                             }
                             else
                             {
                                 coins[i].etat = 1;
                                 _pingouin.Heal(1);
-                                MediaPlayer.Play(coinSound);
+                                coinSound.Play();
                             }
                         }
                     }
