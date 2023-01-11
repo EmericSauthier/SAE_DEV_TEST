@@ -16,9 +16,12 @@ using System.Collections.Generic;
 
 namespace Projet
 {
-    internal class Niveau2 : GameScreen
+    internal class Desert : GameScreen
     {
         private Game1 _myGame;
+
+        //Activation du cheat
+        bool cheat;
 
         // Fenêtre
         public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
@@ -96,7 +99,7 @@ namespace Projet
         List<MonstreVolant> monstresVolants;
         List<Trap> traps;
 
-        public Niveau2(Game1 game) : base(game)
+        public Desert(Game1 game) : base(game)
         {
             _myGame = game;
         }
@@ -259,35 +262,43 @@ namespace Projet
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
+
+
                 //Code cheat
-                if (_keyboardState.IsKeyDown(Keys.C))
+                if (_keyboardState.IsKeyDown(Keys.F2))
+                    cheat = true;
+                if (cheat)
                 {
-                    _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
-                    for (int i=0; i<_posiPartiPortail.Length; i++)
+                    if (_keyboardState.IsKeyDown(Keys.C))
                     {
-                        partiPortail[i].etat = 0;
+                        _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                        for (int i = 0; i < _posiPartiPortail.Length; i++)
+                        {
+                            partiPortail[i].etat = 0;
+                        }
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.Insert))
+                    {
+                        _pingouin.Position = new Vector2(500, 802); //Le pingouin est tp a son point de départ
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.V))
+                    {
+                        _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.End))
+                    {
+                        _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.F))
+                    {
+                        _pingouin.Position += new Vector2(0, -5);
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.P))
+                    {
+                        _pingouin.WalkVelocity = 2;
                     }
                 }
-                if (_keyboardState.IsKeyDown(Keys.Insert))
-                {
-                    _pingouin.Position = new Vector2(500, 802); //Le pingouin est tp a son point de départ
-                }
-                if (_keyboardState.IsKeyDown(Keys.V))
-                {
-                    _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
-                }
-                if (_keyboardState.IsKeyDown(Keys.End))
-                {
-                    _pingouin.Position = new Vector2(3054, 322); //Le pingouin est tp a la zone de fin
-                }
-                if (_keyboardState.IsKeyDown(Keys.F))
-                {
-                    _pingouin.Position += new Vector2(0, -5);
-                }
-                if (_keyboardState.IsKeyDown(Keys.P))
-                {
-                    _pingouin.WalkVelocity = 2;
-                }
+                
                 
                 
                 // Map
@@ -450,7 +461,7 @@ namespace Projet
                 // Mort
                 if (_pingouin.CurrentLife <= 0)
                 {
-                    _myGame.clicDead = true;
+                    _myGame.goDead = true;
                 }
             }
         }
