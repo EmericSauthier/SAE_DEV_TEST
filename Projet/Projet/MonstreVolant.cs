@@ -243,8 +243,8 @@ namespace Projet
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("position x pingouin : " + (int)pingouin.Position.X);
-                System.Diagnostics.Debug.WriteLine("position x monstre : " + (int)this.Position.X);
+                //System.Diagnostics.Debug.WriteLine("position x pingouin : " + (int)pingouin.Position.X);
+                //System.Diagnostics.Debug.WriteLine("position x monstre : " + (int)this.Position.X);
 
                 if (this.position.X > pingouin.Position.X)
                 {
