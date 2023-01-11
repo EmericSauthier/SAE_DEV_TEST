@@ -75,8 +75,8 @@ namespace Projet
         // Audio
         Song recupAllPortalSound;
         Song coinSound;
-        Song monsterTouchPingouin;
-        Song trapTouchPingouin;
+        Song jeterSnowball;
+        Song snowballTouch;
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
@@ -224,8 +224,8 @@ namespace Projet
             // Chargement des audio
             coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
-            monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
-            trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
+            snowballTouch = Content.Load<Song>("Audio/snowballTouch");
+            jeterSnowball = Content.Load<Song>("Audio/snowballLancer");
 
             // Chargement des audio
             _manager.CoinSong = Content.Load<Song>("Audio/coinSound");
