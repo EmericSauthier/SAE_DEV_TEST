@@ -62,6 +62,10 @@ namespace Projet
                 {
                     _myGame.clicMenu = true;
                 }
+                if (_mouseState.X >= positionMessageNivSuiv.X && _mouseState.Y >= positionMessageNivSuiv.Y && _mouseState.X <= positionMessageNivSuiv.X + messageNivSuiv.Length * 24 && _mouseState.Y <= positionMessageNivSuiv.Y + 24)
+                {
+                    _myGame.goDesert = true;
+                }
             }
             }
 

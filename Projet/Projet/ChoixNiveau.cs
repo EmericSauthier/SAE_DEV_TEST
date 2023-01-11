@@ -66,15 +66,15 @@ namespace Projet
                 //si clic niveau 1
                 else if (_mouseState.X >= _positionNiv1.X && _mouseState.Y >= _positionNiv1.Y && _mouseState.X <= _positionNiv1.X + _niv1.Length * 24 && _mouseState.Y <= _positionNiv1.Y + 24)
                 {
-                    _myGame.clicNiveau1 = true;
+                    _myGame.goDesert = true;
                 }//si clic niveau 2
                 else if (_mouseState.X >= _positionNiv2.X && _mouseState.Y >= _positionNiv2.Y && _mouseState.X <= _positionNiv2.X + _niv2.Length * 24 && _mouseState.Y <= _positionNiv2.Y + 24)
                 {
-                    _myGame.clicNiveau2 = true;
+                    _myGame.goSnow = true;
                 }//si clic niveau 3 //A CHANGER DES QUE NIVEAU 3 EST PRES
                 else if (_mouseState.X >= _positionNiv3.X && _mouseState.Y >= _positionNiv3.Y && _mouseState.X <= _positionNiv3.X + _niv3.Length * 24 && _mouseState.Y <= _positionNiv3.Y + 24)
                 {
-                    _myGame.clicDead = true;
+                    _myGame.goDead = true;
                 }
 
 

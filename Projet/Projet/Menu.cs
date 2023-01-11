@@ -97,18 +97,17 @@ namespace Projet
             {
                 if (_mouseState.X >= positionQuitter.X && _mouseState.Y >= positionQuitter.Y && _mouseState.X <= positionQuitter.X + quitter.Length*24 && _mouseState.Y <= positionQuitter.Y + 24)
                 {
-                    _myGame.clicDead = true;
-                    _myGame.clicArret = true;
+                    _myGame.goStop = true;
                 }
                 //envoie à la scene des regles
                 else if (_mouseState.X >= positionRegle.X && _mouseState.Y >= positionRegle.Y && _mouseState.X <= positionRegle.X + regle.Length * 24 && _mouseState.Y <= positionRegle.Y + 24)
                 {
-                    _myGame.clicRegle = true;
+                    _myGame.goRules = true;
                 }
                 //envoie a la scene de jeu
                 else if (_mouseState.X >= positionJouer.X && _mouseState.Y >= positionJouer.Y && _mouseState.X <= positionJouer.X + jouer.Length * 24 && _mouseState.Y <= positionJouer.Y + 24)
                 {
-                    _myGame.clicNiveau1 = true;
+                    _myGame.goDesert = true;
                 }
                 //envoie a la scene de choix de niveau
                 else if (_mouseState.X >= positionNiv.X && _mouseState.Y >= positionNiv.Y && _mouseState.X <= positionNiv.X + niv.Length * 24 && _mouseState.Y <= positionNiv.Y + 24)

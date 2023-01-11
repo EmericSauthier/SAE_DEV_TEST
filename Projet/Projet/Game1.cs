@@ -30,18 +30,18 @@ namespace Projet
         private Menu _menu;
         private ChoixNiveau _choixNiveau;
         private Regle _regle;
-        private Niveau1 _niveau1;
-        private Niveau2 _niveau2;
+        private Snow _snow;
+        private Desert _desert;
         public static SpriteFont police; //police pour le texte
         
         //BOOLEEN POUR SAVOIR SI L'ON VA SUR UNE AUTRE SCENE
         public bool clicMenu;
-        public bool clicDead;
+        public bool goDead;
         public bool clicWin;
-        public bool clicArret;
-        public bool clicRegle;
-        public bool clicNiveau1;
-        public bool clicNiveau2;
+        public bool goStop;
+        public bool goRules;
+        public bool goSnow;
+        public bool goDesert;
         public bool pause;
         public bool reprendre;
 
@@ -99,8 +99,8 @@ namespace Projet
             _menu = new Menu(this);
             _choixNiveau = new ChoixNiveau(this);
             _regle = new Regle(this);
-            _niveau1 = new Niveau1(this);
-            _niveau2 = new Niveau2(this);
+            _snow = new Snow(this);
+            _desert = new Desert(this);
 
             //POLICE
             police = Content.Load<SpriteFont>("Font/Font");
@@ -134,41 +134,41 @@ namespace Projet
                 _screenManager.LoadScreen(_choixNiveau, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR METTRE LA PAGE GAME OVER
-            else if (clicDead)
+            else if (goDead)
             {
-                clicDead = false;
+                goDead = false;
                 _screenManager.LoadScreen(_gameOver, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR FERMER LE JEU
-            else if (clicArret)
+            else if (goStop)
             {
                 Exit();
             }
             // CONDITION POUR ALLER AUX REGLE DU JEU
-            else if (clicRegle)
+            else if (goRules)
             {
-                clicRegle = false;
+                goRules = false;
                 _screenManager.LoadScreen(_regle, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR LANCER LE NIVEAU 1
-            else if (clicNiveau1)
+            else if (goDesert)
             {
-                clicNiveau1 = false;
+                goDesert = false;
                 pause = false;
-                _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
+                _screenManager.LoadScreen(_desert, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR LANCER LE NIVEAU 2
-            else if (clicNiveau2)
+            else if (goSnow)
             {
-                clicNiveau2 = false;
+                goSnow = false;
                 pause = false;
-                _screenManager.LoadScreen(_niveau2, new FadeTransition(GraphicsDevice, Color.Black));
+                _screenManager.LoadScreen(_snow, new FadeTransition(GraphicsDevice, Color.Black));
             }
             // CONDITION POUR REPRENDRE LA PARTIE EN COURS (SI ELLE N'A PAS ETE TERMINER)
             else if (reprendre)
             {
                 pause = false;
-                _screenManager.LoadScreen(_niveau1, new FadeTransition(GraphicsDevice, Color.Black));
+                _screenManager.LoadScreen(_desert, new FadeTransition(GraphicsDevice, Color.Black));
             }
             
             base.Update(gameTime);
