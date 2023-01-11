@@ -235,6 +235,7 @@ namespace Projet
                         pingouin.Position += new Vector2(10, 0);
                     }
                     pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                    MediaPlayer.Play(_monstreSong);
                 }
             }
             rampants = newRampants;
@@ -262,6 +263,7 @@ namespace Projet
                             pingouin.Position += new Vector2(0, 10);
                         }
                         pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                        MediaPlayer.Play(_monstreSong);
                     }
                     else if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleDetection))
                     {
@@ -296,6 +298,7 @@ namespace Projet
                 MediaPlayer.Play(_trapSong);
             }
         }
+
         public void SnowballsUpdate(ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants, TiledMapTileLayer ground)
         {
             System.Diagnostics.Debug.WriteLine("snowballs : " + snowballs.Length + "\nrampants : " + rampants.Count + "\nvolants : " + volants.Count);
@@ -382,7 +385,6 @@ namespace Projet
             snowballs = UpdateTab(snowballs, snowballNull);
             volants = newVolants;
         }
-
         public Snowball[] UpdateTab(Snowball[] tab, int count)
         {
             Snowball[] newTab = new Snowball[tab.Length - count];
