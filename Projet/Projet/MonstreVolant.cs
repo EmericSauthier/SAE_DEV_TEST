@@ -227,7 +227,6 @@ namespace Projet
 
             if (!HasSawPlayer)
             {
-                //System.Diagnostics.Debug.WriteLine(time);
                 if (ChronoDep <= tempsArrivePosition)
                 {
                     Position += new Vector2((float)Vitesse, 0);
@@ -244,10 +243,17 @@ namespace Projet
             }
             else
             {
-                if(this.position.X > pingouin.Position.X)
+                //System.Diagnostics.Debug.WriteLine("position x pingouin : " + (int)pingouin.Position.X);
+                //System.Diagnostics.Debug.WriteLine("position x monstre : " + (int)this.Position.X);
+
+                if (this.position.X > pingouin.Position.X)
                 {
                     Sprite.Play("flyLeft");
                     this.position.X -= (float)vitessePoursuite;
+                }
+                else if((int)pingouin.Position.X < (int)this.Position.X + 20 && (int)pingouin.Position.X > (int)this.Position.X - 20)
+                {
+                    this.Sprite.Play("flyBottom");
                 }
                 else
                 {
@@ -255,7 +261,7 @@ namespace Projet
                     this.position.X += (float)vitessePoursuite;
                 }
 
-                if(this.position.Y > pingouin.Position.Y)
+                if (this.position.Y > pingouin.Position.Y)
                 {
                     this.position.Y -= (float)Vitesse;
                 }else

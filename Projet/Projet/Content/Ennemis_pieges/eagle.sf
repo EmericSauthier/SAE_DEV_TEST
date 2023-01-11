@@ -14,6 +14,11 @@
       "frames": [7,8,9,10,11,12,13],
       "isLooping": false,
       "frameDuration": 0.2
+    },
+    "flyBottom": {
+      "frames": [14,15],
+      "isLooping": false,
+      "frameDuration": 0.2
     }
   }
 }
