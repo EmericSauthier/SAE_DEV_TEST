@@ -23,25 +23,20 @@ namespace Projet
         private Game1 _myGame;
 
         //Activation du cheat
-        bool cheat;
+        private bool _cheat;
 
         // Fenêtre
         public const int LARGEUR_FENETRE = 1000, HAUTEUR_FENETRE = 800;
-        private GraphicsDeviceManager _graphics;
 
         // GameManager
-        private bool _gameOver;
         private GameManager _manager;
 
         // Gestion des entrées
-        private MouseState _mouseState;
         private KeyboardState _keyboardState;
 
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _groundLayer;
-        private TiledMapTileLayer _deadLayer;
         private Texture2D _fondDesert;
 
         // JEU
@@ -55,18 +50,9 @@ namespace Projet
         private Pingouin _pingouin;
         public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
 
-        // Fox
-        MonstreRampant[] _monstresRampants;
-        MonstreRampant _fox1;
-        public bool isFox1Died;
-        private Vector2[] _posiMonstreRampant;
-
-        // Piège
-        Trap _ceilingTrap1;
-
         // Recompense
-        Vector2[] _posiCoins;
-        Recompenses[] coins;
+        private Vector2[] _posiCoins;
+        private Recompenses[] _coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
 
         // Life
@@ -74,31 +60,31 @@ namespace Projet
         private Vector2[] _heartsPositions;
 
         // Debug rectangle
-        private Rectangle rFox;
-        private Rectangle rTrap;
-        private Rectangle rKillingFox;
-        private Rectangle rRecompense;
+        private Rectangle _rFox;
+        private Rectangle _rTrap;
+        private Rectangle _rKillingFox;
+        private Rectangle _rRecompense;
 
         // Portail
-        private int _partiRecolleter;
-        private Vector2 _recoltePosition;
-        Recompenses[] partiPortail;
-        Recompenses openingPortal;
-        Recompenses closingPortal;
-        Vector2[] _posiPartiPortail;
+        private int _partiesRecoletees;
+        private Vector2 _recolteesPosition;
+        private Recompenses[] _partiesPortail;
+        private Recompenses _openingPortal;
+        private Recompenses _closingPortal;
+        private Vector2[] _posiPartiPortail;
 
         // Son
-        SoundEffect recupAllPortalSound;
-        SoundEffect coinSound;
-        Song soudtrack;
+        private SoundEffect recupAllPortalSound;
+        private SoundEffect coinSound;
+        private Song soudtrack;
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
 
         //
-        List<MonstreRampant> monstresRampants;
-        List<MonstreVolant> monstresVolants;
-        List<Trap> traps;
+        private List<MonstreRampant> _monstresRampants;
+        private List<MonstreVolant> _monstresVolants;
+        private List<Trap> _traps;
 
         public Desert(Game1 game) : base(game)
         {
@@ -111,7 +97,6 @@ namespace Projet
             _myGame.Window.Title = "Man-chaud";
 
             // Etat de la partie
-            _gameOver = false;
             _manager = new GameManager();
             _myGame.nivActu = 1;
 
@@ -137,30 +122,30 @@ namespace Projet
             }
 
             // Tableau monstre rampant
-            monstresRampants = new List<MonstreRampant>();
-            monstresRampants.Add(new MonstreRampant(new Vector2(1558, 340), "fox", 0.5, 6));
-            monstresRampants.Add(new MonstreRampant(new Vector2(2619, 432), "fox", 0.4, 5));
-            monstresRampants.Add(new MonstreRampant(new Vector2(1500, 1134), "fox", 0.6, 5));
+            _monstresRampants = new List<MonstreRampant>();
+            _monstresRampants.Add(new MonstreRampant(new Vector2(1558, 340), "fox", 0.5, 6));
+            _monstresRampants.Add(new MonstreRampant(new Vector2(2619, 432), "fox", 0.4, 5));
+            _monstresRampants.Add(new MonstreRampant(new Vector2(1500, 1134), "fox", 0.6, 5));
             // Tableau monstre volant
-            monstresVolants = new List<MonstreVolant>();
-            monstresVolants.Add(new MonstreVolant(new Vector2(632, 67), "eagle", 1, 12));
-            monstresVolants.Add(new MonstreVolant(new Vector2(2504, 292), "eagle", 1, 12));
+            _monstresVolants = new List<MonstreVolant>();
+            _monstresVolants.Add(new MonstreVolant(new Vector2(632, 67), "eagle", 1, 12));
+            _monstresVolants.Add(new MonstreVolant(new Vector2(2504, 292), "eagle", 1, 12));
             // Tableau Traps
-            traps = new List<Trap>();
-            traps.Add(new Trap(new Vector2(1296, 1023), "press"));
-            traps.Add(new Trap(new Vector2(1778, 1148), "press"));
+            _traps = new List<Trap>();
+            _traps.Add(new Trap(new Vector2(1296, 1023), "press"));
+            _traps.Add(new Trap(new Vector2(1778, 1148), "press"));
 
             // Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
                 new Vector2(1086 + 50, 1122), new Vector2(2440, 642), new Vector2(2390, 642), new Vector2(1646, 642),
                 new Vector2(1696, 642), new Vector2(212, 92), new Vector2(262, 92), new Vector2(172, 92), new Vector2(312, 92),
                 new Vector2(721, 250), new Vector2(771, 250), new Vector2(821, 250) };
-            coins = new Recompenses[_posiCoins.Length];
+            _coins = new Recompenses[_posiCoins.Length];
             int x = 986;
             int y = 1122;
             for (int i = 0; i < _posiCoins.Length; i++)
             {
-                coins[i] = new Recompenses(_posiCoins[i], "piece", 0);
+                _coins[i] = new Recompenses(_posiCoins[i], "piece", 0);
             }
 
             // Life
@@ -168,14 +153,14 @@ namespace Projet
 
             // Portail
             _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780, 99), new Vector2(2430, 292) };
-            _partiRecolleter = 0;
-            partiPortail = new Recompenses[_posiPartiPortail.Length];
+            _partiesRecoletees = 0;
+            _partiesPortail = new Recompenses[_posiPartiPortail.Length];
             for (int i = 0; i < _posiPartiPortail.Length; i++)
             {
-                partiPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
+                _partiesPortail[i] = new Recompenses(_posiPartiPortail[i], "portal", 0);
             }
-            openingPortal = new Recompenses(new Vector2(3054, 292), "portal", 1);
-            closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
+            _openingPortal = new Recompenses(new Vector2(3054, 292), "portal", 1);
+            _closingPortal = new Recompenses(new Vector2(400, 770), "portal", 0);
 
             _snowballs = new Snowball[0];
 
@@ -198,30 +183,30 @@ namespace Projet
             // Chargement du sprite/son du renard
             SoundEffect foxDeath = Content.Load<SoundEffect>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
-            for (int i = 0; i < monstresRampants.Count; i++)
+            for (int i = 0; i < _monstresRampants.Count; i++)
             {
-                monstresRampants[i].LoadContent(foxSprite, foxDeath);
+                _monstresRampants[i].LoadContent(foxSprite, foxDeath);
             };
 
             // Chargement texture eagle
             SpriteSheet eagleSprite = Content.Load<SpriteSheet>("Ennemis_pieges/eagle.sf", new JsonContentLoader());
-            for (int i = 0; i < monstresVolants.Count; i++)
+            for (int i = 0; i < _monstresVolants.Count; i++)
             {
-                monstresVolants[i].LoadContent(eagleSprite);
+                _monstresVolants[i].LoadContent(eagleSprite);
             }
 
             // Chargement du sprite du piège
             SpriteSheet ceilingTrapSprite = Content.Load<SpriteSheet>("Ennemis_pieges/ceilingTrap.sf", new JsonContentLoader());
-            for (int i = 0; i < traps.Count; i++)
+            for (int i = 0; i < _traps.Count; i++)
             {
-                traps[i].LoadContent(ceilingTrapSprite);
+                _traps[i].LoadContent(ceilingTrapSprite);
             }
 
             // Chargement du sprite de la recompense
             SpriteSheet spriteCoin = Content.Load<SpriteSheet>("Decors/spritCoin.sf", new JsonContentLoader());
             for (int i = 0; i < _posiCoins.Length; i++)
             {
-                coins[i].LoadContent(spriteCoin);
+                _coins[i].LoadContent(spriteCoin);
             }
 
             // Chargement de la texture des coeurs
@@ -231,10 +216,10 @@ namespace Projet
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             for (int i = 0; i < _posiPartiPortail.Length; i++)
             {
-                partiPortail[i].LoadContent(spritePortal);
+                _partiesPortail[i].LoadContent(spritePortal);
             }
-            openingPortal.LoadContent(spritePortal);
-            closingPortal.LoadContent(spritePortal);
+            _openingPortal.LoadContent(spritePortal);
+            _closingPortal.LoadContent(spritePortal);
 
             // Audio
             coinSound = Content.Load<SoundEffect>("Audio/coinSound");
@@ -260,9 +245,9 @@ namespace Projet
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
             // CONDITION POUR AFFICHER LE PORTAIL DE SORTIE
-            if (_partiRecolleter == _posiPartiPortail.Length && openingPortal.etat==1)
+            if (_partiesRecoletees == _posiPartiPortail.Length && _openingPortal.etat==1)
             {
-                openingPortal.etat = 0;
+                _openingPortal.etat = 0;
                 recupAllPortalSound.Play();
             }
 
@@ -275,15 +260,15 @@ namespace Projet
             {
                 // Code cheat
                 if (_keyboardState.IsKeyDown(Keys.F2))
-                    cheat = true;
-                if (cheat)
+                    _cheat = true;
+                if (_cheat)
                 {
                     if (_keyboardState.IsKeyDown(Keys.C))
                     {
-                        _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                        _partiesRecoletees = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
                         for (int i = 0; i < _posiPartiPortail.Length; i++)
                         {
-                            partiPortail[i].etat = 0;
+                            _partiesPortail[i].etat = 0;
                         }
                     }
                     if (_keyboardState.IsKeyDown(Keys.Insert))
@@ -307,8 +292,7 @@ namespace Projet
                         _pingouin.WalkVelocity = 2;
                     }
                 }
-                
-                
+
                 
                 // Map
                 _tiledMapRenderer.Update(gameTime);
@@ -319,7 +303,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, ref monstresRampants, ref monstresVolants, _tiledMap, deltaSeconds, null, traps);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, ref _monstresRampants, ref _monstresVolants, _tiledMap, deltaSeconds, null, _traps);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -327,48 +311,48 @@ namespace Projet
 
                 // Ennemis
                 // Rampants
-                for (int i = 0; i < monstresRampants.Count; i++)
+                for (int i = 0; i < _monstresRampants.Count; i++)
                 {
-                    monstresRampants[i].RightLeftMove(gameTime);
-                    monstresRampants[i].Sprite.Update(deltaSeconds);
-                    monstresRampants[i].UpdateBoxes();
+                    _monstresRampants[i].RightLeftMove(gameTime);
+                    _monstresRampants[i].Sprite.Update(deltaSeconds);
+                    _monstresRampants[i].UpdateBoxes();
                 }
 
                 // Volants
-                for (int i = 0; i < monstresVolants.Count; i++)
+                for (int i = 0; i < _monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].Move(gameTime, _pingouin);
-                    monstresVolants[i].Sprite.Update(deltaSeconds);
-                    monstresVolants[i].UpdateBoxes();
+                    _monstresVolants[i].Move(gameTime, _pingouin);
+                    _monstresVolants[i].Sprite.Update(deltaSeconds);
+                    _monstresVolants[i].UpdateBoxes();
                 }
 
                 // Traps
-                for (int i = 0; i < traps.Count; i++)
+                for (int i = 0; i < _traps.Count; i++)
                 {
-                    traps[i].PressActivation(gameTime);
-                    traps[i].Sprite.Update(deltaSeconds);
-                    traps[i].UpdateBoxes();
+                    _traps[i].PressActivation(gameTime);
+                    _traps[i].Sprite.Update(deltaSeconds);
+                    _traps[i].UpdateBoxes();
                 }
 
                 // Recompense
                 for (int i = 0; i < _posiCoins.Length; i++)
                 {
-                    coins[i].Sprite.Play("coin");
-                    coins[i].Sprite.Update(deltaSeconds);
+                    _coins[i].Sprite.Play("coin");
+                    _coins[i].Sprite.Update(deltaSeconds);
                 }
 
                 // Compteur morceau de portail recolleter
-                _recoltePosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2+50);
+                _recolteesPosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2+50);
 
                 // Portail
-                openingPortal.Sprite.Play("openingPortal");
-                closingPortal.Sprite.Play("closingPortal");
-                openingPortal.Sprite.Update(deltaSeconds);
-                closingPortal.Sprite.Update(deltaSeconds);
+                _openingPortal.Sprite.Play("openingPortal");
+                _closingPortal.Sprite.Play("closingPortal");
+                _openingPortal.Sprite.Update(deltaSeconds);
+                _closingPortal.Sprite.Update(deltaSeconds);
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
                 {
-                    partiPortail[i].Sprite.Play("portal");
-                    partiPortail[i].Sprite.Update(deltaSeconds);
+                    _partiesPortail[i].Sprite.Play("portal");
+                    _partiesPortail[i].Sprite.Update(deltaSeconds);
                 }
 
                 // Lifes
@@ -380,10 +364,10 @@ namespace Projet
 
                 for (int i = 0; i < _posiCoins.Length; i++)
                 {
-                    if (coins[i].etat == 0)
+                    if (_coins[i].etat == 0)
                     {
                         //Collision de la recompense avec le pingouin
-                        if (Collision.IsCollidingRecompense(coins[i], _pingouin.HitBox))
+                        if (Collision.IsCollidingRecompense(_coins[i], _pingouin.HitBox))
                         {
                             if (_pingouin.CurrentLife == _pingouin.MaxLife)
                             {
@@ -396,12 +380,12 @@ namespace Projet
                                 {
                                     _pingouin.WalkVelocity *= 1.20;
                                 }
-                                coins[i].etat = 1;
+                                _coins[i].etat = 1;
                                 coinSound.Play();
                             }
                             else
                             {
-                                coins[i].etat = 1;
+                                _coins[i].etat = 1;
                                 _pingouin.Heal(1);
                                 coinSound.Play();
                             }
@@ -410,21 +394,21 @@ namespace Projet
                 }
                 for (int i = 0; i < _posiPartiPortail.Length; i++)
                 {
-                    if (partiPortail[i].etat == 0)
+                    if (_partiesPortail[i].etat == 0)
                     {
                         //Collision des moreau de portail avec le pingouin
-                        if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
+                        if (Collision.IsCollidingRecompense(_partiesPortail[i], _pingouin.HitBox))
                         {
-                            _partiRecolleter += 1;
-                            partiPortail[i].etat = 1;
+                            _partiesRecoletees += 1;
+                            _partiesPortail[i].etat = 1;
                         }
                     }
                 }
                 //Collision avec le portail de changement de niveau
-                if (openingPortal.etat == 0)
+                if (_openingPortal.etat == 0)
                 {
                     //Collision des moreau de portail avec le pingouin
-                    if (Collision.IsCollidingRecompense(openingPortal, _pingouin.HitBox))
+                    if (Collision.IsCollidingRecompense(_openingPortal, _pingouin.HitBox))
                     {
                         _myGame.clicWin = true;
                     }
@@ -459,7 +443,7 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"Chrono : {Chrono.AffichageChrono(Chrono.chrono)}", _positionChrono - new Vector2(20, 0), Color.White);
 
             // Affichage du nombre de parti de portaill recuperer
-            _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiRecolleter}" + $"/" + $"{_posiPartiPortail.Length}", _recoltePosition, Color.White);
+            _myGame.SpriteBatch.DrawString(Game1.police, $"{_partiesRecoletees}" + $"/" + $"{_posiPartiPortail.Length}", _recolteesPosition, Color.White);
 
             // Life
             for (int i = 0; i < _pingouin.CurrentLife; i++)
@@ -468,64 +452,64 @@ namespace Projet
             }
 
             // Fox
-            for (int i = 0; i < monstresRampants.Count; i++)
+            for (int i = 0; i < _monstresRampants.Count; i++)
             {
-                monstresRampants[i].Affiche(_myGame);
+                _monstresRampants[i].Affiche(_myGame);
             }
 
             // Trap
-            for (int i = 0; i < traps.Count; i++)
+            for (int i = 0; i < _traps.Count; i++)
             {
-                traps[i].Affiche(_myGame);
+                _traps[i].Affiche(_myGame);
             }
 
             // Eagle
-            for (int i = 0; i < monstresVolants.Count; i++)
+            for (int i = 0; i < _monstresVolants.Count; i++)
             {
-                monstresVolants[i].Affiche(_myGame);
+                _monstresVolants[i].Affiche(_myGame);
             }
 
             // Affichage des recompenses si elle n'as pas ete prise
             for (int i = 0; i < _posiCoins.Length; i++)
             {
-                if (coins[i].etat == 0)
+                if (_coins[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.Draw(coins[i].Sprite, coins[i].Position, 0, new Vector2((float)0.15));
+                    _myGame.SpriteBatch.Draw(_coins[i].Sprite, _coins[i].Position, 0, new Vector2((float)0.15));
                 }
             }
 
             // Affichage des parti du portail
             for (int i=0; i < _posiPartiPortail.Length; i++)
             {
-                if (partiPortail[i].etat == 0)
+                if (_partiesPortail[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.Draw(partiPortail[i].Sprite, partiPortail[i].Position, 0, new Vector2((float)0.35));
+                    _myGame.SpriteBatch.Draw(_partiesPortail[i].Sprite, _partiesPortail[i].Position, 0, new Vector2((float)0.35));
                 }
             }
             
-            if (openingPortal.etat == 0)
+            if (_openingPortal.etat == 0)
             {
-                _myGame.SpriteBatch.Draw(openingPortal.Sprite, openingPortal.Position, 0, new Vector2(2));
+                _myGame.SpriteBatch.Draw(_openingPortal.Sprite, _openingPortal.Position, 0, new Vector2(2));
             }
             if (Chrono.chrono<1)
             {
-                _myGame.SpriteBatch.Draw(closingPortal.Sprite, closingPortal.Position, 0, new Vector2(2));
+                _myGame.SpriteBatch.Draw(_closingPortal.Sprite, _closingPortal.Position, 0, new Vector2(2));
             }
 
             // Debug collision
-            _myGame.SpriteBatch.DrawRectangle(rTrap, Color.Orange);
+            _myGame.SpriteBatch.DrawRectangle(_rTrap, Color.Orange);
             for (int i = 0; i < _posiCoins.Length; i++)
             {
-                if (coins[i].etat == 0)
+                if (_coins[i].etat == 0)
                 {
-                    _myGame.SpriteBatch.DrawRectangle(rRecompense, Color.YellowGreen);
+                    _myGame.SpriteBatch.DrawRectangle(_rRecompense, Color.YellowGreen);
                 }
             }
 
             if (!isFox1Died)
             {
-                _myGame.SpriteBatch.DrawRectangle(rFox, Color.Red);
-                _myGame.SpriteBatch.DrawRectangle(rKillingFox, Color.DarkOrange);
+                _myGame.SpriteBatch.DrawRectangle(_rFox, Color.Red);
+                _myGame.SpriteBatch.DrawRectangle(_rKillingFox, Color.DarkOrange);
             }
 
             _myGame.SpriteBatch.End();

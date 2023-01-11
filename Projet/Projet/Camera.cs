@@ -51,48 +51,8 @@ namespace Projet
 
         public void Update(GameTime gameTime, Pingouin pingouin)
         {
-            //MoveCamera(gameTime);
             CameraPosition = new Vector2(pingouin.Position.X, pingouin.Position.Y);
             OrthographicCamera.LookAt(CameraPosition);
         }
-
-        private Vector2 GetMovementDirection()
-        {
-            var movementDirection = Vector2.Zero;
-            var state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Down))
-            {
-                movementDirection += Vector2.UnitY;
-            }
-            if (state.IsKeyDown(Keys.Up))
-            {
-                movementDirection -= Vector2.UnitY;
-            }
-            if (state.IsKeyDown(Keys.Left))
-            {
-                movementDirection -= Vector2.UnitX;
-            }
-            if (state.IsKeyDown(Keys.Right))
-            {
-                movementDirection += Vector2.UnitX;
-            }
-
-            // Can't normalize the zero vector so test for it before normalizing
-            if (movementDirection != Vector2.Zero)
-            {
-                movementDirection.Normalize();
-            }
-
-            return movementDirection;
-        }
-
-        private void MoveCamera(GameTime gameTime)
-        {
-            var speed = 1;
-            var seconds = gameTime.GetElapsedSeconds();
-            var movementDirection = GetMovementDirection();
-            _cameraPosition += speed * movementDirection * seconds;
-        }
-
     }
 }
