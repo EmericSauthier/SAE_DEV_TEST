@@ -308,25 +308,25 @@ namespace Projet
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
             //game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 2);
 
-            foreach (Point point in this.CheckBottom())
-            {
-                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Green, 5);
-            }
+            //foreach (Point point in this.CheckBottom())
+            //{
+            //    game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Green, 5);
+            //}
 
-            foreach (Point point in this.CheckTop())
-            {
-                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Orange, 5);
-            }
+            //foreach (Point point in this.CheckTop())
+            //{
+            //    game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Orange, 5);
+            //}
 
-            foreach (Point point in this.CheckLeft())
-            {
-                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Blue, 5);
-            }
+            //foreach (Point point in this.CheckLeft())
+            //{
+            //    game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Blue, 5);
+            //}
 
-            foreach (Point point in this.CheckRight())
-            {
-                game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Red, 5);
-            }
+            //foreach (Point point in this.CheckRight())
+            //{
+            //    game.SpriteBatch.DrawPoint(point.X, point.Y, Color.Red, 5);
+            //}
         }
         public void Animate(String animation)
         {
