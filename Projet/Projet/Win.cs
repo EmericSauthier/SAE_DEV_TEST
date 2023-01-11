@@ -39,9 +39,9 @@ namespace Projet
             messageGagner = "Niveau completer !";
             messageMenu = "Menu";
             messageNivSuiv = "Niveau suivant -->";
-            positionMessageGagner = new Vector2(50, 50);
-            positionMessageMenu = new Vector2(50, 350);
-            positionMessageNivSuiv = new Vector2(250, 350);
+            positionMessageGagner = new Vector2(Game1.LARGEUR_FENETRE / 2-messageGagner.Length*12, Game1.HAUTEUR_FENETRE / 3);
+            positionMessageMenu = new Vector2(50, positionMessageGagner.Y+100);
+            positionMessageNivSuiv = new Vector2(250, positionMessageGagner.Y+100);
             base.Initialize();
         }
         public override void LoadContent()
