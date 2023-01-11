@@ -29,6 +29,7 @@ namespace Projet
         public Keys _attaquer;
 
         private float _timer;
+        private float _timerSpike;
         private Texture2D _snowballTexture;
 
         public Texture2D SnowballTexture
@@ -47,10 +48,14 @@ namespace Projet
         public GameManager()
         {
             _timer = 0;
+            _timerSpike = 0;
         }
 
-        public void Update(Game1 game, KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground, TiledMapTileLayer dead, float deltaTime)
+        public void Update(Game1 game, KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMap map, float deltaTime, TiledMapTileLayer spikes = null)
         {
+            TiledMapTileLayer ground = map.GetLayer<TiledMapTileLayer>("Ground");
+            TiledMapTileLayer dead = map.GetLayer<TiledMapTileLayer>("DeadZone");
+
             if (pingouin.CurrentLife <= 0 || Collision.MapCollision(pingouin.CheckBottom(), dead))
             {
                 game.clicDead = true;
@@ -58,9 +63,15 @@ namespace Projet
             else
             {
                 _timer += deltaTime;
+                _timerSpike += deltaTime;
                 InputsManager(keyboardState, pingouin, ref snowballs, ground);
                 SnowballsUpdate(ref snowballs, ground);
                 pingouin.Update(deltaTime, ground);
+                if (spikes != null && Collision.MapCollision(new Point((int)pingouin.Position.X, (int)(pingouin.Position.Y + 50 * pingouin.Scale)), spikes) && _timerSpike >= 2)
+                {
+                    pingouin.CurrentLife -= 1;
+                    _timerSpike = 0;
+                }
             }
         }
         public void InputsManager(KeyboardState keyboardState, Pingouin pingouin, ref Snowball[] snowballs, TiledMapTileLayer ground)

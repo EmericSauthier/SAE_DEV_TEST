@@ -35,10 +35,9 @@ namespace Projet
         // Variables de map
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private TiledMapTileLayer _groundLayer;
-        private TiledMapTileLayer _deadLayer;
+        private TiledMapTileLayer _spikesLayer;
 
-        //JEU
+        // JEU
         private Camera _camera;
         public static float scale;
 
@@ -50,10 +49,9 @@ namespace Projet
         List<MonstreVolant> monstresVolants;
         List<Trap> traps;
         private Pingouin _pingouin;
-        public int _largeurPingouin = 50, _hauteurPingouin = 40; // à déplacer ?
         private Rectangle _hitBoxPingouin;
 
-        //Recompense
+        // Recompense
         Recompenses []coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
 
@@ -69,7 +67,7 @@ namespace Projet
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
 
-        //Audio
+        // Audio
         Song recupAllPortalSound;
         Song coinSound;
         Song monsterTouchPingouin;
@@ -126,7 +124,7 @@ namespace Projet
             traps.Add(new Trap(new Vector2(2728, 897), "press"));
             traps.Add(new Trap(new Vector2(1618, 767), "press"));
 
-            //Recompenses
+            // Recompenses
             coins = new Recompenses[4];
             int x = 1150;
             int y = 780;
@@ -138,7 +136,7 @@ namespace Projet
             // Life
             _heartsPositions = new Vector2[3];
 
-            //Portail
+            // Portail
             _posiPartiPortail = new Vector2[] { new Vector2(1070, 642), new Vector2(2801, 300) };
             _partiRecolleter = 0;
             partiPortail = new Recompenses[_posiPartiPortail.Length];
@@ -158,8 +156,7 @@ namespace Projet
             // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _groundLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
-            _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
+            _spikesLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Spikes");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
@@ -198,7 +195,7 @@ namespace Projet
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
-            //Chargement du sprite du portail
+            // Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             for (int i=0; i < _posiPartiPortail.Length; i++)
             {
@@ -208,7 +205,7 @@ namespace Projet
             closingPortal.LoadContent(spritePortal);
 
 
-            //Chargement des audio
+            // Chargement des audio
             coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
             monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
@@ -225,24 +222,24 @@ namespace Projet
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //CONDITION POUR GAGNER
+            // CONDITION POUR GAGNER
             if (_partiRecolleter ==_posiPartiPortail.Length)
             {
                 openingPortal.etat = 0;
                 MediaPlayer.Play(recupAllPortalSound);
             }
 
-            //CONDITION POUR ALLER SUR LE MENU DU JEU
+            // CONDITION POUR ALLER SUR LE MENU DU JEU
             if (_keyboardState.IsKeyDown(Keys.Tab))
             {
                 _myGame.pause = !_myGame.pause;
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
-                //Code cheat
+                // Code cheat
                 if (_keyboardState.IsKeyDown(Keys.C))
                 {
-                    _partiRecolleter = _posiPartiPortail.Length; //L'entiereté des parti de portail est récolleter
+                    _partiRecolleter = _posiPartiPortail.Length; // L'entiereté des parti de portail est récolleter
                     for (int i = 0; i < _posiPartiPortail.Length; i++)
                     {
                         partiPortail[i].etat = 0;
@@ -250,15 +247,15 @@ namespace Projet
                 }
                 if (_keyboardState.IsKeyDown(Keys.Insert))
                 {
-                    _pingouin.Position = new Vector2(500, 900); //Le pingouin est tp a son point de départ
+                    _pingouin.Position = new Vector2(500, 900); // Le pingouin est tp a son point de départ
                 }
                 if (_keyboardState.IsKeyDown(Keys.V))
                 {
-                    _pingouin.CurrentLife = 3;//Le pingouin récupere toute sa vie
+                    _pingouin.CurrentLife = 3;// Le pingouin récupere toute sa vie
                 }
                 if (_keyboardState.IsKeyDown(Keys.End))
                 {
-                    _pingouin.Position = new Vector2(1150, 780); //Le pingouin est tp a la zone de fin
+                    _pingouin.Position = new Vector2(1150, 780); // Le pingouin est tp a la zone de fin
                 }
                 if (_keyboardState.IsKeyDown(Keys.F))
                 {
@@ -276,9 +273,9 @@ namespace Projet
                 _camera.Update(gameTime, _pingouin);
 
                 // Pingouin
-                _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
+                _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); // envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _groundLayer, _deadLayer, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _tiledMap, deltaSeconds, _spikesLayer);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -406,7 +403,7 @@ namespace Projet
                 {
                     if (partiPortail[i].etat == 0)
                     {
-                        //Collision des moreau de portail avec le pingouin
+                        // Collision des moreau de portail avec le pingouin
                         if (Collision.IsCollidingRecompense(partiPortail[i], _pingouin.HitBox))
                         {
                             _partiRecolleter += 1;
@@ -414,10 +411,10 @@ namespace Projet
                         }
                     }
                 }
-                //Collision avec le portail de changement de niveau
+                // Collision avec le portail de changement de niveau
                 if (openingPortal.etat == 0)
                 {
-                    //Collision des moreau de portail avec le pingouin
+                    // Collision des moreau de portail avec le pingouin
                     if (Collision.IsCollidingRecompense(openingPortal, _pingouin.HitBox))
                     {
                         _myGame.clicWin = true;
