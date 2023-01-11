@@ -278,7 +278,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_keyboardState, _pingouin, ref _snowballs, _groundLayer, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _groundLayer, _deadLayer, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -422,12 +422,6 @@ namespace Projet
                     {
                         _myGame.clicWin = true;
                     }
-                }
-
-                // Mort
-                if (_pingouin.CurrentLife <= 0)
-                {
-                    _myGame.clicDead = true;
                 }
     }
         }
