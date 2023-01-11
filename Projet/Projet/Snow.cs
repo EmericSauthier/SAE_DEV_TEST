@@ -361,43 +361,6 @@ namespace Projet
                     _heartsPositions[i] += new Vector2(50 * i, 0);
                 }
 
-                
-                // Collisions des traps avec le pingouin
-                for (int i = 0; i < traps.Count; i++)
-                {
-                    if (Collision.IsCollidingTrap(traps[i], _pingouin.HitBox))
-                    {
-                        _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                        MediaPlayer.Play(trapTouchPingouin);
-                    }
-                }
-
-                // Collision des rampants avec le pingouin
-                for (int i = 0; i < monstresRampants.Count; i++)
-                {
-                    if (!monstresRampants[i].IsDied)
-                    {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresRampants[i], _pingouin.HitBox))
-                        {
-                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                            MediaPlayer.Play(monsterTouchPingouin);
-                        }
-                    }
-                }
-
-                // Collision des volants avec le pingouin
-                for (int i = 0; i < monstresVolants.Count; i++)
-                {
-                    if (!monstresVolants[i].IsDied)
-                    {
-                        if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
-                        {
-                            _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                            MediaPlayer.Play(monsterTouchPingouin);
-                        }
-                    }
-                }
-
                 for (int i = 0; i < _posiCoins.Length; i++)
                 {
                     if (coins[i].etat == 0)

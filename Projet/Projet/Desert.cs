@@ -241,6 +241,12 @@ namespace Projet
             monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
             trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
+            // Chargement des audio
+            _manager.CoinSong = Content.Load<Song>("Audio/coinSound");
+            _manager.PortalSong = Content.Load<Song>("Audio/recupAllPortal");
+            _manager.MonstreSong = Content.Load<Song>("Audio/monsterTouchPingouin");
+            _manager.TrapSong = Content.Load<Song>("Audio/trapTouchPingouin");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -309,7 +315,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, ref monstresRampants, ref monstresVolants, _tiledMap, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, ref monstresRampants, ref monstresVolants, _tiledMap, deltaSeconds, null, traps);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
