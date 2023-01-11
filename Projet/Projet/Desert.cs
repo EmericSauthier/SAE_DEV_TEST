@@ -41,7 +41,7 @@ namespace Projet
         private TiledMapTileLayer _groundLayer;
         private TiledMapTileLayer _deadLayer;
 
-        //JEU
+        // JEU
         private Camera _camera;
         public static float scale;
 
@@ -61,7 +61,7 @@ namespace Projet
         // Piège
         Trap _ceilingTrap1;
 
-        //Recompense
+        // Recompense
         Vector2[] _posiCoins;
         Recompenses[] coins;
         public int largeurRecompense1 = 10, hauteurRecompense1 = 10;
@@ -70,13 +70,13 @@ namespace Projet
         private Texture2D _heartSprite;
         private Vector2[] _heartsPositions;
 
-        //Debug rectangle
+        // Debug rectangle
         private Rectangle rFox;
         private Rectangle rTrap;
         private Rectangle rKillingFox;
         private Rectangle rRecompense;
 
-        //Portail
+        // Portail
         private int _partiRecolleter;
         private Vector2 _recoltePosition;
         Recompenses[] partiPortail;
@@ -84,7 +84,7 @@ namespace Projet
         Recompenses closingPortal;
         Vector2[] _posiPartiPortail;
 
-        //Son
+        // Son
         Song recupAllPortalSound;
         Song coinSound;
         Song monsterTouchPingouin;
@@ -148,7 +148,7 @@ namespace Projet
             traps.Add(new Trap(new Vector2(1296, 1023), "press"));
             traps.Add(new Trap(new Vector2(1778, 1148), "press"));
 
-            //Recompenses
+            // Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
                 new Vector2(1086 + 50, 1122), new Vector2(2440, 642), new Vector2(2390, 642), new Vector2(1646, 642),
                 new Vector2(1696, 642), new Vector2(212, 92), new Vector2(262, 92), new Vector2(172, 92), new Vector2(312, 92),
@@ -164,7 +164,7 @@ namespace Projet
             // Life
             _heartsPositions = new Vector2[3];
 
-            //Portail
+            // Portail
             _posiPartiPortail = new Vector2[] { new Vector2(52, 514), new Vector2(1878, 1054), new Vector2(3170, 1122), new Vector2(780, 99), new Vector2(2430, 292) };
             _partiRecolleter = 0;
             partiPortail = new Recompenses[_posiPartiPortail.Length];
@@ -184,8 +184,6 @@ namespace Projet
             // Chargement de la map et du TileLayer du sol/décor
             _tiledMap = Content.Load<TiledMap>("Maps/desertMap");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-            _groundLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Ground");
-            _deadLayer = _tiledMap.GetLayer<TiledMapTileLayer>("DeadZone");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
@@ -224,7 +222,7 @@ namespace Projet
             // Chargement de la texture des coeurs
             _heartSprite = Content.Load<Texture2D>("Life/heart");
 
-            //Chargement du sprite du portail
+            // Chargement du sprite du portail
             SpriteSheet spritePortal = Content.Load<SpriteSheet>("Decors/portal.sf", new JsonContentLoader());
             for (int i = 0; i < _posiPartiPortail.Length; i++)
             {
@@ -233,7 +231,7 @@ namespace Projet
             openingPortal.LoadContent(spritePortal);
             closingPortal.LoadContent(spritePortal);
 
-            //Audio
+            // Audio
             coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
             monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
@@ -250,23 +248,21 @@ namespace Projet
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            //CONDITION POUR AFFICHER LE PORTAIL DE SORTIE
+            // CONDITION POUR AFFICHER LE PORTAIL DE SORTIE
             if (_partiRecolleter == _posiPartiPortail.Length && openingPortal.etat==1)
             {
                 openingPortal.etat = 0;
                 MediaPlayer.Play(recupAllPortalSound);
             }
 
-            //CONDITION POUR ALLER SUR LE MENU DU JEU
+            // CONDITION POUR ALLER SUR LE MENU DU JEU
             if (_keyboardState.IsKeyDown(Keys.Tab))
             {
                 _myGame.pause = !_myGame.pause;
             }
             else if (!_myGame.pause || _myGame.reprendre)
             {
-
-
-                //Code cheat
+                // Code cheat
                 if (_keyboardState.IsKeyDown(Keys.F2))
                     cheat = true;
                 if (cheat)
@@ -312,7 +308,7 @@ namespace Projet
                 // Pingouin
                 _myGame.dernierePosiPingouin = new Vector2(_pingouin.Position.GetHashCode()); //envoie dans game 1 la position du pingouin pour pouvoir reprendre a la meme position
 
-                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _groundLayer, _deadLayer, deltaSeconds);
+                _manager.Update(_myGame, _keyboardState, _pingouin, ref _snowballs, _tiledMap, deltaSeconds);
 
                 // Chrono
                 Chrono.UpdateChronos(deltaSeconds);
@@ -350,10 +346,10 @@ namespace Projet
                     coins[i].Sprite.Update(deltaSeconds);
                 }
 
-                //Compteur morceau de portail recolleter
+                // Compteur morceau de portail recolleter
                 _recoltePosition = new Vector2(_camera.CameraPosition.X - LARGEUR_FENETRE / 2, _camera.CameraPosition.Y - HAUTEUR_FENETRE / 2+50);
 
-                //Portail
+                // Portail
                 openingPortal.Sprite.Play("openingPortal");
                 closingPortal.Sprite.Play("closingPortal");
                 openingPortal.Sprite.Update(deltaSeconds);

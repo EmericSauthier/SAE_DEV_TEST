@@ -306,6 +306,7 @@ namespace Projet
         {
             // Affichage du pingouin
             game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
+            //game.SpriteBatch.DrawPoint(this.position.X, this.position.Y + 50 * this.scale, Color.Green, 5);
             //game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 2);
 
             //foreach (Point point in this.CheckBottom())
