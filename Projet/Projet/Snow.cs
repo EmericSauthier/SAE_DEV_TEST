@@ -180,10 +180,11 @@ namespace Projet
             _manager.SnowballTexture = Content.Load<Texture2D>("Perso/snowball");
 
             // Chargement du sprite du renard
+            Song foxDeath = Content.Load<Song>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].LoadContent(foxSprite);
+                monstresRampants[i].LoadContent(foxSprite, foxDeath);
             };
 
             // Chargement texture eagle

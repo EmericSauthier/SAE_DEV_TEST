@@ -195,11 +195,12 @@ namespace Projet
             // Chargement de la texture de la boule de neige
             _manager.SnowballTexture = this.Content.Load<Texture2D>("Perso/snowball");
 
-            // Chargement du sprite du renard
+            // Chargement du sprite/son du renard
+            Song foxDeath = Content.Load<Song>("Audio/foxDeath");
             SpriteSheet foxSprite = Content.Load<SpriteSheet>("Ennemis_pieges/fox.sf", new JsonContentLoader());
             for (int i = 0; i < monstresRampants.Count; i++)
             {
-                monstresRampants[i].LoadContent(foxSprite);
+                monstresRampants[i].LoadContent(foxSprite, foxDeath);
             };
 
             // Chargement texture eagle

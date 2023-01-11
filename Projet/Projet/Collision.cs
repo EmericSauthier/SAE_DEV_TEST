@@ -16,6 +16,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.Screens.Transitions;
+using Microsoft.Xna.Framework.Media;
 
 namespace Projet
 {
@@ -41,6 +42,8 @@ namespace Projet
             if (hitboxPingouin.Intersects(monstre.RectangleKill))
             {
                 monstre.IsDied = true;
+                MediaPlayer.Play(monstre.DeathSong);
+                
             }
 
             if (hitboxPingouin.Intersects(monstre.RectangleSprite))
