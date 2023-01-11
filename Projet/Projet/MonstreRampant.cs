@@ -12,6 +12,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using MonoGame.Extended.TextureAtlases;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Projet
 {
@@ -24,7 +25,7 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isMovingRight;
         private bool isDied;
-        private Song deathSong;
+        private SoundEffect deathSong;
 
         private double chronoDep;
         private int largeur, hauteur;
@@ -190,7 +191,7 @@ namespace Projet
             }
         }
 
-        public Song DeathSong
+        public SoundEffect DeathSong
         {
             get
             {
@@ -222,7 +223,7 @@ namespace Projet
             else ChronoDep = 0;
         }
 
-        public void LoadContent(SpriteSheet sprite, Song song)
+        public void LoadContent(SpriteSheet sprite, SoundEffect song)
         {           
             this.Sprite = new AnimatedSprite(sprite);
             this.DeathSong = song;

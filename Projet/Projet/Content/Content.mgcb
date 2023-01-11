@@ -20,45 +20,39 @@
 
 #begin Audio/coinSound.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/coinSound.mp3
 
 #begin Audio/foxDeath.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/foxDeath.mp3
 
 #begin Audio/monsterTouchPingouin.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/monsterTouchPingouin.mp3
 
 #begin Audio/recupAllPortal.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/recupAllPortal.mp3
 
 #begin Audio/snowballLancer.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/snowballLancer.mp3
 
 #begin Audio/snowballTouch.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/snowballTouch.mp3
-
-#begin Audio/soudtrack1.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Audio/soudtrack1.mp3
 
 #begin Audio/soundtrack2.mp3
 /importer:Mp3Importer
@@ -74,13 +68,13 @@
 
 #begin Audio/trapTouchPingouin.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/trapTouchPingouin.mp3
 
 #begin Audio/zapTeleport.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/zapTeleport.mp3
 
@@ -131,6 +125,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Decors/fondGame12.webp
+
+#begin Decors/fondGameDesert.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Decors/fondGameDesert.jpg
 
 #begin Decors/fondMenu.jpg
 /importer:TextureImporter

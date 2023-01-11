@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended.Tiled;
 using System.Collections.Generic;
 
@@ -20,10 +21,10 @@ namespace Projet
         private float _timerSpike;
         private Texture2D _snowballTexture;
 
-        private Song _trapSong;
-        private Song _monstreSong;
-        private Song _coinSong;
-        private Song _portalSong;
+        private SoundEffect _trapSong;
+        private SoundEffect _monstreSong;
+        private SoundEffect _coinSong;
+        private SoundEffect _portalSong;
 
         public Texture2D SnowballTexture
         {
@@ -37,7 +38,7 @@ namespace Projet
                 this._snowballTexture = value;
             }
         }
-        public Song TrapSong
+        public SoundEffect TrapSong
         {
             get
             {
@@ -49,7 +50,7 @@ namespace Projet
                 this._trapSong = value;
             }
         }
-        public Song MonstreSong
+        public SoundEffect MonstreSong
         {
             get
             {
@@ -61,7 +62,7 @@ namespace Projet
                 this._monstreSong = value;
             }
         }
-        public Song CoinSong
+        public SoundEffect CoinSong
         {
             get
             {
@@ -73,7 +74,7 @@ namespace Projet
                 this._coinSong = value;
             }
         }
-        public Song PortalSong
+        public SoundEffect PortalSong
         {
             get
             {
@@ -235,7 +236,7 @@ namespace Projet
                         pingouin.Position += new Vector2(10, 0);
                     }
                     pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                    MediaPlayer.Play(_monstreSong);
+                    _monstreSong.Play();
                 }
             }
             rampants = newRampants;
@@ -263,7 +264,7 @@ namespace Projet
                             pingouin.Position += new Vector2(0, 10);
                         }
                         pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                        MediaPlayer.Play(_monstreSong);
+                        _monstreSong.Play();
                     }
                     else if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleDetection))
                     {
@@ -285,7 +286,7 @@ namespace Projet
                 if (traps[i].CanCollidingTrap && Collision.SpriteCollision(pingouin.HitBox, traps[i].RectangleSprite))
                 {
                     pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
-                    MediaPlayer.Play(_trapSong);
+                    _trapSong.Play();
                 }
             }
         }
@@ -295,7 +296,7 @@ namespace Projet
             {
                 pingouin.CurrentLife -= 1;
                 _timerSpike = 0;
-                MediaPlayer.Play(_trapSong);
+                _trapSong.Play();
             }
         }
 
