@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
-
-using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled.Renderers;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.Screens.Transitions;
+using System.Collections.Generic;
 
 namespace Projet
 {
@@ -38,6 +24,8 @@ namespace Projet
         private Song _monstreSong;
         private Song _coinSong;
         private Song _portalSong;
+        private Song _throwSnowball;
+        private Song _hitSnowball;
 
         public Texture2D SnowballTexture
         {
@@ -99,6 +87,30 @@ namespace Projet
                 this._portalSong = value;
             }
         }
+        public Song ThrowSnowball
+        {
+            get
+            {
+                return this._throwSnowball;
+            }
+
+            set
+            {
+                this._throwSnowball = value;
+            }
+        }
+        public Song HitSnowball
+        {
+            get
+            {
+                return this._hitSnowball;
+            }
+
+            set
+            {
+                this._hitSnowball = value;
+            }
+        }
 
         public GameManager()
         {
@@ -128,7 +140,7 @@ namespace Projet
                 CollisionWithMonstre(pingouin, ref rampants);
                 CollisionWithMonstre(pingouin, ref volants);
                 // Vérifie les collisions des boules de neige (avec le décor)
-                SnowballsUpdate(ref snowballs, ground);
+                SnowballsUpdate(ref snowballs, ref rampants, ref volants, ground);
                 // Met à jour le pingouin
                 pingouin.Update(deltaTime, ground);
 
@@ -178,6 +190,7 @@ namespace Projet
                     direction = -1;
                 }
                 pingouin.Animate("attack");
+                MediaPlayer.Play(_throwSnowball);
 
                 // Ajoute une boule de neige au tableau
                 Snowball[] newSnowballsArray = new Snowball[snowballs.Length + 1];
@@ -249,6 +262,7 @@ namespace Projet
                         pingouin.Position += new Vector2(10, 0);
                     }
                     pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                    MediaPlayer.Play(_monstreSong);
                 }
             }
             rampants = newRampants;
@@ -276,6 +290,7 @@ namespace Projet
                             pingouin.Position += new Vector2(0, 10);
                         }
                         pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                        MediaPlayer.Play(_monstreSong);
                     }
                     else if (Collision.SpriteCollision(pingouin.HitBox, volants[i].RectangleDetection))
                     {
@@ -310,72 +325,94 @@ namespace Projet
                 MediaPlayer.Play(_trapSong);
             }
         }
-        public void MonstreUpdate(Pingouin pingouin, ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants)
-        {
-            int snowballNull = 0;
-            int rampantNull = 0;
-            int volantNull = 0;
-            for (int i = 0; i < snowballs.Length; i++)
-            {
-                for (int j = 0; j < rampants.Count; j++)
-                {
-                    if (snowballs[i] != null && (Collision.SpriteCollision(snowballs[i].HitBox, rampants[j].RectangleSprite) || Collision.SpriteCollision(snowballs[i].HitBox, rampants[j].RectangleKill)))
-                    {
-                        System.Diagnostics.Debug.WriteLine("RAMPANT SUPPRIMER");
-                        System.Diagnostics.Debug.WriteLine(rampants);
-                        snowballs[i] = null;
-                        rampants.Remove(rampants[i]);
-                        snowballNull++;
-                        rampantNull++;
-                        System.Diagnostics.Debug.WriteLine(rampants);
-                    }
-                    else if (Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleKill))
-                    {
-                        
-                        System.Diagnostics.Debug.WriteLine("RAMPANT SUPPRIMER");
-                        System.Diagnostics.Debug.WriteLine(rampants);
-                        snowballs[i] = null;
-                        rampants.Remove(rampants[i]);
-                        snowballNull++;
-                        rampantNull++;
-                        System.Diagnostics.Debug.WriteLine(rampants);
-                    }
-                }
 
-                for (int j = 0; j < volants.Count; j++)
+        public void SnowballsUpdate(ref Snowball[] snowballs, ref List<MonstreRampant> rampants, ref List<MonstreVolant> volants, TiledMapTileLayer ground)
+        {
+            if (snowballs.Length > 0)
+            {
+                SnowballWithMap(ref snowballs, ground);
+                SnowballWithMonster(ref snowballs, ref rampants);
+                SnowballWithMonster(ref snowballs, ref volants);
+                for (int i = 0; i < snowballs.Length; i++)
                 {
-                    if (snowballs[i] != null && (Collision.SpriteCollision(snowballs[i].HitBox, volants[j].RectangleSprite) || Collision.SpriteCollision(snowballs[i].HitBox, volants[j].RectangleKill) || Collision.SpriteCollision(pingouin.HitBox, rampants[i].RectangleKill)))
-                    {
-                        System.Diagnostics.Debug.WriteLine("VOLANT SUPPRIMER");
-                        snowballs[i] = null;
-                        volants.Remove(volants[i]);
-                        snowballNull++;
-                        volantNull++;
-                    }
+                    snowballs[i].Move();
                 }
             }
-
-            snowballs = UpdateTab(snowballs, snowballNull);
         }
-        public void SnowballsUpdate(ref Snowball[] snowballs, TiledMapTileLayer mapLayer)
+        public void SnowballWithMap(ref Snowball[] snowballs, TiledMapTileLayer ground)
         {
             int snowballNull = 0;
             for (int i = 0; i < snowballs.Length; i++)
             {
                 // Vérification des collisions avec le décor et la distance
-                if (snowballs[i] != null && Collision.MapCollision(new Point((int)snowballs[i].Middle.X, (int)snowballs[i].Middle.Y), mapLayer) || snowballs[i].Distance >= 500)
+                if (snowballs[i] != null)
                 {
-                    snowballs[i] = null;
-                    snowballNull++;
-                } else if (snowballs != null)
-                {
-                    snowballs[i].Move();
+                    if (Collision.MapCollision(new Point((int)snowballs[i].Middle.X, (int)snowballs[i].Middle.Y), ground) || snowballs[i].Distance >= 500)
+                    {
+                        snowballs[i] = null;
+                        snowballNull++;
+                    }
+                    else
+                    {
+                        snowballs[i].Move();
+                    }
                 }
             }
 
             snowballs = UpdateTab(snowballs, snowballNull);
         }
-
+        public void SnowballWithMonster(ref Snowball[] snowballs, ref List<MonstreRampant> rampants)
+        {
+            int snowballNull = 0;
+            List<MonstreRampant> newRampants = new List<MonstreRampant>();
+            for (int i = 0; i < rampants.Count; i++)
+            {
+                bool collide = false;
+                for (int j = 0; j < snowballs.Length; j++)
+                {
+                    if (snowballs[j] != null && (Collision.SpriteCollision(rampants[i].RectangleSprite, snowballs[j].HitBox) || Collision.SpriteCollision(rampants[i].RectangleKill, snowballs[j].HitBox)))
+                    {
+                        snowballs[j] = null;
+                        snowballNull++;
+                        collide = true;
+                        MediaPlayer.Play(_hitSnowball);
+                        break;
+                    }
+                }
+                if (!collide)
+                {
+                    newRampants.Add(rampants[i]);
+                }
+            }
+            snowballs = UpdateTab(snowballs, snowballNull);
+            rampants = newRampants;
+        }
+        public void SnowballWithMonster(ref Snowball[] snowballs, ref List<MonstreVolant> volants)
+        {
+            int snowballNull = 0;
+            List<MonstreVolant> newVolants = new List<MonstreVolant>();
+            for (int i = 0; i < volants.Count; i++)
+            {
+                bool collide = false;
+                for (int j = 0; j < snowballs.Length; j++)
+                {
+                    if (snowballs[j] != null && (Collision.SpriteCollision(volants[i].RectangleSprite, snowballs[j].HitBox) || Collision.SpriteCollision(volants[i].RectangleKill, snowballs[j].HitBox)))
+                    {
+                        snowballs[j] = null;
+                        snowballNull++;
+                        collide = true;
+                        MediaPlayer.Play(_hitSnowball);
+                        break;
+                    }
+                }
+                if (!collide)
+                {
+                    newVolants.Add(volants[i]);
+                }
+            }
+            snowballs = UpdateTab(snowballs, snowballNull);
+            volants = newVolants;
+        }
         public Snowball[] UpdateTab(Snowball[] tab, int count)
         {
             Snowball[] newTab = new Snowball[tab.Length - count];

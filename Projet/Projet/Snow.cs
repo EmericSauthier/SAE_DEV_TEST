@@ -28,7 +28,6 @@ namespace Projet
         private GraphicsDeviceManager _graphics;
 
         // GameManager
-        private bool _gameOver;
         private GameManager _manager;
 
         // Gestion des entrées
@@ -75,12 +74,9 @@ namespace Projet
         // Audio
         Song recupAllPortalSound;
         Song coinSound;
-        Song monsterTouchPingouin;
-        Song trapTouchPingouin;
 
         // Tableau de boule de neige
         private Snowball[] _snowballs;
-        private Texture2D _snowballTexture;
 
         public Snow(Game1 game) : base(game)
         {
@@ -93,7 +89,6 @@ namespace Projet
             _myGame.Window.Title = "Jeu du pingouin";
 
             // Etat de la partie
-            _gameOver = false;
             _manager = new GameManager();
             _myGame.nivActu = 2;
 
@@ -224,14 +219,14 @@ namespace Projet
             // Chargement des audio
             coinSound = Content.Load<Song>("Audio/coinSound");
             recupAllPortalSound = Content.Load<Song>("Audio/recupAllPortal");
-            monsterTouchPingouin = Content.Load<Song>("Audio/monsterTouchPingouin");
-            trapTouchPingouin = Content.Load<Song>("Audio/trapTouchPingouin");
 
             // Chargement des audio
             _manager.CoinSong = Content.Load<Song>("Audio/coinSound");
             _manager.PortalSong = Content.Load<Song>("Audio/recupAllPortal");
             _manager.MonstreSong = Content.Load<Song>("Audio/monsterTouchPingouin");
             _manager.TrapSong = Content.Load<Song>("Audio/trapTouchPingouin");
+            _manager.HitSnowball = Content.Load<Song>("Audio/snowballTouch");
+            _manager.ThrowSnowball = Content.Load<Song>("Audio/snowballLancer");
 
 
             base.LoadContent();
@@ -505,11 +500,6 @@ namespace Projet
                     _myGame.SpriteBatch.DrawRectangle(coins[i].RectangleSprite, Color.YellowGreen);
                 }
             }
-
-            // Debug Position
-            _myGame.SpriteBatch.DrawString(Game1.police, "x : " + $"{Math.Round(_pingouin.Position.X, 0)}", _recoltePosition + new Vector2(0, 100), Color.White);
-            _myGame.SpriteBatch.DrawString(Game1.police, "y : " + $"{Math.Round(_pingouin.Position.Y, 0)}", _recoltePosition + new Vector2(0, 170), Color.White);
-
 
             _myGame.SpriteBatch.End();
         }
