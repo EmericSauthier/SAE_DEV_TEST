@@ -39,6 +39,7 @@ namespace Projet
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
         private TiledMapTileLayer _spikesLayer;
+        private Texture2D _fondSnow;
 
         // JEU
         private Camera _camera;
@@ -169,6 +170,8 @@ namespace Projet
             _tiledMap = Content.Load<TiledMap>("Maps/snowmap1");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
             _spikesLayer = _tiledMap.GetLayer<TiledMapTileLayer>("Spikes");
+
+            _fondSnow = Content.Load<Texture2D>("Decors/fondGame1");
 
             // Chargement du sprite du pingouin
             _pingouin.Perso = new AnimatedSprite(Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader()));
@@ -445,6 +448,11 @@ namespace Projet
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // Fond de map
+            _myGame.SpriteBatch.Begin();
+            _myGame.SpriteBatch.Draw(_fondSnow, new Vector2(0,0), Color.White);
+            _myGame.SpriteBatch.End();
 
             // Application du zoom de la caméra
             _tiledMapRenderer.Draw(_camera.OrthographicCamera.GetViewMatrix());
