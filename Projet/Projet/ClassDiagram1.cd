@@ -1,66 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="Projet.Camera" Collapsed="true">
-    <Position X="10.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACQAAAAAABAAEQAAAAAAAAAAAAAACAABAAAAIAAAgAA=</HashCode>
-      <FileName>Camera.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Projet.Chrono" Collapsed="true">
-    <Position X="12.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAACAAAAAAAAAAAAAABIAABAAA=</HashCode>
-      <FileName>Chrono.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Projet.GameManager" Collapsed="true">
-    <Position X="14.25" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>BgRAAAAAAABgAIAAoAASwhAAAAKAAEBAAAEISQQAABQ=</HashCode>
-      <FileName>GameManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Projet.MonstreRampant" Collapsed="true">
-    <Position X="10.75" Y="2.5" Width="1.5" />
+  <Class Name="Projet.MonstreRampant">
+    <Position X="7.5" Y="8.75" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAiAEgACgAAAAAAgAAEAJgABBZQACAWQgAgBAAAAARc=</HashCode>
       <FileName>MonstreRampant.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projet.MonstreVolant" Collapsed="true">
-    <Position X="12.5" Y="2.5" Width="1.5" />
+  <Class Name="Projet.MonstreVolant">
+    <Position X="11.75" Y="8.75" Width="3.75" />
     <TypeIdentifier>
       <HashCode>CAiAEgACgIABAAAgCAAAJgAABZQBCQWQAAkJAAgQCTc=</HashCode>
       <FileName>MonstreVolant.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projet.Pingouin" Collapsed="true">
-    <Position X="14.25" Y="2.5" Width="1.5" />
+  <Class Name="Projet.Pingouin">
+    <Position X="16" Y="8.75" Width="3.5" />
     <TypeIdentifier>
       <HashCode>BIQAAgEBIgAYKKCgFKqAIASCBABAIgwAQAAJwAGABUM=</HashCode>
       <FileName>Pingouin.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projet.Recompenses" Collapsed="true">
-    <Position X="10.75" Y="3.5" Width="1.5" />
+  <Class Name="Projet.Recompenses">
+    <Position X="19.75" Y="8.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAgAAAAIgAAAZAACAGQgAiAIIAAAAQ=</HashCode>
       <FileName>Recompenses.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projet.Snowball" Collapsed="true">
-    <Position X="12.5" Y="3.5" Width="1.5" />
+  <Class Name="Projet.Regle">
+    <Position X="23.25" Y="8.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ACQAAqMAhAYAB0AgKAIAQgAAAAAgoABAFAQIDGAAAMQ=</HashCode>
+      <FileName>Regle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projet.Snow">
+    <Position X="26.75" Y="8.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBMSSAAAAAAwBAAABBQRALAQEAAIEACZEACSAIBAQ=</HashCode>
+      <FileName>Snow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projet.Snowball">
+    <Position X="30.5" Y="8.75" Width="3" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAIAAAAQgRAAAIAAAAEAAAhBAAAYQAAAEAAE=</HashCode>
       <FileName>Snowball.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projet.Trap" Collapsed="true">
-    <Position X="14.25" Y="3.5" Width="1.5" />
+  <Class Name="Projet.Trap">
+    <Position X="33.75" Y="8.75" Width="4" />
     <TypeIdentifier>
       <HashCode>AAADAEAGAgBAAAAgAAAAAgAAAYAACAGQAA0AgAAAAAU=</HashCode>
       <FileName>Trap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projet.Win">
+    <Position X="38" Y="8.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ACQAASAgAAAAAwAAAAAAAAAQAAAAAAAAAAAIAEQAAAQ=</HashCode>
+      <FileName>Win.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
