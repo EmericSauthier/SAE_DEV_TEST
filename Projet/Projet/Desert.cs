@@ -404,6 +404,7 @@ namespace Projet
                         if (Collision.IsCollidingMonstre(_pingouin, monstresVolants[i], _pingouin.HitBox))
                         {
                             _pingouin.TakeDamage(1, ref Chrono.chronoInvincibility);
+                            MediaPlayer.Play(monsterTouchPingouin);
                         }
                     }
                 }
