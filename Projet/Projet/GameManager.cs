@@ -24,6 +24,8 @@ namespace Projet
         private Song _monstreSong;
         private Song _coinSong;
         private Song _portalSong;
+        private Song _throwSnowball;
+        private Song _hitSnowball;
 
         public Texture2D SnowballTexture
         {
@@ -83,6 +85,30 @@ namespace Projet
             set
             {
                 this._portalSong = value;
+            }
+        }
+        public Song ThrowSnowball
+        {
+            get
+            {
+                return this._throwSnowball;
+            }
+
+            set
+            {
+                this._throwSnowball = value;
+            }
+        }
+        public Song HitSnowball
+        {
+            get
+            {
+                return this._hitSnowball;
+            }
+
+            set
+            {
+                this._hitSnowball = value;
             }
         }
 
