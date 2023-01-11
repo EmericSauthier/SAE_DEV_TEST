@@ -222,7 +222,6 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
 
             // GameManager
             _keyboardState = Keyboard.GetState();

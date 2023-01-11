@@ -53,7 +53,7 @@ namespace Projet
         {
             if (pingouin.CurrentLife <= 0 || Collision.MapCollision(pingouin.CheckBottom(), dead))
             {
-                game.clicDead = true;
+                game.goDead = true;
             }
             else
             {

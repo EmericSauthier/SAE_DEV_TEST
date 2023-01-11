@@ -138,14 +138,15 @@ namespace Projet
             monstresRampants = new List<MonstreRampant>();
             monstresRampants.Add(new MonstreRampant(new Vector2(1558, 340), "fox", 0.5, 6));
             monstresRampants.Add(new MonstreRampant(new Vector2(2619, 432), "fox", 0.4, 5));
+            monstresRampants.Add(new MonstreRampant(new Vector2(1500, 1134), "fox", 0.6, 5));
             // Tableau monstre volant
             monstresVolants = new List<MonstreVolant>();
             monstresVolants.Add(new MonstreVolant(new Vector2(632, 67), "eagle", 1, 12));
             monstresVolants.Add(new MonstreVolant(new Vector2(2504, 292), "eagle", 1, 12));
             // Tableau Traps
             traps = new List<Trap>();
-            traps.Add(new Trap(new Vector2(1296, 1026), "press"));
-            traps.Add(new Trap(new Vector2(1778, 1154), "press"));
+            traps.Add(new Trap(new Vector2(1296, 1023), "press"));
+            traps.Add(new Trap(new Vector2(1778, 1148), "press"));
 
             //Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
@@ -242,8 +243,9 @@ namespace Projet
         }
         public override void Update(GameTime gameTime)
         {
-            
-            
+
+
+            System.Diagnostics.Debug.WriteLine(_pingouin.Position);
             // GameManager
             _keyboardState = Keyboard.GetState();
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
