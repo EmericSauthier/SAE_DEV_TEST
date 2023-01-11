@@ -317,7 +317,7 @@ namespace Projet
                 // Volants
                 for (int i = 0; i < monstresVolants.Count; i++)
                 {
-                    monstresVolants[i].Move(ref Chrono.chronoDepEagle, _pingouin);
+                    monstresVolants[i].Move(gameTime, _pingouin);
                     monstresVolants[i].Sprite.Update(deltaSeconds);
                     monstresVolants[i].UpdateBoxes();
                 }
@@ -325,7 +325,7 @@ namespace Projet
                 // Traps
                 for (int i = 0; i < traps.Count; i++)
                 {
-                    traps[i].PressActivation(ref Chrono.chronoTrap);
+                    traps[i].PressActivation(gameTime);
                     traps[i].Sprite.Update(deltaSeconds);
                     traps[i].UpdateBoxes();
                 }

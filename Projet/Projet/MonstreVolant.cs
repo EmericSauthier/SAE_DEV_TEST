@@ -20,6 +20,7 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isDied;
         private bool hasSawPlayer;
+        private double chronoDep;
 
         private int largeur, hauteur;
         private Rectangle rectangleSprite, rectangleKill, rectangleDetection;
@@ -32,6 +33,7 @@ namespace Projet
             this.TempsArrivePosition = tempsArrivePosition;
             vitessePoursuite = this.Vitesse * 1.3;
             IsDied = false;
+            this.ChronoDep = 0;
 
             UpdateDimensions();
             UpdateBoxes();
@@ -206,24 +208,39 @@ namespace Projet
             }
         }
 
-        public void Move(ref double time, Pingouin pingouin)
+        public double ChronoDep
         {
+            get
+            {
+                return this.chronoDep;
+            }
+
+            set
+            {
+                this.chronoDep = value;
+            }
+        }
+
+        public void Move(GameTime gameTime, Pingouin pingouin)
+        {
+            ChronoDep += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (!HasSawPlayer)
             {
                 //System.Diagnostics.Debug.WriteLine(time);
-                if (time <= tempsArrivePosition)
+                if (ChronoDep <= tempsArrivePosition)
                 {
                     Position += new Vector2((float)Vitesse, 0);
                     Sprite.Play("flyRight");
                     IsMovingRight = true;
                 }
-                else if (time > tempsArrivePosition && time < tempsArrivePosition * 2)
+                else if (ChronoDep > tempsArrivePosition && ChronoDep < tempsArrivePosition * 2)
                 {
                     Position -= new Vector2((float)Vitesse, 0);
                     Sprite.Play("flyLeft");
                     IsMovingRight = false;
                 }
-                else time = 0;
+                else ChronoDep = 0;
             }
             else
             {

@@ -10,7 +10,6 @@ namespace Projet
     {
         public static double chrono;
         public static double chronoTrap;
-        public static double chronoDepFox;
         public static double chronoDepEagle;
         public static double chronoInvincibility;
 
@@ -25,9 +24,6 @@ namespace Projet
         public static void InitializeChronos()
         {
             chrono = 0;
-            chronoTrap= 0;
-            chronoDepFox = 0;
-            chronoDepEagle = 0;
             chronoInvincibility = 0;
         }
 
@@ -35,9 +31,6 @@ namespace Projet
         {
             Chrono.chrono += deltaSeconds;
             Chrono.chronoInvincibility += deltaSeconds;
-            Chrono.chronoDepEagle += deltaSeconds;
-            Chrono.chronoDepFox += deltaSeconds;
-            Chrono.chronoTrap += deltaSeconds;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Projet
         private bool isMovingRight;
         private bool isDied;
 
-        private double chronoDepFox;
+        private double chronoDep;
         private int largeur, hauteur;
         private Rectangle rectangleSprite, rectangleKill;
 
@@ -35,7 +35,7 @@ namespace Projet
             this.Enemy = enemy;
             this.TempsArrivePosition = tempsArrivePosition;
             IsDied = false;
-            this.ChronoDepFox = 0;
+            this.ChronoDep = 0;
 
             UpdateDimensions();
             UpdateBoxes();
@@ -175,37 +175,37 @@ namespace Projet
             }
         }
 
-        public double ChronoDepFox
+        public double ChronoDep
         {
             get
             {
-                return this.chronoDepFox;
+                return this.chronoDep;
             }
 
             set
             {
-                this.chronoDepFox = value;
+                this.chronoDep = value;
             }
         }
 
         public void RightLeftMove(GameTime gameTime)
         {
-            ChronoDepFox += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            System.Diagnostics.Debug.WriteLine(ChronoDepFox);
+            ChronoDep += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            System.Diagnostics.Debug.WriteLine(ChronoDep);
 
-            if (ChronoDepFox <= this.TempsArrivePosition)
+            if (ChronoDep <= this.TempsArrivePosition)
             {
                 Position += new Vector2((float)Vitesse, 0);
                 Sprite.Play("rightWalking");
                 IsMovingRight = true;
             }
-            else if (ChronoDepFox <= (this.TempsArrivePosition*2))
+            else if (ChronoDep <= (this.TempsArrivePosition*2))
             {
                 Position -= new Vector2((float)Vitesse, 0);
                 Sprite.Play("leftWalking");
                 IsMovingRight = false;
             }
-            else ChronoDepFox = 0;
+            else ChronoDep = 0;
         }
 
         public void LoadContent(SpriteSheet sprite)
