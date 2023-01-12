@@ -17,7 +17,6 @@ namespace Projet
         private Rectangle hitBox;
 
         private float scale;
-        private float rotation;
 
         // Paramètres de vitesse
         private double walkVelocity;
@@ -98,18 +97,6 @@ namespace Projet
             set
             {
                 this.scale = value;
-            }
-        }
-        public float Rotation
-        {
-            get
-            {
-                return this.rotation;
-            }
-
-            set
-            {
-                this.rotation = value;
             }
         }
         public double WalkVelocity
