@@ -132,8 +132,8 @@ namespace Projet
             _monstresVolants.Add(new MonstreVolant(new Vector2(2504, 292), "eagle", 1, 12));
             // Tableau Traps
             _traps = new List<Trap>();
-            _traps.Add(new Trap(new Vector2(1296, 1023), "press"));
-            _traps.Add(new Trap(new Vector2(1778, 1148), "press"));
+            _traps.Add(new Trap(new Vector2(1296, 1024), "press"));
+            _traps.Add(new Trap(new Vector2(1776, 1152), "press"));
 
             // Recompenses
             _posiCoins = new Vector2[] { new Vector2(986, 1122), new Vector2(986 + 50, 1122), new Vector2(1086, 1122),
