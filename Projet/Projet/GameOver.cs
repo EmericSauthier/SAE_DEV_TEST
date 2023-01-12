@@ -17,7 +17,6 @@ namespace Projet
         private static SpriteFont _policeGO;
         //DECORATION PNGOUIN
         private Pingouin _pingouin;
-        private Pingouin[] _pingouinTab;
 
         //CHAMPS CONCERNANT LES TEXTES
         public static string messagePerdu;
@@ -45,13 +44,7 @@ namespace Projet
             positionMessageRejouer = new Vector2(Game1.LARGEUR_FENETRE/4, positionMessagePerdu.Y+150);
             positionMessageMenu = new Vector2(Game1.LARGEUR_FENETRE/2+ messagePerdu.Length * 24, positionMessagePerdu.Y+150);
 
-            //MISE EN PLACE DE PINGOUIN DECO
-            _pingouinTab = new Pingouin[6];
-            for (int i =0; i < 6; i++)
-            {
-                _pingouinTab[i] = new Pingouin(50+100*i, 600);
-            }
-            
+            //MISE EN PLACE DE PINGOUIN DECO            
             _pingouin = new Pingouin(70, 90);
 
             //GESTION CLIC
@@ -61,10 +54,6 @@ namespace Projet
         public override void LoadContent()
         {
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("Perso/penguin.sf", new JsonContentLoader());
-            for (int i=0; i<6; i++)
-            {
-                _pingouinTab[i].Perso = new AnimatedSprite(spriteSheet);
-            }
             _pingouin.Perso = new AnimatedSprite(spriteSheet);
 
             //POLICE
@@ -75,12 +64,6 @@ namespace Projet
         public override void Update(GameTime gameTime)
         {
             float deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            for (int i =0; i <6; i++)
-            {
-                _pingouinTab[i].Perso.Play("dead");
-                _pingouinTab[i].Perso.Update(deltaSeconds);
-            }
-
             _pingouin.Perso.Play("dead");
             _pingouin.Perso.Update(deltaSeconds);
             _mouseState = Mouse.GetState();
@@ -112,10 +95,6 @@ namespace Projet
             _myGame.SpriteBatch.DrawString(Game1.police, $"{messageMenu}", positionMessageMenu, Color.White);
 
             //PINGOUIN
-            //for (int i=0; i<6; i++)
-            //{
-            //    _myGame.SpriteBatch.Draw(_pingouinTab[i].Perso, _pingouinTab[i].Position);
-            //}
             _myGame.SpriteBatch.Draw(_pingouin.Perso, _pingouin.Position);
             _myGame.SpriteBatch.End();
         }
