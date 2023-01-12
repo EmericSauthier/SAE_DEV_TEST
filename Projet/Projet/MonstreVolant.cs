@@ -15,7 +15,6 @@ namespace Projet
         private double tempsArrivePosition;
         private bool isDied;
         private bool hasSawPlayer;
-        private bool hasLostPlayer;
         private double chronoDep;
         private Vector2 positionDeBase;
         private bool hasTouchPlayer;
@@ -314,7 +313,6 @@ namespace Projet
                 if ((int)PositionDeBase.Y < (int)this.Position.Y + 20 && (int)PositionDeBase.Y > (int)this.Position.Y - 20)
                 {
                     this.HasTouchPlayer = false;
-                    this.hasLostPlayer = false;
                 }
             }
         }
