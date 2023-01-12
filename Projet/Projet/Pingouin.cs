@@ -262,7 +262,6 @@ namespace Projet
             this.CurrentLife = this.MaxLife;
 
             this.direction = "Right";
-            this.rotation = 0;
         }
 
 
@@ -280,7 +279,7 @@ namespace Projet
         public void Affiche(Game1 game)
         {
             // Affichage du pingouin
-            game.SpriteBatch.Draw(this.Perso, this.Position, this.Rotation, new Vector2(scale));
+            game.SpriteBatch.Draw(this.Perso, this.Position, 0, new Vector2(scale));
             //game.SpriteBatch.DrawPoint(this.position.X, this.position.Y + 50 * this.scale, Color.Green, 5);
             //game.SpriteBatch.DrawRectangle(this.HitBox, Color.Red, 2);
 
